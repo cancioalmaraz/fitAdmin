@@ -1,11 +1,10 @@
 import React from 'react';
+import Layout from './Components/shared/Layout';
 
 const App = () => {
     return (
-        <div>
-            App
-        </div>
-    )
-}
+        <Layout />
+    );
+};
 
 export default App;
