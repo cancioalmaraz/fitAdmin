@@ -74,7 +74,7 @@ class CoachService extends BaseService
             'second_last_name' => 'required|string',
             'sex' => 'string',
             'age' => 'integer',
-            'email' => 'string',
+            'email' => 'email',
             'phone' => 'string',
             'address' => 'string'
         ];
@@ -117,7 +117,7 @@ class CoachService extends BaseService
             'second_last_name' => 'required|string',
             'sex' => 'string',
             'age' => 'integer',
-            'email' => 'string',
+            'email' => 'email',
             'phone' => 'string',
             'address' => 'string'
         ];
