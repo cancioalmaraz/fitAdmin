@@ -19,7 +19,9 @@ class ClientService extends BaseService
      */
     public function __construct(
         protected ClientRepository $clientRepository
-    ){}
+    ){
+        parent::__construct();
+    }
     
     /**
      * getAll

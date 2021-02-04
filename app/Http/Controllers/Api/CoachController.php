@@ -47,7 +47,18 @@ class CoachController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $apiRes = new ApiResponse('Coach');
+        $coach = $this->coachService->create($request->input());
+
+        if ($this->coachService->hasErrors()){
+            $apiRes->errors = $this->coachService->getErrors();
+            return response()->json($apiRes, 400);
+        }
+
+        $apiRes->results = $coach;
+        $apiRes->totalCount = 1;
+        $apiRes->filterCount = 1;
+        return response()->json($apiRes);
     }
 
     /**
