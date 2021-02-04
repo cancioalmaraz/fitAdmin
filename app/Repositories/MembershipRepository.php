@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Models\Coach;
+use App\Models\Membership;
 
-class CoachRepository {
+class MembershipRepository {
     
     /**
      * queryAll
@@ -13,15 +13,11 @@ class CoachRepository {
      * @return Builder
      */
     public function queryAll($filterList = []){
-        $query = Coach::from(Coach::getFullTableName() . ' as ch')
-            ->select('ch.*');
+        $query = Membership::from(Membership::getFullTableName() . ' as m')
+            ->select('m.*');
 
-        if (array_key_exists('first_last_name', $filterList) ){
-            $query->where('ch.first_last_name', 'like', '%'.$filterList['first_last_name'].'%');
-        }
-
-        if (array_key_exists('ci', $filterList) ){
-            $query->where('c.ci', '=', $filterList['ci']);
+        if (array_key_exists('name', $filterList) ){
+            $query->where('m.name', 'like', '%'.$filterList['name'].'%');
         }
 
         return $query;
@@ -34,11 +30,11 @@ class CoachRepository {
      * @param  int $offset
      * @param  array $order
      * @param  array $filterList
-     * @return Coach[]
+     * @return Membership[]
      */
     public function getAll( $limit = 10,
                             $offset = 0,
-                            $order = [['col' => 'ch.first_last_name', 'dir' => 'asc']],
+                            $order = [['col' => 'm.name', 'dir' => 'asc']],
                             $filterList = [] ){
         $query = $this->queryAll($filterList);
 

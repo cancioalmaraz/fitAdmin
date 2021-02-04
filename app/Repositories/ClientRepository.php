@@ -16,11 +16,11 @@ class ClientRepository {
         $query = Client::from(Client::getFullTableName() . ' as c')
             ->select('c.*');
 
-        if ( array_key_exists('first_last_name', $filterList) ){
+        if (array_key_exists('first_last_name', $filterList) ){
             $query->where('c.first_last_name', 'like', '%'.$filterList['first_last_name'].'%');
         }
 
-        if ( array_key_exists('ci', $filterList) ){
+        if (array_key_exists('ci', $filterList) ){
             $query->where('c.ci', '=', $filterList['ci']);
         }
 
