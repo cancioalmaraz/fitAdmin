@@ -26,13 +26,13 @@ class CreateClientsTable extends Migration
             $table->json('address')->nullable();
 
             $table->unsignedBigInteger('coach_id')->nullable();
-            $table->foreign('coach_id')->references('id')->on('coaches')->onDelete('cascade');
+            $table->foreign('coach_id')->references('id')->on('coaches')->onDelete('set null');
 
             $table->unsignedBigInteger('membership_id')->nullable();
-            $table->foreign('membership_id')->references('id')->on('memberships')->onDelete('cascade');
+            $table->foreign('membership_id')->references('id')->on('memberships')->onDelete('set null');
 
             $table->unsignedBigInteger('schedule_id')->nullable();
-            $table->foreign('schedule_id')->references('id')->on('schedules')->onDelete('cascade');
+            $table->foreign('schedule_id')->references('id')->on('schedules')->onDelete('set null');
 
             $table->timestamps();
         });

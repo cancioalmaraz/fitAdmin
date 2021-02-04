@@ -6,6 +6,7 @@ use App\Models\Coach;
 use App\Repositories\CoachRepository;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 /**
  * Class CoachService
  * @package App\Services
@@ -121,7 +122,11 @@ class CoachService extends BaseService
      */
     public function update(Coach $coach, $data = []) {
         $validationRules = [
-            'ci' => 'required|integer|unique:'.Coach::getTableName(),
+            'ci' => [
+                'required',
+                'integer',
+                Rule::unique(Coach::getTableName())->ignore($coach->id)
+            ],
             'name' => 'required|string',
             'first_last_name' => 'required|string',
             'second_last_name' => 'required|string',

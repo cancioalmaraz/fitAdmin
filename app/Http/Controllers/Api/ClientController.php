@@ -6,13 +6,19 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Services\ClientService;
+use App\Services\CoachService;
+use App\Services\MembershipService;
+use App\Services\ScheduleService;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
 
     public function __construct(
-        protected ClientService $clientService
+        protected ClientService $clientService,
+        protected CoachService $coachService,
+        protected MembershipService $membershipService,
+        protected ScheduleService $scheduleService
     ){}
 
     /**
@@ -31,16 +37,6 @@ class ClientController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -48,7 +44,35 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $apiRes = new ApiResponse('Client');
+
+        $coach = null;
+        $membership = null;
+        $schedule = null;
+
+        if (array_key_exists('coach', $request->input())){
+            $coach = $this->coachService->getById($request->input('coach.id'));
+        }
+
+        if (array_key_exists('membership', $request->input())){
+            $membership = $this->membershipService->getById($request->input('membership.id'));
+        }
+
+        if (array_key_exists('schedule', $request->input())){
+            $schedule = $this->scheduleService->getById($request->input('schedule.id'));
+        }
+
+        $client = $this->clientService->create($coach, $membership, $schedule, $request->input());
+
+        if ($this->clientService->hasErrors()){
+            $apiRes->errors = $this->clientService->getErrors();
+            return response()->json($apiRes, 400);
+        }
+
+        $apiRes->results = $client;
+        $apiRes->totalCount = 1;
+        $apiRes->filterCount = 1;
+        return response()->json($apiRes);
     }
 
     /**
@@ -59,18 +83,11 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  App\Models\Client  $client
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Client $client)
-    {
-        //
+        $apiRes = new ApiResponse('Client');
+        $apiRes->results = $client;
+        $apiRes->totalCount = 1;
+        $apiRes->filterCount = 1;
+        return response()->json($apiRes);
     }
 
     /**
@@ -82,7 +99,35 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        //
+        $apiRes = new ApiResponse('Client');
+
+        $coach = null;
+        $membership = null;
+        $schedule = null;
+
+        if (array_key_exists('coach', $request->input())){
+            $coach = $this->coachService->getById($request->input('coach.id'));
+        }
+
+        if (array_key_exists('membership', $request->input())){
+            $membership = $this->membershipService->getById($request->input('membership.id'));
+        }
+
+        if (array_key_exists('schedule', $request->input())){
+            $schedule = $this->scheduleService->getById($request->input('schedule.id'));
+        }
+
+        $client = $this->clientService->update($client, $coach, $membership, $schedule, $request->input());
+
+        if ($this->clientService->hasErrors()){
+            $apiRes->errors = $this->clientService->getErrors();
+            return response()->json($apiRes, 400);
+        }
+
+        $apiRes->results = $client;
+        $apiRes->totalCount = 1;
+        $apiRes->filterCount = 1;
+        return response()->json($apiRes);
     }
 
     /**
@@ -93,6 +138,8 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        $apiRes = new ApiResponse('Client');
+        $apiRes->results = $client->delete();
+        return response()->json($apiRes);
     }
 }
