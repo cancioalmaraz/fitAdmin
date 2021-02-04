@@ -3,6 +3,8 @@ import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
+    Grid,
+    TextField,
     Typography
 } from "@material-ui/core";
 
@@ -18,7 +20,21 @@ const ClientFilterSection = React.memo(({ accordion = { state: false } }) => {
                 }}
             ></AccordionSummary>
             <AccordionDetails>
-                <Typography>Filter Section</Typography>
+                <Grid container spacing={3}>
+                    <Grid item xs={6} md={2}>
+                        <TextField
+                            fullWidth
+                            label="Apellido P."
+                        />
+                    </Grid>
+
+                    <Grid item xs={6} md={2}>
+                        <TextField
+                            fullWidth
+                            label="Coach"
+                        />
+                    </Grid>
+                </Grid>
             </AccordionDetails>
         </Accordion>
     );

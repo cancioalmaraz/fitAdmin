@@ -29,9 +29,9 @@ const PaginationUi = React.memo(
             >
                 <Box p={1}>
                     <Typography className={classes.textPagination}>
-                        Showing {loading ? "..." : offset + 1} to{" "}
-                        {loading ? "..." : offset + totalItemsInPage} of{" "}
-                        {loading ? "..." : totalItems} entries
+                        Mostrando {loading ? "..." : offset + 1} a{" "}
+                        {loading ? "..." : offset + totalItemsInPage} de{" "}
+                        {loading ? "..." : totalItems} entradas
                     </Typography>
                 </Box>
                 <Box p={1}>
