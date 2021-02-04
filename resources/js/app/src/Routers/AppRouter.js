@@ -5,15 +5,15 @@ import {
     Route,
     Redirect
 } from "react-router-dom";
-import HomePage from "../Components/shared/HomePage";
+import ClientPage from "../Components/Client/ClientPage";
 
 const AppRouter = props => {
     return (
         <Router>
-            <div>
+            <div style={{width: '100%'}}>
                 <Switch>
                     <Route path="/">
-                        <HomePage {...props} />
+                        <ClientPage {...props} />
                     </Route>
                     <Redirect to="/" />
                 </Switch>
