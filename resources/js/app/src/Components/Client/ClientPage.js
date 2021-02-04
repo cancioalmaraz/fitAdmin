@@ -9,9 +9,9 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 
 // Components
-import ClientTitle from "./ClientTitle";
 import ClientList from "./ClientList";
-import PaginationUi from "../shared/Pagination";
+import Pagination from "../shared/Pagination";
+import ClientActionSection from "./ClientActionSection";
 
 const drawerWidth = 240;
 
@@ -93,11 +93,11 @@ const ClientPage = props => {
             <main className={classes.content}>
                 <div className={classes.toolbar} />
 
-                <ClientTitle />
+                <ClientActionSection />
 
                 <ClientList />
 
-                <PaginationUi />
+                <Pagination />
 
             </main>
         </Fragment>
