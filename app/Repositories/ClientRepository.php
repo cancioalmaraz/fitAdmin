@@ -5,7 +5,17 @@ namespace App\Repositories;
 use App\Models\Client;
 
 class ClientRepository {
-    
+        
+    /**
+     * getById
+     *
+     * @param  int $id
+     * @return Client
+     */
+    public function getById($id){
+        return Client::find($id);
+    }
+
     /**
      * queryAll
      *

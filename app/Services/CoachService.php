@@ -25,6 +25,16 @@ class CoachService extends BaseService
     }
     
     /**
+     * getById
+     *
+     * @param  int $id
+     * @return Coach
+     */
+    public function getById($id){
+        return $this->coachRepository->getById($id);
+    }
+    
+    /**
      * getAll
      *
      * @param  array $data

@@ -25,6 +25,16 @@ class MembershipService extends BaseService
     }
     
     /**
+     * getById
+     *
+     * @param  int $id
+     * @return Membership
+     */
+    public function getById($id){
+        return $this->membershipRepository->getById($id);
+    }
+    
+    /**
      * getAll
      *
      * @param  array $data

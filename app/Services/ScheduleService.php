@@ -25,6 +25,16 @@ class ScheduleService extends BaseService
     }
     
     /**
+     * getById
+     *
+     * @param  int $id
+     * @return Schedule
+     */
+    public function getById($id){
+        return $this->scheduleRepository->getById($id);
+    }
+    
+    /**
      * getAll
      *
      * @param  array $data

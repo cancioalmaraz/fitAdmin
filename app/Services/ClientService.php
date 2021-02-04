@@ -24,6 +24,16 @@ class ClientService extends BaseService
     }
     
     /**
+     * getById
+     *
+     * @param  int $id
+     * @return Client
+     */
+    public function getById($id){
+        return $this->clientRepository->getById($id);
+    }
+    
+    /**
      * getAll
      *
      * @param  array $data

@@ -5,7 +5,17 @@ namespace App\Repositories;
 use App\Models\Schedule;
 
 class ScheduleRepository {
-    
+        
+    /**
+     * getBydId
+     *
+     * @param  int $id
+     * @return Schedule
+     */
+    public function getById($id){
+        return Schedule::find($id);
+    }
+
     /**
      * queryAll
      *

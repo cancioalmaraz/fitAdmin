@@ -5,7 +5,17 @@ namespace App\Repositories;
 use App\Models\Coach;
 
 class CoachRepository {
-    
+        
+    /**
+     * getBydId
+     *
+     * @param  int $id
+     * @return Coach
+     */
+    public function getById($id){
+        return Coach::find($id);
+    }
+
     /**
      * queryAll
      *

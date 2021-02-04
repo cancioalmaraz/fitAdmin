@@ -7,6 +7,16 @@ use App\Models\Membership;
 class MembershipRepository {
     
     /**
+     * getBydId
+     *
+     * @param  int $id
+     * @return Membership
+     */
+    public function getById($id){
+        return Membership::find($id);
+    }
+
+    /**
      * queryAll
      *
      * @param  array $filterList
