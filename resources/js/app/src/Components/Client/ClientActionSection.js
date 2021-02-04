@@ -1,11 +1,25 @@
 import React from "react";
 import { Button, Grid } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
 
-const ClientActionSection = () => {
+// Icons
+import AddIcon from "@material-ui/icons/Add";
+import FilterListIcon from '@material-ui/icons/FilterList';
+
+const ClientActionSection = ({accordion}) => {
     return (
         <Grid container spacing={3}>
-            <Grid item xs={6} md={10}></Grid>
+            <Grid item xs={6} md={2}>
+                <Button
+                    fullWidth
+                    size="small"
+                    color="primary"
+                    variant="contained"
+                    startIcon={<FilterListIcon />}
+                    onClick={accordion.state ? accordion.close : accordion.open}
+                >
+                    Filtros
+                </Button>
+            </Grid>
             <Grid item xs={6} md={2}>
                 <Button
                     fullWidth

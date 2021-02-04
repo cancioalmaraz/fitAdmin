@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Fragment } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,6 +12,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ClientList from "./ClientList";
 import Pagination from "../shared/Pagination";
 import ClientActionSection from "./ClientActionSection";
+import ClientFilterSection from "./ClientFilterSection";
 
 const drawerWidth = 240;
 
@@ -86,6 +87,16 @@ const AppBarPage = props => {
 const ClientPage = props => {
     const classes = useStyles();
 
+    const [accordion, setAccordion] = useState(false);
+
+    const handleOpenAccordion = () => {
+        setAccordion(true);
+    };
+
+    const handleCloseAccordion = () => {
+        setAccordion(false);
+    };
+
     return (
         <Fragment>
             <AppBarPage {...props} />
@@ -93,12 +104,23 @@ const ClientPage = props => {
             <main className={classes.content}>
                 <div className={classes.toolbar} />
 
-                <ClientActionSection />
+                <ClientActionSection
+                    accordion={{
+                        state: accordion,
+                        open: handleOpenAccordion,
+                        close: handleCloseAccordion
+                    }}
+                />
+
+                <ClientFilterSection
+                    accordion={{
+                        state: accordion
+                    }}
+                />
 
                 <ClientList />
 
                 <Pagination />
-
             </main>
         </Fragment>
     );
