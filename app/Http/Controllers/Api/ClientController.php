@@ -2,20 +2,32 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
+use App\Services\ClientService;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
+
+    public function __construct(
+        protected ClientService $clientService
+    ){}
+
     /**
-     * Display a listing of the resource.
+     * index
      *
-     * @return \Illuminate\Http\Response
+     * @param  Request $request
+     * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $apiRes = new ApiResponse('Client');
+        $apiRes->results = $this->clientService->getAll($request->input());
+        $apiRes->totalCount = $this->clientService->countAll();
+        $apiRes->filterCount = $this->clientService->countAllFiltered($request->input());
+        return response()->json($apiRes);
     }
 
     /**
