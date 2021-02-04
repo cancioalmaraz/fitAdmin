@@ -12,23 +12,22 @@ import {
 // Components
 import ClientListRow from "./ClientListRow";
 
-const ClientList = ({ clientList = { data: [] } }) => {
+const ClientList = ({ clientList = { data: [], loading: false } }) => {
     return (
         <TableContainer>
             <Table>
                 <Hidden smDown>
                     <TableHead>
                         <TableRow>
-                            <TableCell align="center"></TableCell>
                             <TableCell align="center">Id</TableCell>
-                            <TableCell align="center">Description</TableCell>
-                            <TableCell align="center">Status</TableCell>
-                            <TableCell align="center">Progress</TableCell>
-                            <TableCell align="center">Code</TableCell>
-                            <TableCell align="center">Started At</TableCell>
-                            <TableCell align="center">Finished At</TableCell>
-                            <TableCell align="center">Priority</TableCell>
-                            <TableCell align="center">Type</TableCell>
+                            <TableCell align="center">Nombre</TableCell>
+                            <TableCell align="center">Apellido P.</TableCell>
+                            <TableCell align="center">Appelido M.</TableCell>
+                            <TableCell align="center">Direccion</TableCell>
+                            <TableCell align="center">Email</TableCell>
+                            <TableCell align="center">Telefono</TableCell>
+                            <TableCell align="center">Coach</TableCell>
+                            <TableCell align="center">Acciones</TableCell>
                         </TableRow>
                     </TableHead>
                 </Hidden>
