@@ -3,10 +3,13 @@ import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
+    Button,
     Grid,
     TextField,
     Typography
 } from "@material-ui/core";
+
+import SearchIcon from '@material-ui/icons/Search';
 
 const ClientFilterSection = React.memo(({ accordion = { state: false } }) => {
     return (
@@ -27,13 +30,26 @@ const ClientFilterSection = React.memo(({ accordion = { state: false } }) => {
                             label="Apellido P."
                         />
                     </Grid>
-
                     <Grid item xs={6} md={2}>
                         <TextField
                             fullWidth
                             label="Coach"
                         />
                     </Grid>
+
+                    <Grid item xs md={10}></Grid>
+                    <Grid item xs={12} md={2}>
+                        <Button
+                            fullWidth
+                            size="small"
+                            color="primary"
+                            variant="contained"
+                            startIcon={<SearchIcon />}
+                        >
+                            Buscar
+                        </Button>
+                    </Grid>
+
                 </Grid>
             </AccordionDetails>
         </Accordion>

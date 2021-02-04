@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Grid } from "@material-ui/core";
+import { Button, Grid, Hidden } from "@material-ui/core";
 
 // Icons
 import AddIcon from "@material-ui/icons/Add";
@@ -20,6 +20,9 @@ const ClientActionSection = React.memo(({accordion}) => {
                     Filtros
                 </Button>
             </Grid>
+            <Hidden xsDown>
+                <Grid item md={8}></Grid>
+            </Hidden>
             <Grid item xs={6} md={2}>
                 <Button
                     fullWidth
