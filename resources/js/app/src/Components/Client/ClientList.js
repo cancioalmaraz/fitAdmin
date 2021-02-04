@@ -12,7 +12,7 @@ import {
 // Components
 import ClientListRow from "./ClientListRow";
 
-const ClientList = ({ clientList = { data: [], loading: false } }) => {
+const ClientList = React.memo(({ clientList = { data: [], loading: false } }) => {
     return (
         <TableContainer>
             <Table>
@@ -39,6 +39,6 @@ const ClientList = ({ clientList = { data: [], loading: false } }) => {
             </Table>
         </TableContainer>
     );
-};
+});
 
 export default ClientList;

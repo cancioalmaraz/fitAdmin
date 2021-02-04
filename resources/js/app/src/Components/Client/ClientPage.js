@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Fragment } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const AppBarPage = props => {
+const AppBarPage = React.memo(props => {
     const classes = useStyles();
 
     const { drawer } = props;
@@ -82,20 +82,20 @@ const AppBarPage = props => {
             </Toolbar>
         </AppBar>
     );
-};
+});
 
-const ClientPage = props => {
+const ClientPage = React.memo(props => {
     const classes = useStyles();
 
     const [accordion, setAccordion] = useState(false);
 
-    const handleOpenAccordion = () => {
+    const handleOpenAccordion = useCallback(() => {
         setAccordion(true);
-    };
+    }, []);
 
-    const handleCloseAccordion = () => {
+    const handleCloseAccordion = useCallback(() => {
         setAccordion(false);
-    };
+    }, []);
 
     return (
         <Fragment>
@@ -124,6 +124,6 @@ const ClientPage = props => {
             </main>
         </Fragment>
     );
-};
+});
 
 export default ClientPage;

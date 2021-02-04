@@ -5,7 +5,7 @@ import { Button, Grid } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import FilterListIcon from '@material-ui/icons/FilterList';
 
-const ClientActionSection = ({accordion}) => {
+const ClientActionSection = React.memo(({accordion}) => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={6} md={2}>
@@ -33,6 +33,6 @@ const ClientActionSection = ({accordion}) => {
             </Grid>
         </Grid>
     );
-};
+});
 
 export default ClientActionSection;

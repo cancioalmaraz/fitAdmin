@@ -6,7 +6,7 @@ import {
     Typography
 } from "@material-ui/core";
 
-const ClientFilterSection = ({ accordion = { state: false } }) => {
+const ClientFilterSection = React.memo(({ accordion = { state: false } }) => {
     return (
         <Accordion expanded={accordion.state}>
             <AccordionSummary
@@ -22,6 +22,6 @@ const ClientFilterSection = ({ accordion = { state: false } }) => {
             </AccordionDetails>
         </Accordion>
     );
-};
+});
 
 export default ClientFilterSection;
