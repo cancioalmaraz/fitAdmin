@@ -101,5 +101,46 @@ class CoachService extends BaseService
         }
         return $coach;
     }
+    
+    /**
+     * update
+     *
+     * @param  Coach $coach
+     * @param  array $data
+     * @return Coach
+     */
+    public function update(Coach $coach, $data = []) {
+        $validationRules = [
+            'ci' => 'required|integer|unique:'.Coach::getTableName(),
+            'name' => 'required|string',
+            'first_last_name' => 'required|string',
+            'second_last_name' => 'required|string',
+            'sex' => 'string',
+            'age' => 'integer',
+            'email' => 'string',
+            'phone' => 'string',
+            'address' => 'string'
+        ];
+
+        $validator = Validator::make($data, $validationRules);
+
+        if ($validator->fails()) {
+            $this->errors->merge($validator->errors());
+        }
+
+        if (!$this->hasErrors()) {
+            $coach->ci = $data['ci'];
+            $coach->name = $data['name'];
+            $coach->first_last_name = $data['first_last_name'];
+            $coach->second_last_name = $data['second_last_name'];
+            $coach->sex = Arr::get($data, 'sex');
+            $coach->age = Arr::get($data, 'age');
+            $coach->email = Arr::get($data, 'email');
+            $coach->phone = Arr::get($data, 'phone');
+            $coach->address = Arr::get($data, 'address');
+            $coach->update();
+        }
+        return $coach;
+    }
 
 }

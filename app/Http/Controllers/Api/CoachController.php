@@ -30,16 +30,6 @@ class CoachController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -69,18 +59,11 @@ class CoachController extends Controller
      */
     public function show(Coach $coach)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  App\Models\Coach  $coach
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Coach $coach)
-    {
-        //
+        $apiRes = new ApiResponse('Coach');
+        $apiRes->results = $coach;
+        $apiRes->totalCount = 1;
+        $apiRes->filterCount = 1;
+        return response()->json($apiRes);
     }
 
     /**
@@ -92,7 +75,18 @@ class CoachController extends Controller
      */
     public function update(Request $request, Coach $coach)
     {
-        //
+        $apiRes = new ApiResponse('Coach');
+        $coach = $this->coachService->update($coach, $request->input());
+
+        if ($this->coachService->hasErrors()){
+            $apiRes->errors = $this->coachService->getErrors();
+            return response()->json($apiRes, 400);
+        }
+
+        $apiRes->results = $coach;
+        $apiRes->totalCount = 1;
+        $apiRes->filterCount = 1;
+        return response()->json($apiRes);
     }
 
     /**
@@ -103,6 +97,8 @@ class CoachController extends Controller
      */
     public function destroy(Coach $coach)
     {
-        //
+        $apiRes = new ApiResponse('Coach');
+        $apiRes->results = $coach->delete();
+        return response()->json($apiRes);
     }
 }
