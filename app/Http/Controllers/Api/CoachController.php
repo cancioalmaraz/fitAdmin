@@ -2,20 +2,31 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\ApiResponse;
 use App\Models\Coach;
 use App\Http\Controllers\Controller;
+use App\Services\CoachService;
 use Illuminate\Http\Request;
 
 class CoachController extends Controller
 {
+
+    public function __construct(
+        protected CoachService $coachService
+    ){}
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $apiRes = new ApiResponse('Coach');
+        $apiRes->results = $this->coachService->getAll($request->input());
+        $apiRes->totalCount = $this->coachService->countAll();
+        $apiRes->filterCount = $this->coachService->countAllFiltered($request->input());
+        return response()->json($apiRes);
     }
 
     /**

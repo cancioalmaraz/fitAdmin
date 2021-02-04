@@ -31,3 +31,4 @@ Route::get('test', function(){
 });
 
 Route::apiResource('clients', 'Api\ClientController');
+Route::apiResource('coaches', 'Api\CoachController');
