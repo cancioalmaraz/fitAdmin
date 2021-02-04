@@ -163,6 +163,7 @@ const ClientPage = React.memo(props => {
                     handleClose={handleCloseForm}
                     handleSubmit={handleSubmitForm}
                 />
+
             </main>
         </Fragment>
     );

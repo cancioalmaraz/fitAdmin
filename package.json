@@ -24,8 +24,10 @@
         "@material-ui/data-grid": "^4.0.0-alpha.18",
         "@material-ui/icons": "^4.11.2",
         "@material-ui/lab": "^4.0.0-alpha.57",
+        "leaflet": "^1.7.1",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
+        "react-leaflet": "^3.1.0",
         "react-router-dom": "^5.2.0"
     }
 }
