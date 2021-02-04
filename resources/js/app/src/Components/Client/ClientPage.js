@@ -13,6 +13,7 @@ import ClientList from "./ClientList";
 import Pagination from "../shared/Pagination";
 import ClientActionSection from "./ClientActionSection";
 import ClientFilterSection from "./ClientFilterSection";
+import ClientForm from "./ClientForm";
 
 const drawerWidth = 240;
 
@@ -87,6 +88,7 @@ const AppBarPage = React.memo(props => {
 const ClientPage = React.memo(props => {
     const classes = useStyles();
 
+    // State to Accordion
     const [accordion, setAccordion] = useState(false);
 
     const handleOpenAccordion = useCallback(() => {
@@ -96,6 +98,37 @@ const ClientPage = React.memo(props => {
     const handleCloseAccordion = useCallback(() => {
         setAccordion(false);
     }, []);
+
+    // State to form
+    const [stateForm, setStateForm] = useState({
+        open: false,
+        loading: false,
+        client: {}
+    });
+
+    const handleOpenForm = useCallback(() => {
+        setStateForm(state => ({
+            ...state,
+            open: true,
+            client: {}
+        }));
+    }, [setStateForm]);
+
+    const handleCloseForm = useCallback(() => {
+        setStateForm(state => ({
+            ...state,
+            open: false
+        }));
+    }, [setStateForm]);
+
+    const handleSubmitForm = useCallback(
+        (e, form) => {
+            e.preventDefault();
+
+            console.log(form);
+        },
+        [handleCloseForm]
+    );
 
     return (
         <Fragment>
@@ -110,6 +143,9 @@ const ClientPage = React.memo(props => {
                         open: handleOpenAccordion,
                         close: handleCloseAccordion
                     }}
+                    form={{
+                        open: handleOpenForm
+                    }}
                 />
 
                 <ClientFilterSection
@@ -121,6 +157,12 @@ const ClientPage = React.memo(props => {
                 <ClientList />
 
                 <Pagination />
+
+                <ClientForm
+                    state={stateForm}
+                    handleClose={handleCloseForm}
+                    handleSubmit={handleSubmitForm}
+                />
             </main>
         </Fragment>
     );

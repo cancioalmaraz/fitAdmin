@@ -5,7 +5,7 @@ import { Button, Grid, Hidden } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import FilterListIcon from '@material-ui/icons/FilterList';
 
-const ClientActionSection = React.memo(({accordion}) => {
+const ClientActionSection = React.memo(({accordion, form}) => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={6} md={2}>
@@ -30,6 +30,7 @@ const ClientActionSection = React.memo(({accordion}) => {
                     color="primary"
                     variant="contained"
                     startIcon={<AddIcon />}
+                    onClick={form.open}
                 >
                     Inscribir
                 </Button>
