@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
+use DateTime;
+use Illuminate\Support\Facades\Date;
+
 class Client extends BaseModel
 {
     protected $table = 'clients';
@@ -23,6 +26,10 @@ class Client extends BaseModel
         return $this->belongsTo(Schedule::class, 'schedule_id', 'id');
     }
 
+    public function payments(){
+        return $this->belongsToMany(Payment::class, 'clients_payments', 'client_id', 'payment_id')->latest();
+    }
+
     public function toArray()
     {
         $array = parent::toArray();
@@ -38,6 +45,13 @@ class Client extends BaseModel
         if (!is_null($this->schedule)) {
             $array['schedule'] = $this->schedule;
         }
+
+        $endDate = new DateTime($this->payments()->latest()->first()->end_date);
+        $today = new DateTime(date("Y-m-d"));
+
+        $diff = $endDate->diff($today);
+        $array['remaining_days'] = $diff->days;
+        $array['last_payment'] = $this->payments()->latest()->first();
 
         return $array;
     }
