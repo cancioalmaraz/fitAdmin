@@ -81,9 +81,16 @@ class ClientController extends Controller
      * @param  App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function show(Client $client)
+    public function show($id)
     {
         $apiRes = new ApiResponse('Client');
+        $client = $this->clientService->getById($id);
+
+        if (is_null($client)){
+            $apiRes->errors->add('Client', 'Client Not Found');
+            return response()->json($apiRes, 404);
+        }
+
         $apiRes->results = $client;
         $apiRes->totalCount = 1;
         $apiRes->filterCount = 1;

@@ -46,7 +46,7 @@ class ClientService extends BaseService
         return $this->clientRepository->getAll(
             Arr::get($data, 'limit', 10),
             Arr::get($data, 'offset', 0),
-            Arr::get($data, 'order', [['col' => 'c.first_last_name', 'dir' => 'asc']]),
+            Arr::get($data, 'order', [['col' => 'remaining_days', 'dir' => 'asc']]),
             Arr::get($data, 'filterList', [])
         );
     }

@@ -27,7 +27,7 @@ class Client extends BaseModel
     }
 
     public function payments(){
-        return $this->belongsToMany(Payment::class, 'clients_payments', 'client_id', 'payment_id')->latest();
+        return $this->belongsToMany(Payment::class, 'clients_payments', 'client_id', 'payment_id');
     }
 
     public function toArray()
@@ -46,11 +46,6 @@ class Client extends BaseModel
             $array['schedule'] = $this->schedule;
         }
 
-        $endDate = new DateTime($this->payments()->latest()->first()->end_date);
-        $today = new DateTime(date("Y-m-d"));
-
-        $diff = $endDate->diff($today);
-        $array['remaining_days'] = $diff->days;
         $array['last_payment'] = $this->payments()->latest()->first();
 
         return $array;

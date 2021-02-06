@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Client;
+use Illuminate\Support\Facades\DB;
 
 class ClientRepository {
         
@@ -13,7 +14,10 @@ class ClientRepository {
      * @return Client
      */
     public function getById($id){
-        return Client::find($id);
+        $query = $this->queryAll()
+            ->where('c.id', '=', $id);
+
+        return $query->first();
     }
 
     /**
@@ -24,7 +28,15 @@ class ClientRepository {
      */
     public function queryAll($filterList = []){
         $query = Client::from(Client::getFullTableName() . ' as c')
-            ->select('c.*');
+            ->select('c.*')
+            ->addSelect(DB::raw("(SELECT DATEDIFF(p.end_date, CURRENT_DATE())
+                                FROM fitAdmin.clients as c2
+                                INNER JOIN fitAdmin.clients_payments as cp
+                                ON c2.id = cp.client_id
+                                INNER JOIN fitAdmin.payments as p
+                                ON p.id = cp.payment_id
+                                WHERE c2.id = c.id
+                                ORDER BY p.created_at DESC LIMIT 1) as remaining_days"));
 
         if (array_key_exists('first_last_name', $filterList) ){
             $query->where('c.first_last_name', 'like', '%'.$filterList['first_last_name'].'%');
@@ -48,7 +60,7 @@ class ClientRepository {
      */
     public function getAll( $limit = 10,
                             $offset = 0,
-                            $order = [['col' => 'c.first_last_name', 'dir' => 'asc']],
+                            $order = [['col' => 'remaining_days', 'dir' => 'asc']],
                             $filterList = [] ){
         $query = $this->queryAll($filterList);
 
