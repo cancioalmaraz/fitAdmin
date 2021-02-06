@@ -180,31 +180,31 @@ const ClientPage = React.memo(props => {
             ...state,
             loading: true
         }));
-    }
+    };
 
     const finishLoadingPagination = () => {
         setPagination(state => ({
             ...state,
             loading: false
         }));
-    }
+    };
 
     const settingPagination = data => {
         setPagination(state => ({
             ...state,
-            totalPages: Math.ceil(data.totalCount / limit),
-            totalItems: data.totalCount,
+            totalPages: Math.ceil(data.filterCount / limit),
+            totalItems: data.filterCount,
             totalItemsInPage: data.results.length
         }));
     };
 
     // Function in Page
-    const chargePage = () => {
+    const chargePage = (filterList = {}) => {
         startLoadingClientList();
         startLoadingPagination();
 
         clientService
-            .getAll(limit)
+            .getAll(limit, pagination.offset, filterList)
             .then(httpSuccess => {
                 chargeClientList(httpSuccess.data.results);
                 settingPagination(httpSuccess.data);
@@ -213,6 +213,11 @@ const ClientPage = React.memo(props => {
                 finishLoadingClientList();
                 finishLoadingPagination();
             });
+    };
+
+    const search = (e, filterList) => {
+        e.preventDefault();
+        chargePage(filterList);
     };
 
     useEffect(() => {
@@ -241,18 +246,24 @@ const ClientPage = React.memo(props => {
                     accordion={{
                         state: accordion
                     }}
+                    filter={{
+                        search: search,
+                        charge: chargePage
+                    }}
                 />
 
                 <ClientList clientList={clientList} />
 
-                <Pagination
-                    page={pagination.page}
-                    totalPages={pagination.totalPages}
-                    totalItems={pagination.totalItems}
-                    offset={pagination.offset}
-                    totalItemsInPage={pagination.totalItemsInPage}
-                    loading={pagination.loading}
-                />
+                {!pagination.loading && (
+                    <Pagination
+                        page={pagination.page}
+                        totalPages={pagination.totalPages}
+                        totalItems={pagination.totalItems}
+                        offset={pagination.offset}
+                        totalItemsInPage={pagination.totalItemsInPage}
+                        loading={pagination.loading}
+                    />
+                )}
 
                 <ClientForm
                     state={stateForm}

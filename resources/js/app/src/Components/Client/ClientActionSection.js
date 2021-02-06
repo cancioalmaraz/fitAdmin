@@ -8,7 +8,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 const ClientActionSection = React.memo(({accordion, form}) => {
     return (
         <Grid container spacing={3}>
-            <Grid item xs={6} md={2}>
+            <Grid item xs={6} sm={3} md={2}>
                 <Button
                     fullWidth
                     size="small"
@@ -21,9 +21,9 @@ const ClientActionSection = React.memo(({accordion, form}) => {
                 </Button>
             </Grid>
             <Hidden xsDown>
-                <Grid item md={8}></Grid>
+                <Grid item sm={6} md={8}></Grid>
             </Hidden>
-            <Grid item xs={6} md={2}>
+            <Grid item xs={6} sm={3} md={2}>
                 <Button
                     fullWidth
                     size="small"

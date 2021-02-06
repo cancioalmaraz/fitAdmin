@@ -8,10 +8,12 @@ class ClienService {
         urlSearchParams.append("offset", offset);
 
         for (const property in filterList) {
-            urlSearchParams.append(
-                `filterList[${property}][]`,
-                filterList[property]
-            );
+            if (filterList[property] !== ""){
+                urlSearchParams.append(
+                    `filterList[${property}]`,
+                    filterList[property]
+                );
+            }
         }
 
         return axios.get("/fitAdmin/public/api/clients", {
