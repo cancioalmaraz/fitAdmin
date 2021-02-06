@@ -16,7 +16,7 @@ const ClientListRow = ({ client }) => {
         <TableRow style={styles.row}>
             <TableCell style={styles.cell} align="center">{client.ci}</TableCell>
             <TableCell style={styles.cell} align="center">{client.name}</TableCell>
-            <TableCell style={styles.cell} align="center">{client.firtst_last_name}</TableCell>
+            <TableCell style={styles.cell} align="center">{client.first_last_name}</TableCell>
             <TableCell style={styles.cell} align="center">{client.second_last_name}</TableCell>
             <TableCell style={styles.cell} align="center">
                 {!!client.remaining_days && client.remaining_days}
