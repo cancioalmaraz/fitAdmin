@@ -14,9 +14,10 @@ import AppRouter from "../../Routers/AppRouter";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import PersonIcon from '@material-ui/icons/Person';
-import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
-import HouseIcon from '@material-ui/icons/House';
+import PersonIcon from "@material-ui/icons/Person";
+import AccessibilityNewIcon from "@material-ui/icons/AccessibilityNew";
+import HouseIcon from "@material-ui/icons/House";
+import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 
 const drawerWidth = 240;
 
@@ -103,14 +104,18 @@ const Layout = () => {
                         </ListItemIcon>
                         <ListItemText primary={"Clientes"} />
                     </ListItem>
-
                     <ListItem button>
                         <ListItemIcon>
                             <AccessibilityNewIcon />
                         </ListItemIcon>
                         <ListItemText primary={"Coachs"} />
                     </ListItem>
-
+                    <ListItem button>
+                        <ListItemIcon>
+                            <MonetizationOnIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={"Pagos"} />
+                    </ListItem>
                     <ListItem button>
                         <ListItemIcon>
                             <HouseIcon />
