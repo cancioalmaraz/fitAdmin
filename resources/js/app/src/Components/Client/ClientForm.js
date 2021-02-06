@@ -114,18 +114,18 @@ const ClientForm = React.memo(({ state, handleClose, handleSubmit }) => {
 
     useEffect(() => {
         if (state.open) {
-            setForm(
-                !!state.client.id
-                    ? state.client
-                    : {
-                          ci: "",
-                          name: "",
-                          first_last_name: "",
-                          second_last_name: "",
-                          phone: "",
-                          address: center
-                      }
-            );
+            setForm({
+                ci: !!state.client.ci ? state.client.ci : "",
+                name: !!state.client.name ? state.client.name : "",
+                first_last_name: !!state.client.first_last_name
+                    ? state.client.first_last_name
+                    : "",
+                second_last_name: !!state.client.second_last_name
+                    ? state.client.second_last_name
+                    : "",
+                phone: !!state.client.phone ? state.client.phone : "",
+                address: !!state.client.phone ? state.client.phone : center
+            });
         }
     }, [state.open]);
 

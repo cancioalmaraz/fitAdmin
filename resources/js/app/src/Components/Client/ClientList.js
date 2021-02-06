@@ -13,7 +13,7 @@ import {
 import ClientListRow from "./ClientListRow";
 
 const ClientList = React.memo(
-    ({ clientList = { data: [], loading: false } }) => {
+    ({ clientList = { data: [], loading: false }, actionList = {} }) => {
         return (
             <TableContainer>
                 <Table>
@@ -43,6 +43,7 @@ const ClientList = React.memo(
                                 <ClientListRow
                                     key={client.id}
                                     client={client}
+                                    actionList={actionList}
                                 />
                             ))}
                     </TableBody>

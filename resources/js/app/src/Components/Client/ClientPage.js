@@ -149,6 +149,17 @@ const ClientPage = React.memo(props => {
         }));
     }, [setStateForm]);
 
+    const handleEditClient = useCallback(
+        client => {
+            setStateForm(state => ({
+                ...state,
+                open: true,
+                client: client
+            }));
+        },
+        [setStateForm]
+    );
+
     const handleCloseForm = useCallback(() => {
         setStateForm(state => ({
             ...state,
@@ -252,7 +263,10 @@ const ClientPage = React.memo(props => {
                     }}
                 />
 
-                <ClientList clientList={clientList} />
+                <ClientList
+                    clientList={clientList}
+                    actionList={{ edit: handleEditClient }}
+                />
 
                 {!pagination.loading && (
                     <Pagination
