@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Fragment } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,6 +14,9 @@ import Pagination from "../shared/Pagination";
 import ClientActionSection from "./ClientActionSection";
 import ClientFilterSection from "./ClientFilterSection";
 import ClientForm from "./ClientForm";
+
+// Services
+import ClientService from "../../Services/ClientService";
 
 const drawerWidth = 240;
 
@@ -85,8 +88,40 @@ const AppBarPage = React.memo(props => {
     );
 });
 
+const limit = 10;
+
 const ClientPage = React.memo(props => {
     const classes = useStyles();
+
+    // Services
+    const clientService = new ClientService();
+
+    // State to Clients
+    const [clientList, setClientList] = useState({
+        data: [],
+        loading: true
+    });
+
+    const chargeClientList = (data = []) => {
+        setClientList(state => ({
+            ...state,
+            data: data
+        }));
+    };
+
+    const startLoadingClientList = () => {
+        setClientList(state => ({
+            ...state,
+            loading: true
+        }));
+    };
+
+    const finishLoadingClientList = () => {
+        setClientList(state => ({
+            ...state,
+            loading: false
+        }));
+    };
 
     // State to Accordion
     const [accordion, setAccordion] = useState(false);
@@ -130,6 +165,60 @@ const ClientPage = React.memo(props => {
         [handleCloseForm]
     );
 
+    // State to Pagination
+    const [pagination, setPagination] = useState({
+        page: 1,
+        totalPages: 0,
+        offset: 0,
+        totalItems: 0,
+        totalItemsInPage: 0,
+        loading: true
+    });
+
+    const startLoadingPagination = () => {
+        setPagination(state => ({
+            ...state,
+            loading: true
+        }));
+    }
+
+    const finishLoadingPagination = () => {
+        setPagination(state => ({
+            ...state,
+            loading: false
+        }));
+    }
+
+    const settingPagination = data => {
+        setPagination(state => ({
+            ...state,
+            totalPages: Math.ceil(data.totalCount / limit),
+            totalItems: data.totalCount,
+            totalItemsInPage: data.results.length
+        }));
+    };
+
+    // Function in Page
+    const chargePage = () => {
+        startLoadingClientList();
+        startLoadingPagination();
+
+        clientService
+            .getAll(limit)
+            .then(httpSuccess => {
+                chargeClientList(httpSuccess.data.results);
+                settingPagination(httpSuccess.data);
+            })
+            .finally(() => {
+                finishLoadingClientList();
+                finishLoadingPagination();
+            });
+    };
+
+    useEffect(() => {
+        chargePage();
+    }, []);
+
     return (
         <Fragment>
             <AppBarPage {...props} />
@@ -154,16 +243,22 @@ const ClientPage = React.memo(props => {
                     }}
                 />
 
-                <ClientList />
+                <ClientList clientList={clientList} />
 
-                <Pagination />
+                <Pagination
+                    page={pagination.page}
+                    totalPages={pagination.totalPages}
+                    totalItems={pagination.totalItems}
+                    offset={pagination.offset}
+                    totalItemsInPage={pagination.totalItemsInPage}
+                    loading={pagination.loading}
+                />
 
                 <ClientForm
                     state={stateForm}
                     handleClose={handleCloseForm}
                     handleSubmit={handleSubmitForm}
                 />
-
             </main>
         </Fragment>
     );
