@@ -80,7 +80,7 @@ const ClientListRow = ({ client, actionList = {} }) => {
                     {client.second_last_name}
                 </TableCell>
                 <TableCell style={styles.cell} align="center">
-                    {!!client.remaining_days && client.remaining_days}
+                    {client.remaining_days !== null && client.remaining_days}
                 </TableCell>
                 <TableCell style={styles.cell} align="center">
                     {!!client.phone && client.phone}
