@@ -18,6 +18,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import AccessibilityNewIcon from "@material-ui/icons/AccessibilityNew";
 import HouseIcon from "@material-ui/icons/House";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
+import ScheduleIcon from '@material-ui/icons/Schedule';
 
 const drawerWidth = 240;
 
@@ -121,6 +122,12 @@ const Layout = () => {
                             <HouseIcon />
                         </ListItemIcon>
                         <ListItemText primary={"Afiliaciones"} />
+                    </ListItem>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <ScheduleIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={"Horarios"} />
                     </ListItem>
                 </List>
             </Drawer>
