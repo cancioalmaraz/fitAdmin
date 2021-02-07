@@ -289,7 +289,7 @@ const ClientForm = React.memo(({ state, handleClose, handleSubmit }) => {
                             <CloseIcon />
                         </IconButton>
                         <Typography variant="h6" className={classes.titleMap}>
-                            Mapa
+                            Seleccione la ubicacion
                         </Typography>
                         <Button
                             autoFocus
