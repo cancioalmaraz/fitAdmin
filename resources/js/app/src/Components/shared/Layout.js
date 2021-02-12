@@ -9,7 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import AppRouter from "../../Routers/AppRouter";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, useHistory } from "react-router-dom";
 
 // Icons
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
@@ -20,6 +20,7 @@ import AccessibilityNewIcon from "@material-ui/icons/AccessibilityNew";
 import HouseIcon from "@material-ui/icons/House";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import ScheduleIcon from "@material-ui/icons/Schedule";
+import EventIcon from "@material-ui/icons/Event";
 
 const drawerWidth = 240;
 
@@ -64,6 +65,16 @@ const DrawerUi = ({ drawer }) => {
     const classes = useStyles();
     const theme = useTheme();
 
+    const history = useHistory();
+
+    const linkToClients = () => {
+        history.push("/");
+    };
+
+    const linkToEvents = () => {
+        history.push("/fitAdmin/public/events");
+    };
+
     return (
         <Drawer
             variant="permanent"
@@ -89,7 +100,7 @@ const DrawerUi = ({ drawer }) => {
             </div>
             <Divider />
             <List>
-                <ListItem button>
+                <ListItem button onClick={linkToClients}>
                     <ListItemIcon>
                         <PersonIcon />
                     </ListItemIcon>
@@ -118,6 +129,12 @@ const DrawerUi = ({ drawer }) => {
                         <ScheduleIcon />
                     </ListItemIcon>
                     <ListItemText primary={"Horarios"} />
+                </ListItem>
+                <ListItem button onClick={linkToEvents}>
+                    <ListItemIcon>
+                        <EventIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={"Eventos"} />
                 </ListItem>
             </List>
         </Drawer>
