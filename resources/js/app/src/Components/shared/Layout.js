@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -9,6 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import AppRouter from "../../Routers/AppRouter";
+import { BrowserRouter as Router } from "react-router-dom";
 
 // Icons
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
@@ -18,7 +19,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import AccessibilityNewIcon from "@material-ui/icons/AccessibilityNew";
 import HouseIcon from "@material-ui/icons/House";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
-import ScheduleIcon from '@material-ui/icons/Schedule';
+import ScheduleIcon from "@material-ui/icons/Schedule";
 
 const drawerWidth = 240;
 
@@ -59,10 +60,73 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const Layout = () => {
+const DrawerUi = ({ drawer }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
+
+    return (
+        <Drawer
+            variant="permanent"
+            className={clsx(classes.drawer, {
+                [classes.drawerOpen]: drawer.state,
+                [classes.drawerClose]: !drawer.state
+            })}
+            classes={{
+                paper: clsx({
+                    [classes.drawerOpen]: drawer.state,
+                    [classes.drawerClose]: !drawer.state
+                })
+            }}
+        >
+            <div className={classes.toolbar}>
+                <IconButton onClick={drawer.close}>
+                    {theme.direction === "rtl" ? (
+                        <ChevronRightIcon />
+                    ) : (
+                        <ChevronLeftIcon />
+                    )}
+                </IconButton>
+            </div>
+            <Divider />
+            <List>
+                <ListItem button>
+                    <ListItemIcon>
+                        <PersonIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={"Clientes"} />
+                </ListItem>
+                <ListItem button>
+                    <ListItemIcon>
+                        <AccessibilityNewIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={"Coachs"} />
+                </ListItem>
+                <ListItem button>
+                    <ListItemIcon>
+                        <MonetizationOnIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={"Pagos"} />
+                </ListItem>
+                <ListItem button>
+                    <ListItemIcon>
+                        <HouseIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={"Afiliaciones"} />
+                </ListItem>
+                <ListItem button>
+                    <ListItemIcon>
+                        <ScheduleIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={"Horarios"} />
+                </ListItem>
+            </List>
+        </Drawer>
+    );
+};
+
+const Layout = () => {
+    const classes = useStyles();
+    const [open, setOpen] = useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -75,70 +139,22 @@ const Layout = () => {
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <Drawer
-                variant="permanent"
-                className={clsx(classes.drawer, {
-                    [classes.drawerOpen]: open,
-                    [classes.drawerClose]: !open
-                })}
-                classes={{
-                    paper: clsx({
-                        [classes.drawerOpen]: open,
-                        [classes.drawerClose]: !open
-                    })
-                }}
-            >
-                <div className={classes.toolbar}>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === "rtl" ? (
-                            <ChevronRightIcon />
-                        ) : (
-                            <ChevronLeftIcon />
-                        )}
-                    </IconButton>
-                </div>
-                <Divider />
-                <List>
-                    <ListItem button>
-                        <ListItemIcon>
-                            <PersonIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={"Clientes"} />
-                    </ListItem>
-                    <ListItem button>
-                        <ListItemIcon>
-                            <AccessibilityNewIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={"Coachs"} />
-                    </ListItem>
-                    <ListItem button>
-                        <ListItemIcon>
-                            <MonetizationOnIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={"Pagos"} />
-                    </ListItem>
-                    <ListItem button>
-                        <ListItemIcon>
-                            <HouseIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={"Afiliaciones"} />
-                    </ListItem>
-                    <ListItem button>
-                        <ListItemIcon>
-                            <ScheduleIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={"Horarios"} />
-                    </ListItem>
-                </List>
-            </Drawer>
 
-            <AppRouter
-                drawer={{
-                    state: open,
-                    open: handleDrawerOpen,
-                    close: handleDrawerClose
-                }}
-            />
+            <Router>
+                <DrawerUi
+                    drawer={{
+                        state: open,
+                        close: handleDrawerClose
+                    }}
+                />
+                <AppRouter
+                    drawer={{
+                        state: open,
+                        open: handleDrawerOpen,
+                        close: handleDrawerClose
+                    }}
+                />
+            </Router>
         </div>
     );
 };
