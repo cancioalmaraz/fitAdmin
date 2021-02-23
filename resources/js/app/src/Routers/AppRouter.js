@@ -12,10 +12,9 @@ const AppRouter = props => {
                 <Route path="/">
                     <ClientPage {...props} />
                 </Route>
-                <Route path="/fitAdmin/public/events">
+                <Route path="/events">
                     <EventPage {...props} />
                 </Route>
-                <Redirect to="/" />
             </Switch>
         </div>
     );

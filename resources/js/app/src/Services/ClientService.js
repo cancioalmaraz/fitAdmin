@@ -16,7 +16,7 @@ class ClienService {
             }
         }
 
-        return axios.get("/fitAdmin/public/api/clients", {
+        return axios.get("/api/clients", {
             params: urlSearchParams
         });
     }

@@ -72,7 +72,7 @@ const DrawerUi = ({ drawer }) => {
     };
 
     const linkToEvents = () => {
-        history.push("/fitAdmin/public/events");
+        history.push("/events");
     };
 
     return (

@@ -1,0 +1,22 @@
+version: "3"
+
+services: 
+  mysql:
+    image: mysql:5.7
+    ports: 
+      - 3306:3306
+    volumes: 
+      - mysql-data:/var/lib/mysql
+
+  apache:
+    image: apache:1.0
+    ports: 
+      - 80:80
+    volumes: 
+      - $PWD:/var/www/html
+      - $PWD/docker/config/apache/sites-available:/etc/apache2/sites-available
+
+volumes: 
+  mysql-data:
+    name: "fitAdmin-mysql-data"
+    driver: local
