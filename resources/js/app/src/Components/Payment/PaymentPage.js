@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useCallback, useState } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -8,6 +8,8 @@ import IconButton from "@material-ui/core/IconButton";
 
 // Icons
 import MenuIcon from "@material-ui/icons/Menu";
+import { Button } from "@material-ui/core";
+import PaymentForm from "./PaymentForm";
 
 const drawerWidth = 240;
 
@@ -86,16 +88,52 @@ const AppBarPage = React.memo(props => {
 const PaymentPage = React.memo(props => {
     const classes = useStyles();
 
+    // State to form
+    const [stateForm, setStateForm] = useState({
+        open: false,
+        loading: false,
+        client: {},
+        submit: () => {}
+    });
+
+    const handleCreatePayment = useCallback(() => {
+        setStateForm(state => ({
+            ...state,
+            open: true,
+            submit: createPayment
+        }));
+    }, [setStateForm]);
+
+    const handleCloseForm = useCallback(() => {
+        setStateForm(state => ({
+            ...state,
+            open: false
+        }));
+    }, [setStateForm]);
+
+    // Functions to Payments
+    const createPayment = (e, payment) => {
+        e.preventDefault();
+        console.log(payment);
+    };
+
     return (
         <Fragment>
             <AppBarPage {...props} />
 
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <div className={classes.root}>Pagina de pagos</div>
+                <div className={classes.root}>
+                    <Button onClick={handleCreatePayment}>Realizar Pago</Button>
+
+                    <PaymentForm
+                        state={stateForm}
+                        handleClose={handleCloseForm}
+                    />
+                </div>
             </main>
         </Fragment>
     );
-})  ;
+});
 
 export default PaymentPage;
