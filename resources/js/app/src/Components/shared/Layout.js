@@ -75,6 +75,10 @@ const DrawerUi = ({ drawer }) => {
         history.push("/events");
     };
 
+    const linkToPayments = () => {
+        history.push("/payments");
+    };
+
     return (
         <Drawer
             variant="permanent"
@@ -112,7 +116,7 @@ const DrawerUi = ({ drawer }) => {
                     </ListItemIcon>
                     <ListItemText primary={"Coachs"} />
                 </ListItem>
-                <ListItem button>
+                <ListItem button onClick={linkToPayments}>
                     <ListItemIcon>
                         <MonetizationOnIcon />
                     </ListItemIcon>

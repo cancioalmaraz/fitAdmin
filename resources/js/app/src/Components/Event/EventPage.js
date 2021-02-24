@@ -8,9 +8,9 @@ import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 
 // Icons
+import MenuIcon from "@material-ui/icons/Menu";
 import CakeIcon from "@material-ui/icons/Cake";
 
 // Components
