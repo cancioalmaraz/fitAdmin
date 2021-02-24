@@ -14,8 +14,6 @@ class CreateClientsPayments extends Migration
     public function up()
     {
         Schema::create('clients_payments', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            
             $table->unsignedBigInteger('client_id')->nullable();
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
 
