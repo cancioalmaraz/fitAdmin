@@ -15,10 +15,10 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->float('payment_amount');
-            $table->mediumText('notes');
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable(false);
+            $table->float('payment_amount')->nullable(false);
+            $table->mediumText('notes')->nullable();
 
             $table->timestamps();
         });
