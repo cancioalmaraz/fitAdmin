@@ -13,7 +13,8 @@ class PaymentController extends Controller
 
     public function __construct(
         protected PaymentService $paymentService
-    ){}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.
@@ -40,7 +41,7 @@ class PaymentController extends Controller
         $apiRes = new ApiResponse('Payment');
         $payment = $this->paymentService->create($request->input());
 
-        if ($this->paymentService->hasErrors()){
+        if ($this->paymentService->hasErrors()) {
             $apiRes->errors = $this->paymentService->getErrors();
             return response()->json($apiRes, 400);
         }
