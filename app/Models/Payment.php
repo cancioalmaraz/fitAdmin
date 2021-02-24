@@ -14,9 +14,7 @@ class Payment extends BaseModel
     {
         $array = parent::toArray();
 
-        if (!is_null($this->clients)) {
-            $array['clients'] = $this->clients();
-        }
+        $array['clients'] = $this->clients;
 
         return $array;
     }

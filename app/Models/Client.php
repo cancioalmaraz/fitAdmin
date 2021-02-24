@@ -3,12 +3,9 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
-use DateTime;
-use Illuminate\Support\Facades\Date;
 
 class Client extends BaseModel
 {
-    protected $table = 'clients';
 
     protected $casts = [
         'address' => 'array'
@@ -45,8 +42,6 @@ class Client extends BaseModel
         if (!is_null($this->schedule)) {
             $array['schedule'] = $this->schedule;
         }
-
-        $array['last_payment'] = $this->payments();
 
         return $array;
     }
