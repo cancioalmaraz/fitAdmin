@@ -1,20 +1,32 @@
-version: "3"
+version: '3'
 
-services: 
+services:
+  app:
+    build: .docker/images/app
+    image: laravel-app
+    depends_on:
+      - mysql
+    volumes:
+      - ./:/application:cached
+
   mysql:
     image: mysql:5.7
-    ports: 
-      - 3306:3306
-    volumes: 
-      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - mysql-data:/var/lib/mysql:cached
 
-  apache:
-    image: apache:1.0
-    ports: 
-      - 80:80
-    volumes: 
-      - $PWD:/var/www/html
-      - $PWD/docker/config/apache/sites-available:/etc/apache2/sites-available
+  nginx:
+    image: nginx:1.19
+    ports:
+      - "80:80"
+    volumes:
+      - .docker/config/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:cached
+      - ./:/application:cached
+    depends_on:
+      - app
 
 volumes: 
   mysql-data:

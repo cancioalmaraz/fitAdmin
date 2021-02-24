@@ -1,4 +1,4 @@
-FROM php:8.0.2-apache
+FROM php:8.0.2-fpm
 
 # Installing dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -12,8 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libonig-dev \
     locales \
     zip \
-    jpegoptim optipng pngquant gifsicle \
-    iputils-ping
+    jpegoptim optipng pngquant gifsicle
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -21,5 +20,18 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Installing extensions
 RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath opcache
 
-# Installing composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.10.20
+# Changing Workdir
+WORKDIR /application
+
+# Add user for laravel application
+RUN groupadd -g 1000 www
+RUN useradd -u 1000 -ms /bin/bash -g www www
+
+# Copy existing application directory contents
+COPY . /application
+
+# Copy existing application directory permissions
+COPY --chown=www:www . /application
+
+# Change current user to www
+USER www
