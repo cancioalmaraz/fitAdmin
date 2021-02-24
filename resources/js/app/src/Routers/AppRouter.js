@@ -9,10 +9,10 @@ const AppRouter = props => {
     return (
         <div style={{ width: "100%" }}>
             <Switch>
-                <Route path="/">
+                <Route exact path="/">
                     <ClientPage {...props} />
                 </Route>
-                <Route path="/events">
+                <Route exact path="/events">
                     <EventPage {...props} />
                 </Route>
             </Switch>
