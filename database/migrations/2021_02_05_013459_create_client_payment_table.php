@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClientsPayments extends Migration
+class CreateClientPaymentTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateClientsPayments extends Migration
      */
     public function up()
     {
-        Schema::create('clients_payments', function (Blueprint $table) {
+        Schema::create('client_payment', function (Blueprint $table) {
             $table->unsignedBigInteger('client_id')->nullable();
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
 
@@ -29,6 +29,6 @@ class CreateClientsPayments extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('clients_payments');
+        Schema::dropIfExists('client_payment');
     }
 }

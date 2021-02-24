@@ -7,7 +7,7 @@ use App\Models\BaseModel;
 class Payment extends BaseModel
 {
     public function clients(){
-        return $this->belongsToMany(Client::class, 'clients_payments', 'client_id', 'payment_id');
+        return $this->belongsToMany(Client::class, 'client_payment', 'payment_id', 'client_id');
     }
 
     public function toArray()

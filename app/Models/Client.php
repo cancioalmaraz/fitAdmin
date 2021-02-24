@@ -27,7 +27,7 @@ class Client extends BaseModel
     }
 
     public function payments(){
-        return $this->belongsToMany(Payment::class, 'clients_payments', 'client_id', 'payment_id');
+        return $this->belongsToMany(Payment::class, 'client_payment', 'client_id', 'payment_id');
     }
 
     public function toArray()
@@ -46,7 +46,7 @@ class Client extends BaseModel
             $array['schedule'] = $this->schedule;
         }
 
-        $array['last_payment'] = $this->payments()->latest()->first();
+        $array['last_payment'] = $this->payments();
 
         return $array;
     }

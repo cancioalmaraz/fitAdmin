@@ -31,7 +31,7 @@ class ClientRepository {
             ->select('c.*')
             ->addSelect(DB::raw("(SELECT DATEDIFF(p.end_date, CURRENT_DATE())
                                 FROM fitAdmin.clients as c2
-                                INNER JOIN fitAdmin.clients_payments as cp
+                                INNER JOIN fitAdmin.client_payment as cp
                                 ON c2.id = cp.client_id
                                 INNER JOIN fitAdmin.payments as p
                                 ON p.id = cp.payment_id
