@@ -1,15 +1,22 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
+import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
 
 // Icons
 import CakeIcon from "@material-ui/icons/Cake";
 
 // Components
 import BirthdayTab from "./BirthdayTab";
+
+const drawerWidth = 240;
 
 const AppBarPage = React.memo(props => {
     const classes = useStyles();
