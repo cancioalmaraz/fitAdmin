@@ -17,6 +17,7 @@ import ClientForm from "./ClientForm";
 
 // Services
 import ClientService from "../../Services/ClientService";
+import SnackActions from "../shared/SnackActions";
 
 const drawerWidth = 240;
 
@@ -175,6 +176,7 @@ const ClientPage = React.memo(props => {
             e.preventDefault();
             clientService.create(client).then(httpSuccess => {
                 handleCloseForm();
+                handleOpenSnack( "success", "Cliente Creado Satisfactoriamente" );
                 chargePage();
             });
         },
@@ -186,6 +188,7 @@ const ClientPage = React.memo(props => {
             e.preventDefault();
             clientService.edit(client).then(httpSuccess => {
                 handleCloseForm();
+                handleOpenSnack( "success", "Cliente Actualizado Satisfactoriamente" );
                 chargePage();
             });
         },
@@ -222,6 +225,46 @@ const ClientPage = React.memo(props => {
             totalPages: Math.ceil(data.filterCount / limit),
             totalItems: data.filterCount,
             totalItemsInPage: data.results.length
+        }));
+    };
+
+    // State for SnackActions
+    const [openSnack, setOpenSnack] = useState({
+        success: {
+            state: false,
+            message: "Message Success Default"
+        },
+        error: {
+            state: false,
+            message: "Message Error Default"
+        },
+        info: {
+            state: false,
+            message: "Message Info Default"
+        }
+    });
+
+    const handleCloseSnack = useCallback(
+        (reason, type) => {
+            if (reason === "clickaway") {
+            return;
+            }
+            setOpenSnack((state) => ({
+            ...state,
+            [type]: { ...state[type], state: false }
+            }));
+        },
+        [setOpenSnack]
+    );
+
+    const handleOpenSnack = (type, message = null) => {
+        setOpenSnack((state) => ({
+            ...state,
+            [type]: {
+                ...state[type],
+                state: true,
+                message: message !== null ? message : state[type].message
+            }
         }));
     };
 
@@ -296,6 +339,8 @@ const ClientPage = React.memo(props => {
                 )}
 
                 <ClientForm state={stateForm} handleClose={handleCloseForm} />
+
+                <SnackActions snack={openSnack} handleCloseSnack={handleCloseSnack} />
             </main>
         </Fragment>
     );
