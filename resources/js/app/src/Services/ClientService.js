@@ -28,6 +28,10 @@ class ClienService {
     edit(client) {
         return axios.put(`/api/clients/${client.id}`, client);
     }
+
+    delete(client) {
+        return axios.delete(`/api/clients/${client.id}`);
+    }
 }
 
 export default ClienService;

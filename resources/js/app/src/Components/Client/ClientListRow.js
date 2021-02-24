@@ -5,6 +5,12 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 // Icons
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
@@ -53,6 +59,17 @@ const ClientListRow = ({ client, actionList = {} }) => {
 
     const handleCloseActions = () => {
         setOpenActions(null);
+    };
+
+    // State for delete dialog
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
+    const handleClickOpenDeleteDialog = () => {
+        setOpenDeleteDialog(true);
+    };
+
+    const handleCloseDeleteDialog = () => {
+        setOpenDeleteDialog(false);
     };
 
     const styles = {
@@ -119,6 +136,7 @@ const ClientListRow = ({ client, actionList = {} }) => {
                 </StyledMenuItem>
                 <StyledMenuItem
                     onClick={() => {
+                        handleCloseActions();
                         actionList.edit(client);
                     }}
                 >
@@ -127,13 +145,47 @@ const ClientListRow = ({ client, actionList = {} }) => {
                     </ListItemIcon>
                     <ListItemText primary="Editar" />
                 </StyledMenuItem>
-                <StyledMenuItem>
+                <StyledMenuItem
+                    onClick={() => {
+                        handleCloseActions();
+                        handleClickOpenDeleteDialog();
+                    }}
+                >
                     <ListItemIcon>
                         <DeleteIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Eliminar" />
                 </StyledMenuItem>
             </StyledMenu>
+            <Dialog
+                open={openDeleteDialog}
+                onClose={handleCloseDeleteDialog}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"¿ Eliminar cliente ?"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        ¿ Estas seguro de eliminar al cliente ?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDeleteDialog} color="primary">
+                        Cancelar
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            actionList.delete(client);
+                        }}
+                        color="primary"
+                        autoFocus
+                    >
+                        Aceptar
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Fragment>
     );
 };

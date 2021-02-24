@@ -176,7 +176,7 @@ const ClientPage = React.memo(props => {
             e.preventDefault();
             clientService.create(client).then(httpSuccess => {
                 handleCloseForm();
-                handleOpenSnack( "success", "Cliente Creado Satisfactoriamente" );
+                handleOpenSnack("success", "Cliente Creado Satisfactoriamente");
                 chargePage();
             });
         },
@@ -188,7 +188,10 @@ const ClientPage = React.memo(props => {
             e.preventDefault();
             clientService.edit(client).then(httpSuccess => {
                 handleCloseForm();
-                handleOpenSnack( "success", "Cliente Actualizado Satisfactoriamente" );
+                handleOpenSnack(
+                    "success",
+                    "Cliente Actualizado Satisfactoriamente"
+                );
                 chargePage();
             });
         },
@@ -247,18 +250,18 @@ const ClientPage = React.memo(props => {
     const handleCloseSnack = useCallback(
         (reason, type) => {
             if (reason === "clickaway") {
-            return;
+                return;
             }
-            setOpenSnack((state) => ({
-            ...state,
-            [type]: { ...state[type], state: false }
+            setOpenSnack(state => ({
+                ...state,
+                [type]: { ...state[type], state: false }
             }));
         },
         [setOpenSnack]
     );
 
     const handleOpenSnack = (type, message = null) => {
-        setOpenSnack((state) => ({
+        setOpenSnack(state => ({
             ...state,
             [type]: {
                 ...state[type],
@@ -266,6 +269,15 @@ const ClientPage = React.memo(props => {
                 message: message !== null ? message : state[type].message
             }
         }));
+    };
+
+    //Functions to Client
+    const deleteClient = client => {
+        clientService.delete(client).then(httpSuccess => {
+            handleCloseForm();
+            handleOpenSnack("success", "Cliente Eliminado Satisfactoriamente");
+            chargePage();
+        });
     };
 
     // Function in Page
@@ -324,7 +336,10 @@ const ClientPage = React.memo(props => {
 
                 <ClientList
                     clientList={clientList}
-                    actionList={{ edit: handleEditClient }}
+                    actionList={{
+                        edit: handleEditClient,
+                        delete: deleteClient
+                    }}
                 />
 
                 {!pagination.loading && (
@@ -340,7 +355,10 @@ const ClientPage = React.memo(props => {
 
                 <ClientForm state={stateForm} handleClose={handleCloseForm} />
 
-                <SnackActions snack={openSnack} handleCloseSnack={handleCloseSnack} />
+                <SnackActions
+                    snack={openSnack}
+                    handleCloseSnack={handleCloseSnack}
+                />
             </main>
         </Fragment>
     );
