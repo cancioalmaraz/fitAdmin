@@ -124,7 +124,7 @@ const ClientForm = React.memo(({ state, handleClose, handleSubmit }) => {
                     ? state.client.second_last_name
                     : "",
                 phone: !!state.client.phone ? state.client.phone : "",
-                address: !!state.client.phone ? state.client.phone : center
+                address: !!state.client.address ? state.client.address : center
             });
         }
     }, [state.open]);
