@@ -36,7 +36,7 @@ const ClientFilterSection = React.memo(
 
         const clearFilters = () => {
             setForm(initFilters);
-            filter.charge({});
+            filter.charge();
         };
 
         return (
