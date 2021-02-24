@@ -30,7 +30,7 @@ const ClientActionSection = React.memo(({accordion, form}) => {
                     color="primary"
                     variant="contained"
                     startIcon={<AddIcon />}
-                    onClick={form.open}
+                    onClick={form.create}
                 >
                     Inscribir
                 </Button>

@@ -83,11 +83,7 @@ class ClientService extends BaseService
             'ci' => 'required|integer|unique:'.Client::getTableName(),
             'name' => 'required|string',
             'first_last_name' => 'required|string',
-            'second_last_name' => 'required|string',
-            'sex' => 'string',
-            'age' => 'integer',
-            'email' => 'email',
-            'phone' => 'string'
+            'second_last_name' => 'required|string'
         ];
 
         $validator = Validator::make($data, $validationRules);
@@ -139,12 +135,7 @@ class ClientService extends BaseService
             ],
             'name' => 'required|string',
             'first_last_name' => 'required|string',
-            'second_last_name' => 'required|string',
-            'sex' => 'string',
-            'age' => 'integer',
-            'email' => 'email',
-            'phone' => 'string',
-            'address' => 'string'
+            'second_last_name' => 'required|string'
         ];
 
         $validator = Validator::make($data, $validationRules);

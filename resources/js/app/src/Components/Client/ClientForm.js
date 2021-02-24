@@ -89,7 +89,7 @@ const DraggableMarker = ({ position }) => {
     );
 };
 
-const ClientForm = React.memo(({ state, handleClose, handleSubmit }) => {
+const ClientForm = React.memo(({ state, handleClose }) => {
     const classes = useStyles();
 
     const [form, setForm] = useState({});
@@ -115,6 +115,7 @@ const ClientForm = React.memo(({ state, handleClose, handleSubmit }) => {
     useEffect(() => {
         if (state.open) {
             setForm({
+                ...state.client,
                 ci: !!state.client.ci ? state.client.ci : "",
                 name: !!state.client.name ? state.client.name : "",
                 first_last_name: !!state.client.first_last_name
@@ -145,7 +146,7 @@ const ClientForm = React.memo(({ state, handleClose, handleSubmit }) => {
                     <form
                         id="form-client"
                         onSubmit={e => {
-                            handleSubmit(e, form);
+                            state.submit(e, form);
                         }}
                     >
                         <Grid container spacing={3} className={classes.form}>

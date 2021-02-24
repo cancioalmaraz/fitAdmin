@@ -138,14 +138,16 @@ const ClientPage = React.memo(props => {
     const [stateForm, setStateForm] = useState({
         open: false,
         loading: false,
-        client: {}
+        client: {},
+        submit: () => {}
     });
 
-    const handleOpenForm = useCallback(() => {
+    const handleCreateClient = useCallback(() => {
         setStateForm(state => ({
             ...state,
             open: true,
-            client: {}
+            client: {},
+            submit: createClient
         }));
     }, [setStateForm]);
 
@@ -154,7 +156,8 @@ const ClientPage = React.memo(props => {
             setStateForm(state => ({
                 ...state,
                 open: true,
-                client: client
+                client: client,
+                submit: editClient
             }));
         },
         [setStateForm]
@@ -167,10 +170,21 @@ const ClientPage = React.memo(props => {
         }));
     }, [setStateForm]);
 
-    const handleSubmitForm = useCallback(
+    const createClient = useCallback(
         (e, client) => {
             e.preventDefault();
             clientService.create(client).then(httpSuccess => {
+                handleCloseForm();
+                chargePage();
+            });
+        },
+        [handleCloseForm]
+    );
+
+    const editClient = useCallback(
+        (e, client) => {
+            e.preventDefault();
+            clientService.edit(client).then(httpSuccess => {
                 handleCloseForm();
                 chargePage();
             });
@@ -251,7 +265,7 @@ const ClientPage = React.memo(props => {
                         close: handleCloseAccordion
                     }}
                     form={{
-                        open: handleOpenForm
+                        create: handleCreateClient
                     }}
                 />
 
@@ -281,11 +295,7 @@ const ClientPage = React.memo(props => {
                     />
                 )}
 
-                <ClientForm
-                    state={stateForm}
-                    handleClose={handleCloseForm}
-                    handleSubmit={handleSubmitForm}
-                />
+                <ClientForm state={stateForm} handleClose={handleCloseForm} />
             </main>
         </Fragment>
     );

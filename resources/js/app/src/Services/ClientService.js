@@ -8,7 +8,7 @@ class ClienService {
         urlSearchParams.append("offset", offset);
 
         for (const property in filterList) {
-            if (filterList[property] !== ""){
+            if (filterList[property] !== "") {
                 urlSearchParams.append(
                     `filterList[${property}]`,
                     filterList[property]
@@ -21,8 +21,12 @@ class ClienService {
         });
     }
 
-    create(client){
+    create(client) {
         return axios.post("/api/clients", client);
+    }
+
+    edit(client) {
+        return axios.put(`/api/clients/${client.id}`, client);
     }
 }
 
