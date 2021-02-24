@@ -168,10 +168,12 @@ const ClientPage = React.memo(props => {
     }, [setStateForm]);
 
     const handleSubmitForm = useCallback(
-        (e, form) => {
+        (e, client) => {
             e.preventDefault();
-
-            console.log(form);
+            clientService.create(client).then(httpSuccess => {
+                handleCloseForm();
+                chargePage();
+            });
         },
         [handleCloseForm]
     );

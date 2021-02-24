@@ -87,8 +87,7 @@ class ClientService extends BaseService
             'sex' => 'string',
             'age' => 'integer',
             'email' => 'email',
-            'phone' => 'string',
-            'address' => 'string'
+            'phone' => 'string'
         ];
 
         $validator = Validator::make($data, $validationRules);

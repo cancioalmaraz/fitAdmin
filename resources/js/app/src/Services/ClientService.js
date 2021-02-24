@@ -20,6 +20,10 @@ class ClienService {
             params: urlSearchParams
         });
     }
+
+    create(client){
+        return axios.post("/api/clients", client);
+    }
 }
 
 export default ClienService;
