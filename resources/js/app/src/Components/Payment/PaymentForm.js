@@ -11,6 +11,7 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker
 } from "@material-ui/pickers";
+import esLocale from "date-fns/locale/es";
 
 // Components
 import FilterMultipleSelect from "../shared/FilterMultipleSelect";
@@ -38,8 +39,8 @@ const useStyles = makeStyles(theme => ({
 const PaymentForm = React.memo(({ state, handleClose }) => {
     const initialState = useMemo(
         () => ({
-            start_date: new Date(),
-            end_date: new Date(),
+            start_date: null,
+            end_date: null,
             clientList: []
         }),
         []
@@ -82,10 +83,10 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
                             state.submit(e, form);
                         }}
                     >
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
                             <Grid
                                 container
-                                spacing={3}
+                                spacing={2}
                                 className={classes.form}
                             >
                                 <Grid item xs={12} sm={6}>
@@ -105,6 +106,10 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
                                         KeyboardButtonProps={{
                                             "aria-label": "change date"
                                         }}
+                                        clearable
+                                        clearLabel="Limpiar"
+                                        cancelLabel="Cancelar"
+                                        okLabel="Aceptar"
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -124,6 +129,10 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
                                         KeyboardButtonProps={{
                                             "aria-label": "change date"
                                         }}
+                                        clearable
+                                        clearLabel="Limpiar"
+                                        cancelLabel="Cancelar"
+                                        okLabel="Aceptar"
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
