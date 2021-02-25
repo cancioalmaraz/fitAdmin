@@ -6,6 +6,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { Grid, makeStyles, TextField } from "@material-ui/core";
+import NumberFormat from "react-number-format";
 import DateFnsUtils from "@date-io/date-fns";
 import {
     MuiPickersUtilsProvider,
@@ -36,12 +37,36 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const NumberFormatCustom = props => {
+    const { inputRef, onChange, ...other } = props;
+
+    return (
+        <NumberFormat
+            {...other}
+            getInputRef={inputRef}
+            onValueChange={values => {
+                onChange({
+                    target: {
+                        name: props.name,
+                        value: values.value
+                    }
+                });
+            }}
+            thousandSeparator
+            isNumericString
+            prefix="Bs. "
+        />
+    );
+};
+
 const PaymentForm = React.memo(({ state, handleClose }) => {
     const initialState = useMemo(
         () => ({
             start_date: null,
             end_date: null,
-            clientList: []
+            clientList: [],
+            notes: "",
+            payment_amount: 0
         }),
         []
     );
@@ -83,7 +108,10 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
                             state.submit(e, form);
                         }}
                     >
-                        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
+                        <MuiPickersUtilsProvider
+                            utils={DateFnsUtils}
+                            locale={esLocale}
+                        >
                             <Grid
                                 container
                                 spacing={2}
@@ -136,15 +164,43 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        name="payment_amount"
+                                        label="Monto de Pago"
+                                        fullWidth
+                                        variant="outlined"
+                                        autoComplete="off"
+                                        value={form.payment_amount}
+                                        onChange={handleChangeForm}
+                                        InputProps={{
+                                            inputComponent: NumberFormatCustom
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
                                     <FilterMultipleSelect
                                         name="clientList"
                                         label="Clientes"
                                         value={form.clientList}
                                         onChange={handleChangeForm}
                                         list={[
-                                            { name: "David", id: 1 },
-                                            { name: "Cancio", id: 50 }
+                                            { fullName: "David", id: 1 },
+                                            { fullName: "Cancio", id: 50 }
                                         ]}
+                                        optionField="fullName"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        name="notes"
+                                        label="Notas"
+                                        multiline
+                                        fullWidth
+                                        rows={6}
+                                        variant="outlined"
+                                        value={form.notes}
+                                        onChange={handleChangeForm}
                                     />
                                 </Grid>
                             </Grid>
