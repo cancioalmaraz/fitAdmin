@@ -6,9 +6,14 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import { useTheme, makeStyles } from "@material-ui/core/styles";
 import { VariableSizeList } from "react-window";
-import { useDispatch, useSelector } from "react-redux";
-import { setSelectedFilters } from "../../actions/filter";
-import { Checkbox, FormControlLabel } from "@material-ui/core";
+import {
+    Button,
+    ButtonGroup,
+    Checkbox,
+    FormControlLabel,
+    Grid,
+    Popper
+} from "@material-ui/core";
 
 const LISTBOX_PADDING = 8; // px
 
@@ -109,29 +114,33 @@ const renderGroup = params => [
     params.children
 ];
 
-const ImageManagerFilter = React.memo(
-    ({ name, list, label, module = "ImageManager" }) => {
+const FilterMultipleSelect = React.memo(
+    ({
+        name = "Name Default",
+        list = [],
+        label = "Label Default",
+        onChange = () => {},
+        disabled = false,
+        value = [],
+        optionField = "name",
+        required = false
+    }) => {
         const classes = useStyles();
-        const [selecteds, setSelecteds] = useState(
-            useSelector(state => state.filters[module].selectedFilters[name])
-        );
-        const { loadingFilters } = useSelector(
-            state => state.filters.filterList
-        );
-        const dispatch = useDispatch();
-
-        const handleChange = (_, newValue) => {
-            dispatch(setSelectedFilters(name, newValue, module));
-            setSelecteds(newValue);
-        };
 
         return (
             <Autocomplete
-                id={`label-${name}`}
-                value={selecteds}
-                onChange={handleChange}
+                value={value}
+                onChange={(_, newValue) => {
+                    onChange({
+                        target: {
+                            name: name,
+                            value: newValue
+                        }
+                    });
+                }}
                 disableListWrap
-                disabled={loadingFilters}
+                filterSelectedOptions
+                disabled={disabled}
                 multiple
                 fullWidth
                 classes={classes}
@@ -146,10 +155,13 @@ const ImageManagerFilter = React.memo(
                         label={label}
                     />
                 )}
-                getOptionLabel={option => option !== undefined && option.name}
+                getOptionLabel={option =>
+                    option !== undefined && option[optionField]
+                }
+                getOptionSelected={(option, value) => option.id === value.id}
                 renderOption={(option, { selected }) => (
                     <FormControlLabel
-                        label={option.name}
+                        label={option[optionField]}
                         style={{
                             width: "100%",
                             whiteSpace: "nowrap",
@@ -160,10 +172,9 @@ const ImageManagerFilter = React.memo(
                         }
                     />
                 )}
-                renderTags={value => value.map(e => e.name).join(", ")}
             />
         );
     }
 );
 
-export default ImageManagerFilter;
+export default FilterMultipleSelect;

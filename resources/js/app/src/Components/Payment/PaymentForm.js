@@ -12,8 +12,8 @@ import {
     KeyboardDatePicker
 } from "@material-ui/pickers";
 
-//Icons
-import RoomIcon from "@material-ui/icons/Room";
+// Components
+import FilterMultipleSelect from "../shared/FilterMultipleSelect";
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -39,7 +39,8 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
     const initialState = useMemo(
         () => ({
             start_date: new Date(),
-            end_date: new Date()
+            end_date: new Date(),
+            clientList: []
         }),
         []
     );
@@ -123,6 +124,18 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
                                         KeyboardButtonProps={{
                                             "aria-label": "change date"
                                         }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FilterMultipleSelect
+                                        name="clientList"
+                                        label="Clientes"
+                                        value={form.clientList}
+                                        onChange={handleChangeForm}
+                                        list={[
+                                            { name: "David", id: 1 },
+                                            { name: "Cancio", id: 50 }
+                                        ]}
                                     />
                                 </Grid>
                             </Grid>
