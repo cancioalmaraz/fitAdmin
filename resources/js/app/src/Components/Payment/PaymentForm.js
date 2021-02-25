@@ -64,7 +64,7 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
         () => ({
             start_date: null,
             end_date: null,
-            clientList: [],
+            clientListGross: [],
             notes: "",
             payment_amount: 0
         }),
@@ -180,9 +180,9 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <FilterMultipleSelect
-                                        name="clientList"
+                                        name="clientListGross"
                                         label="Clientes"
-                                        value={form.clientList}
+                                        value={form.clientListGross}
                                         onChange={handleChangeForm}
                                         list={[
                                             { fullName: "David", id: 1 },

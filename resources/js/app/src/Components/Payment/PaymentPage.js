@@ -114,7 +114,7 @@ const PaymentPage = React.memo(props => {
     // Functions to Payments
     const createPayment = (e, payment) => {
         e.preventDefault();
-        payment.clientList = payment.clientList.map(e=>e.id);
+        payment.clientList = payment.clientListGross.map(e=>e.id);
         console.log(payment);
     };
 
