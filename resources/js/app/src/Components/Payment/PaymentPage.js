@@ -5,11 +5,18 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
+import Helpers from "../../Helpers/Helpers";
 
 // Icons
 import MenuIcon from "@material-ui/icons/Menu";
 import { Button } from "@material-ui/core";
+
+// Components
 import PaymentForm from "./PaymentForm";
+import SnackActions from "../shared/SnackActions";
+
+// Services
+import PaymentService from "../../Services/PaymentService";
 
 const drawerWidth = 240;
 
@@ -88,11 +95,15 @@ const AppBarPage = React.memo(props => {
 const PaymentPage = React.memo(props => {
     const classes = useStyles();
 
+    const helpers = new Helpers();
+
+    // Services
+    const paymentService = new PaymentService();
+
     // State to form
     const [stateForm, setStateForm] = useState({
         open: false,
         loading: false,
-        client: {},
         submit: () => {}
     });
 
@@ -111,11 +122,56 @@ const PaymentPage = React.memo(props => {
         }));
     }, [setStateForm]);
 
+    // State to snack messages
+    const [openSnack, setOpenSnack] = useState({
+        success: {
+            state: false,
+            message: "Message Success Default"
+        },
+        error: {
+            state: false,
+            message: "Message Error Default"
+        },
+        info: {
+            state: false,
+            message: "Message Info Default"
+        }
+    });
+
+    const handleCloseSnack = useCallback(
+        (reason, type) => {
+            if (reason === "clickaway") {
+                return;
+            }
+            setOpenSnack(state => ({
+                ...state,
+                [type]: { ...state[type], state: false }
+            }));
+        },
+        [setOpenSnack]
+    );
+
+    const handleOpenSnack = (type, message = null) => {
+        setOpenSnack(state => ({
+            ...state,
+            [type]: {
+                ...state[type],
+                state: true,
+                message: message !== null ? message : state[type].message
+            }
+        }));
+    };
+
     // Functions to Payments
     const createPayment = (e, payment) => {
         e.preventDefault();
-        payment.clientList = payment.clientListGross.map(e=>e.id);
-        console.log(payment);
+        payment.clientList = payment.clientListGross.map(e => e.id);
+        payment.start_date = helpers.parseDate(payment.start_dateFull);
+        payment.end_date = helpers.parseDate(payment.end_dateFull);
+        paymentService.create(payment).then(httpSuccess => {
+            handleCloseForm();
+            handleOpenSnack("success", "Pago realizado exitosamente");
+        });
     };
 
     return (
@@ -130,6 +186,10 @@ const PaymentPage = React.memo(props => {
                     <PaymentForm
                         state={stateForm}
                         handleClose={handleCloseForm}
+                    />
+                    <SnackActions
+                        snack={openSnack}
+                        handleCloseSnack={handleCloseSnack}
                     />
                 </div>
             </main>

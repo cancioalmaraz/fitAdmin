@@ -122,7 +122,12 @@ const ClientListRow = ({ client, actionList = {} }) => {
                 open={Boolean(openActions)}
                 onClose={handleCloseActions}
             >
-                <StyledMenuItem>
+                <StyledMenuItem
+                    onClick={() => {
+                        handleCloseActions();
+                        actionList.generatePayment(client);
+                    }}
+                >
                     <ListItemIcon>
                         <LocalAtmIcon fontSize="small" />
                     </ListItemIcon>

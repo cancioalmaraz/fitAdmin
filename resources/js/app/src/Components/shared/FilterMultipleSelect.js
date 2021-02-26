@@ -139,7 +139,7 @@ const FilterMultipleSelect = React.memo(
                     });
                 }}
                 disableListWrap
-                filterSelectedOptions
+                disableCloseOnSelect
                 disabled={disabled}
                 multiple
                 fullWidth
@@ -153,6 +153,12 @@ const FilterMultipleSelect = React.memo(
                         size="small"
                         variant="outlined"
                         label={label}
+                        inputProps={{
+                            ...params.inputProps,
+                            autoComplete: "off",
+                            required: value.length === 0
+                        }}
+                        required={required}
                     />
                 )}
                 getOptionLabel={option =>

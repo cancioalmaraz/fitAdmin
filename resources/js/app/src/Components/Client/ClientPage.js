@@ -7,6 +7,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import Helpers from "../../Helpers/Helpers";
 
 // Components
 import ClientList from "./ClientList";
@@ -14,10 +15,12 @@ import Pagination from "../shared/Pagination";
 import ClientActionSection from "./ClientActionSection";
 import ClientFilterSection from "./ClientFilterSection";
 import ClientForm from "./ClientForm";
+import SnackActions from "../shared/SnackActions";
+import PaymentForm from "../Payment/PaymentForm";
 
 // Services
 import ClientService from "../../Services/ClientService";
-import SnackActions from "../shared/SnackActions";
+import PaymentService from "../../Services/PaymentService";
 
 const drawerWidth = 240;
 
@@ -94,8 +97,11 @@ const limit = 10;
 const ClientPage = React.memo(props => {
     const classes = useStyles();
 
+    const helpers = new Helpers();
+
     // Services
     const clientService = new ClientService();
+    const paymentService = new PaymentService();
 
     // State to Clients
     const [clientList, setClientList] = useState({
@@ -171,6 +177,34 @@ const ClientPage = React.memo(props => {
         }));
     }, [setStateForm]);
 
+    // State to form payment
+    const [stateFormPayment, setStateFormPayment] = useState({
+        open: false,
+        loading: false,
+        client: {},
+        submit: () => {}
+    });
+
+    const handleCreatePayment = useCallback(
+        client => {
+            setStateFormPayment(state => ({
+                ...state,
+                open: true,
+                client: client,
+                submit: createPayment
+            }));
+        },
+        [setStateFormPayment]
+    );
+
+    const handleCloseFormPayment = useCallback(() => {
+        setStateFormPayment(state => ({
+            ...state,
+            open: false
+        }));
+    }, [setStateFormPayment]);
+
+    // State to clients
     const createClient = useCallback(
         (e, client) => {
             e.preventDefault();
@@ -197,6 +231,19 @@ const ClientPage = React.memo(props => {
         },
         [handleCloseForm]
     );
+
+    // Functions to Payments
+    const createPayment = (e, payment) => {
+        e.preventDefault();
+        payment.clientList = payment.clientListGross.map(e => e.id);
+        payment.start_date = helpers.parseDate(payment.start_dateFull);
+        payment.end_date = helpers.parseDate(payment.end_dateFull);
+        paymentService.create(payment).then(httpSuccess => {
+            handleCloseFormPayment();
+            handleOpenSnack("success", "Pago realizado exitosamente");
+            chargePage();
+        });
+    };
 
     // State to Pagination
     const [pagination, setPagination] = useState({
@@ -337,6 +384,7 @@ const ClientPage = React.memo(props => {
                 <ClientList
                     clientList={clientList}
                     actionList={{
+                        generatePayment: handleCreatePayment,
                         edit: handleEditClient,
                         delete: deleteClient
                     }}
@@ -354,6 +402,11 @@ const ClientPage = React.memo(props => {
                 )}
 
                 <ClientForm state={stateForm} handleClose={handleCloseForm} />
+
+                <PaymentForm
+                    state={stateFormPayment}
+                    handleClose={handleCloseFormPayment}
+                />
 
                 <SnackActions
                     snack={openSnack}

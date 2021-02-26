@@ -17,6 +17,9 @@ import esLocale from "date-fns/locale/es";
 // Components
 import FilterMultipleSelect from "../shared/FilterMultipleSelect";
 
+// Services
+import ClientService from "../../Services/ClientService";
+
 const useStyles = makeStyles(theme => ({
     form: {
         padding: theme.spacing(2, 2, 0)
@@ -62,16 +65,18 @@ const NumberFormatCustom = props => {
 const PaymentForm = React.memo(({ state, handleClose }) => {
     const initialState = useMemo(
         () => ({
-            start_date: null,
-            end_date: null,
-            clientListGross: [],
+            start_dateFull: new Date(),
+            end_dateFull: new Date(),
+            clientListGross: !!state.client ? [state.client] : [],
             notes: "",
             payment_amount: 0
         }),
-        []
+        [state.client]
     );
 
     const classes = useStyles();
+
+    const clientService = new ClientService();
 
     // State for Form
     const [form, setForm] = useState(initialState);
@@ -83,9 +88,45 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
         }));
     };
 
+    // State to clients
+    const [clientList, setClientList] = useState({
+        data: [],
+        loading: true
+    });
+
+    const chargeClientList = (data = []) => {
+        setClientList(state => ({
+            ...state,
+            data: data
+        }));
+    };
+
+    const startLoadingClientList = () => {
+        setClientList(state => ({
+            ...state,
+            loading: true
+        }));
+    };
+
+    const finishLoadingClientList = () => {
+        setClientList(state => ({
+            ...state,
+            loading: false
+        }));
+    };
+
     useEffect(() => {
         if (state.open) {
+            startLoadingClientList();
             setForm(initialState);
+            clientService
+                .getAll(1000, 0)
+                .then(httpSuccess => {
+                    chargeClientList(httpSuccess.data.results);
+                })
+                .finally(() => {
+                    finishLoadingClientList();
+                });
         }
     }, [state.open]);
 
@@ -122,11 +163,11 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
                                         margin="normal"
                                         label="Desde"
                                         format="yyyy-MM-dd"
-                                        value={form.start_date}
+                                        value={form.start_dateFull}
                                         onChange={date => {
                                             handleChangeForm({
                                                 target: {
-                                                    name: "start_date",
+                                                    name: "start_dateFull",
                                                     value: date
                                                 }
                                             });
@@ -134,8 +175,6 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
                                         KeyboardButtonProps={{
                                             "aria-label": "change date"
                                         }}
-                                        clearable
-                                        clearLabel="Limpiar"
                                         cancelLabel="Cancelar"
                                         okLabel="Aceptar"
                                     />
@@ -145,11 +184,11 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
                                         margin="normal"
                                         label="Hasta"
                                         format="yyyy-MM-dd"
-                                        value={form.end_date}
+                                        value={form.end_dateFull}
                                         onChange={date => {
                                             handleChangeForm({
                                                 target: {
-                                                    name: "end_date",
+                                                    name: "end_dateFull",
                                                     value: date
                                                 }
                                             });
@@ -157,8 +196,6 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
                                         KeyboardButtonProps={{
                                             "aria-label": "change date"
                                         }}
-                                        clearable
-                                        clearLabel="Limpiar"
                                         cancelLabel="Cancelar"
                                         okLabel="Aceptar"
                                     />
@@ -178,19 +215,20 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
                                         }}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
-                                    <FilterMultipleSelect
-                                        name="clientListGross"
-                                        label="Clientes"
-                                        value={form.clientListGross}
-                                        onChange={handleChangeForm}
-                                        list={[
-                                            { fullName: "David", id: 1 },
-                                            { fullName: "Cancio", id: 50 }
-                                        ]}
-                                        optionField="fullName"
-                                    />
-                                </Grid>
+                                {!state.client && (
+                                    <Grid item xs={12}>
+                                        <FilterMultipleSelect
+                                            required
+                                            disabled={clientList.loading}
+                                            name="clientListGross"
+                                            label="Clientes"
+                                            value={form.clientListGross}
+                                            onChange={handleChangeForm}
+                                            list={clientList.data}
+                                            optionField="fullName"
+                                        />
+                                    </Grid>
+                                )}
                                 <Grid item xs={12}>
                                     <TextField
                                         name="notes"
