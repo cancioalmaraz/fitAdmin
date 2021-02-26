@@ -208,6 +208,7 @@ const ClientPage = React.memo(props => {
     const createClient = useCallback(
         (e, client) => {
             e.preventDefault();
+            client.date_of_birth = helpers.parseDate(client.date_of_birth_full);
             clientService.create(client).then(httpSuccess => {
                 handleCloseForm();
                 handleOpenSnack("success", "Cliente Creado Satisfactoriamente");
@@ -220,6 +221,7 @@ const ClientPage = React.memo(props => {
     const editClient = useCallback(
         (e, client) => {
             e.preventDefault();
+            client.date_of_birth = helpers.parseDate(client.date_of_birth_full);
             clientService.edit(client).then(httpSuccess => {
                 handleCloseForm();
                 handleOpenSnack(

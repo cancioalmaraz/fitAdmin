@@ -155,7 +155,9 @@ const FilterMultipleSelect = React.memo(
                         {...params}
                         size="small"
                         variant="outlined"
-                        onChange={(e)=>{setInputValue(e.target.value)}}
+                        onChange={e => {
+                            setInputValue(e.target.value);
+                        }}
                         label={label}
                         inputProps={{
                             ...params.inputProps,

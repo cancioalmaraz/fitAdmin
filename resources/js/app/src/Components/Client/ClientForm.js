@@ -15,6 +15,12 @@ import {
 } from "@material-ui/core";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import Slide from "@material-ui/core/Slide";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker
+} from "@material-ui/pickers";
+import esLocale from "date-fns/locale/es";
 
 //Icons
 import CloseIcon from "@material-ui/icons/Close";
@@ -125,7 +131,10 @@ const ClientForm = React.memo(({ state, handleClose }) => {
                     ? state.client.second_last_name
                     : "",
                 phone: !!state.client.phone ? state.client.phone : "",
-                address: !!state.client.address ? state.client.address : center
+                address: !!state.client.address ? state.client.address : center,
+                date_of_birth_full: !!state.client.date_of_birth
+                    ? state.client.date_of_birth
+                    : null
             });
         }
     }, [state.open]);
@@ -149,104 +158,146 @@ const ClientForm = React.memo(({ state, handleClose }) => {
                             state.submit(e, form);
                         }}
                     >
-                        <Grid container spacing={3} className={classes.form}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    rowsMax={1}
-                                    autoComplete="off"
-                                    label="C.I."
-                                    name="ci"
-                                    variant="outlined"
-                                    type="number"
-                                    value={form.ci}
-                                    onChange={handleChangeForm}
-                                />
-                            </Grid>
-
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    rowsMax={1}
-                                    autoComplete="off"
-                                    label="Nombre(s)"
-                                    name="name"
-                                    variant="outlined"
-                                    value={form.name}
-                                    onChange={handleChangeForm}
-                                    inputProps={{
-                                        maxLength: 30
-                                    }}
-                                />
-                            </Grid>
-
-                            <Grid item xs={12} md={6}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    rowsMax={1}
-                                    autoComplete="off"
-                                    label="Apellido P."
-                                    name="first_last_name"
-                                    variant="outlined"
-                                    value={form.first_last_name}
-                                    onChange={handleChangeForm}
-                                    inputProps={{
-                                        maxLength: 30
-                                    }}
-                                />
-                            </Grid>
-
-                            <Grid item xs={12} md={6}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    rowsMax={1}
-                                    autoComplete="off"
-                                    label="Apellido M."
-                                    name="second_last_name"
-                                    variant="outlined"
-                                    value={form.second_last_name}
-                                    onChange={handleChangeForm}
-                                    inputProps={{
-                                        maxLength: 30
-                                    }}
-                                />
-                            </Grid>
-
-                            <Grid item xs={12} md={6}>
-                                <TextField
-                                    fullWidth
-                                    rowsMax={1}
-                                    autoComplete="off"
-                                    label="Telefono"
-                                    name="phone"
-                                    variant="outlined"
-                                    type="number"
-                                    value={form.phone}
-                                    onChange={handleChangeForm}
-                                />
-                            </Grid>
-
+                        <MuiPickersUtilsProvider
+                            utils={DateFnsUtils}
+                            locale={esLocale}
+                        >
                             <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                style={{ alignSelf: "center" }}
+                                container
+                                spacing={3}
+                                className={classes.form}
                             >
-                                <Button
-                                    fullWidth
-                                    onClick={handleOpenMap}
-                                    startIcon={<RoomIcon />}
-                                    color="primary"
-                                    variant="contained"
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        rowsMax={1}
+                                        autoComplete="off"
+                                        label="C.I."
+                                        name="ci"
+                                        variant="outlined"
+                                        type="number"
+                                        value={form.ci}
+                                        onChange={handleChangeForm}
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        rowsMax={1}
+                                        autoComplete="off"
+                                        label="Nombre(s)"
+                                        name="name"
+                                        variant="outlined"
+                                        value={form.name}
+                                        onChange={handleChangeForm}
+                                        inputProps={{
+                                            maxLength: 30
+                                        }}
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12} md={6}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        rowsMax={1}
+                                        autoComplete="off"
+                                        label="Apellido P."
+                                        name="first_last_name"
+                                        variant="outlined"
+                                        value={form.first_last_name}
+                                        onChange={handleChangeForm}
+                                        inputProps={{
+                                            maxLength: 30
+                                        }}
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12} md={6}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        rowsMax={1}
+                                        autoComplete="off"
+                                        label="Apellido M."
+                                        name="second_last_name"
+                                        variant="outlined"
+                                        value={form.second_last_name}
+                                        onChange={handleChangeForm}
+                                        inputProps={{
+                                            maxLength: 30
+                                        }}
+                                    />
+                                </Grid>
+
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={6}
+                                    style={{ alignSelf: "center" }}
                                 >
-                                    Direccion
-                                </Button>
+                                    <TextField
+                                        fullWidth
+                                        rowsMax={1}
+                                        autoComplete="off"
+                                        label="Telefono"
+                                        name="phone"
+                                        variant="outlined"
+                                        type="number"
+                                        value={form.phone}
+                                        onChange={handleChangeForm}
+                                    />
+                                </Grid>
+
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={6}
+                                    style={{ alignSelf: "center" }}
+                                >
+                                    <KeyboardDatePicker
+                                        margin="normal"
+                                        label="Cumpleaños"
+                                        format="yyyy-MM-dd"
+                                        value={form.date_of_birth_full}
+                                        inputVariant="outlined"
+                                        onChange={date => {
+                                            handleChangeForm({
+                                                target: {
+                                                    name: "date_of_birth_full",
+                                                    value: date
+                                                }
+                                            });
+                                        }}
+                                        KeyboardButtonProps={{
+                                            "aria-label": "change date"
+                                        }}
+                                        cancelLabel="Cancelar"
+                                        okLabel="Aceptar"
+                                    />
+                                </Grid>
+
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={12}
+                                    style={{ alignSelf: "center" }}
+                                >
+                                    <Button
+                                        fullWidth
+                                        onClick={handleOpenMap}
+                                        startIcon={<RoomIcon />}
+                                        color="primary"
+                                        variant="contained"
+                                    >
+                                        Direccion
+                                    </Button>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                        </MuiPickersUtilsProvider>
                     </form>
                 </DialogContent>
                 <DialogActions className={classes.dialogActions}>

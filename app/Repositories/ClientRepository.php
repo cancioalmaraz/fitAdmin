@@ -29,14 +29,15 @@ class ClientRepository {
     public function queryAll($filterList = []){
         $query = Client::from(Client::getFullTableName() . ' as c')
             ->select('c.*')
-            ->addSelect(DB::raw("(SELECT DATEDIFF(p.end_date, CONVERT_TZ(CURRENT_DATE(), '+00:00','-04:00'))
+            ->addSelect(DB::raw("(SELECT DATEDIFF(pm.end_date, CURRENT_DATE())
                                 FROM fitAdmin.clients as c2
                                 INNER JOIN fitAdmin.client_payment as cp
                                 ON c2.id = cp.client_id
-                                INNER JOIN fitAdmin.payments as p
-                                ON p.id = cp.payment_id
+                                INNER JOIN fitAdmin.payments as pm
+                                ON pm.id = cp.payment_id
                                 WHERE c2.id = c.id
-                                ORDER BY p.created_at DESC LIMIT 1) as remaining_days"));
+                                ORDER BY pm.created_at DESC LIMIT 1) as remaining_days"))
+            ->addSelect(DB::raw("FLOOR(DATEDIFF(CURRENT_DATE(), c.date_of_birth) / 365.25) as age"));
 
         if (array_key_exists('first_last_name', $filterList) ){
             $query->where('c.first_last_name', 'like', '%'.$filterList['first_last_name'].'%');

@@ -100,10 +100,10 @@ class ClientService extends BaseService
             $client->first_last_name = $data['first_last_name'];
             $client->second_last_name = $data['second_last_name'];
             $client->sex = Arr::get($data, 'sex');
-            $client->age = Arr::get($data, 'age');
             $client->email = Arr::get($data, 'email');
             $client->phone = Arr::get($data, 'phone');
             $client->address = Arr::get($data, 'address');
+            $client->date_of_birth = Arr::get($data, 'date_of_birth');
 
             if (!is_null($coach)){
                 $client->coach()->associate($coach);
@@ -150,10 +150,10 @@ class ClientService extends BaseService
             $client->first_last_name = $data['first_last_name'];
             $client->second_last_name = $data['second_last_name'];
             $client->sex = Arr::get($data, 'sex');
-            $client->age = Arr::get($data, 'age');
             $client->email = Arr::get($data, 'email');
             $client->phone = Arr::get($data, 'phone');
             $client->address = Arr::get($data, 'address');
+            $client->date_of_birth = Arr::get($data, 'date_of_birth');
 
             if (!is_null($coach)){
                 $client->coach()->associate($coach);

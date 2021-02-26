@@ -20,9 +20,9 @@ class CreateClientsTable extends Migration
             $table->string('first_last_name')->nullable(false);
             $table->string('second_last_name')->nullable(false);
             $table->string('sex')->nullable();
-            $table->integer('age')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
+            $table->date('date_of_birth')->nullable();
             $table->json('address')->nullable();
 
             $table->unsignedBigInteger('coach_id')->nullable();
