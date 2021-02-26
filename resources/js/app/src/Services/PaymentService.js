@@ -16,7 +16,7 @@ class PaymentService {
             }
         }
 
-        return axios.get("/api/clients", {
+        return axios.get("/api/payments", {
             params: urlSearchParams
         });
     }
