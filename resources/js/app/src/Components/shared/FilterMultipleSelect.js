@@ -127,8 +127,11 @@ const FilterMultipleSelect = React.memo(
     }) => {
         const classes = useStyles();
 
+        const [inputValue, setInputValue] = useState("");
+
         return (
             <Autocomplete
+                inputValue={inputValue}
                 value={value}
                 onChange={(_, newValue) => {
                     onChange({
@@ -152,6 +155,7 @@ const FilterMultipleSelect = React.memo(
                         {...params}
                         size="small"
                         variant="outlined"
+                        onChange={(e)=>{setInputValue(e.target.value)}}
                         label={label}
                         inputProps={{
                             ...params.inputProps,
