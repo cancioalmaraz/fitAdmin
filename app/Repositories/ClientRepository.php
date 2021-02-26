@@ -29,7 +29,7 @@ class ClientRepository {
     public function queryAll($filterList = []){
         $query = Client::from(Client::getFullTableName() . ' as c')
             ->select('c.*')
-            ->addSelect(DB::raw("(SELECT DATEDIFF(p.end_date, CURRENT_DATE())
+            ->addSelect(DB::raw("(SELECT DATEDIFF(p.end_date, CONVERT_TZ(CURRENT_DATE(), '+00:00','-04:00'))
                                 FROM fitAdmin.clients as c2
                                 INNER JOIN fitAdmin.client_payment as cp
                                 ON c2.id = cp.client_id

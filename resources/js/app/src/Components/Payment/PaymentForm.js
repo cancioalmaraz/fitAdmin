@@ -5,7 +5,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { Grid, makeStyles, TextField } from "@material-ui/core";
+import { Grid, makeStyles, TextField, Typography } from "@material-ui/core";
 import NumberFormat from "react-number-format";
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -139,8 +139,16 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
                 onClose={handleClose}
                 classes={{ paper: classes.dialogPaper }}
             >
-                <DialogTitle style={{ textAlign: "center" }}>
-                    Realizar Pago
+                <DialogTitle style={{ textAlign: "center" }} disableTypography>
+                    <Typography variant="h6">
+                        Realizar Pago {!!state.client && "de:"}
+                    </Typography>
+
+                    {!!state.client && (
+                        <Typography variant="subtitle1">
+                            {`C.I : ${state.client.ci} - ${state.client.fullName}`}
+                        </Typography>
+                    )}
                 </DialogTitle>
                 <DialogContent>
                     <form
