@@ -208,7 +208,11 @@ const ClientPage = React.memo(props => {
     const createClient = useCallback(
         (e, client) => {
             e.preventDefault();
-            client.date_of_birth = helpers.parseDate(client.date_of_birth_full);
+            if (!!client.date_of_birth_full) {
+                client.date_of_birth = helpers.parseDate(
+                    client.date_of_birth_full
+                );
+            }
             clientService.create(client).then(httpSuccess => {
                 handleCloseForm();
                 handleOpenSnack("success", "Inscripcion Exitosa");
@@ -224,10 +228,7 @@ const ClientPage = React.memo(props => {
             client.date_of_birth = helpers.parseDate(client.date_of_birth_full);
             clientService.edit(client).then(httpSuccess => {
                 handleCloseForm();
-                handleOpenSnack(
-                    "success",
-                    "Datos actualizados exitosamente"
-                );
+                handleOpenSnack("success", "Datos actualizados exitosamente");
                 chargePage();
             });
         },
@@ -238,8 +239,12 @@ const ClientPage = React.memo(props => {
     const createPayment = (e, payment) => {
         e.preventDefault();
         payment.clientList = payment.clientListGross.map(e => e.id);
-        payment.start_date = helpers.parseDate(payment.start_dateFull);
-        payment.end_date = helpers.parseDate(payment.end_dateFull);
+        if (!!payment.start_dateFull) {
+            payment.start_date = helpers.parseDate(payment.start_dateFull);
+        }
+        if(!!payment.end_dateFull){
+            payment.end_date = helpers.parseDate(payment.end_dateFull);
+        }
         paymentService.create(payment).then(httpSuccess => {
             handleCloseFormPayment();
             handleOpenSnack("success", "Pago realizado exitosamente");
@@ -271,14 +276,19 @@ const ClientPage = React.memo(props => {
         }));
     };
 
-    const settingPagination = data => {
-        setPagination(state => ({
-            ...state,
-            totalPages: Math.ceil(data.filterCount / limit),
-            totalItems: data.filterCount,
-            totalItemsInPage: data.results.length
-        }));
-    };
+    const settingPagination = useCallback(
+        (data, page = pagination.page, offset = pagination.offset) => {
+            setPagination(state => ({
+                ...state,
+                page: page,
+                offset: offset,
+                totalPages: Math.ceil(data.filterCount / limit),
+                totalItems: data.filterCount,
+                totalItemsInPage: data.results.length
+            }));
+        },
+        [pagination.page, pagination.offset]
+    );
 
     // State for SnackActions
     const [openSnack, setOpenSnack] = useState({
@@ -346,6 +356,28 @@ const ClientPage = React.memo(props => {
             });
     };
 
+    const changePage = newPage => {
+        const newOffset = (newPage - 1) * limit;
+
+        startLoadingClientList();
+        startLoadingPagination();
+
+        clientService
+            .getAll(limit, newOffset)
+            .then(httpSuccess => {
+                chargeClientList(httpSuccess.data.results);
+                settingPagination(httpSuccess.data, newPage, newOffset);
+            })
+            .finally(() => {
+                finishLoadingClientList();
+                finishLoadingPagination();
+            });
+    };
+
+    const handleChangePage = (_, newPage) => {
+        changePage(newPage);
+    };
+
     const search = (e, filterList) => {
         e.preventDefault();
         chargePage(filterList);
@@ -397,6 +429,7 @@ const ClientPage = React.memo(props => {
                         page={pagination.page}
                         totalPages={pagination.totalPages}
                         totalItems={pagination.totalItems}
+                        onChange={handleChangePage}
                         offset={pagination.offset}
                         totalItemsInPage={pagination.totalItemsInPage}
                         loading={pagination.loading}

@@ -13,7 +13,7 @@ const PaginationUi = React.memo(
         page = 1,
         totalPages = 1,
         totalItems = 1,
-        handleChangePage = ()=>{},
+        onChange = () => {},
         offset = 0,
         totalItemsInPage = 1,
         loading = false
@@ -40,7 +40,7 @@ const PaginationUi = React.memo(
                         variant="outlined"
                         shape="rounded"
                         page={page}
-                        onChange={handleChangePage}
+                        onChange={onChange}
                         size="small"
                     />
                 </Box>
