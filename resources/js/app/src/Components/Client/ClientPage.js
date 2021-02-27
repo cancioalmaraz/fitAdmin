@@ -211,7 +211,7 @@ const ClientPage = React.memo(props => {
             client.date_of_birth = helpers.parseDate(client.date_of_birth_full);
             clientService.create(client).then(httpSuccess => {
                 handleCloseForm();
-                handleOpenSnack("success", "Cliente Creado Satisfactoriamente");
+                handleOpenSnack("success", "Inscripcion Exitosa");
                 chargePage();
             });
         },
@@ -226,7 +226,7 @@ const ClientPage = React.memo(props => {
                 handleCloseForm();
                 handleOpenSnack(
                     "success",
-                    "Cliente Actualizado Satisfactoriamente"
+                    "Datos actualizados exitosamente"
                 );
                 chargePage();
             });
@@ -324,7 +324,7 @@ const ClientPage = React.memo(props => {
     const deleteClient = client => {
         clientService.delete(client).then(httpSuccess => {
             handleCloseForm();
-            handleOpenSnack("success", "Cliente Eliminado Satisfactoriamente");
+            handleOpenSnack("success", "Cliente Eliminado");
             chargePage();
         });
     };

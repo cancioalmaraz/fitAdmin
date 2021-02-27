@@ -260,7 +260,7 @@ const ClientForm = React.memo(({ state, handleClose }) => {
                                 >
                                     <KeyboardDatePicker
                                         margin="normal"
-                                        label="Cumpleaños"
+                                        label="F. de Nacimiento"
                                         format="yyyy-MM-dd"
                                         value={form.date_of_birth_full}
                                         inputVariant="outlined"
