@@ -6,7 +6,6 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import Helpers from "../../Helpers/Helpers";
 
 // Components
@@ -21,6 +20,11 @@ import PaymentForm from "../Payment/PaymentForm";
 // Services
 import ClientService from "../../Services/ClientService";
 import PaymentService from "../../Services/PaymentService";
+import { Grid } from "@material-ui/core";
+
+// Icons
+import MenuIcon from "@material-ui/icons/Menu";
+import LoopIcon from "@material-ui/icons/Loop";
 
 const drawerWidth = 240;
 
@@ -84,9 +88,22 @@ const AppBarPage = React.memo(props => {
                 >
                     <MenuIcon />
                 </IconButton>
-                <Typography variant="h6" noWrap>
-                    Clientes
-                </Typography>
+                <Grid container justify="space-between">
+                    <Grid item xs={2} style={{ alignSelf: "center" }}>
+                        <Typography variant="h6" noWrap>
+                            Clientes
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={2} style={{ textAlign: "right" }}>
+                        <IconButton
+                            aria-label="reload"
+                            size="medium"
+                            onClick={props.actionList.reload}
+                        >
+                            <LoopIcon fontSize="small" />
+                        </IconButton>
+                    </Grid>
+                </Grid>
             </Toolbar>
         </AppBar>
     );
@@ -255,7 +272,7 @@ const ClientPage = React.memo(props => {
         paymentService.create(payment).then(httpSuccess => {
             handleCloseFormPayment();
             handleOpenSnack("success", "Pago realizado exitosamente");
-            chargePage();
+            chargePage({ ci: httpSuccess.data.results.clients[0].ci });
         });
     };
 
@@ -397,7 +414,12 @@ const ClientPage = React.memo(props => {
 
     return (
         <Fragment>
-            <AppBarPage {...props} />
+            <AppBarPage
+                {...props}
+                actionList={{
+                    reload: chargePage
+                }}
+            />
 
             <main className={classes.content}>
                 <div className={classes.toolbar} />
@@ -423,14 +445,16 @@ const ClientPage = React.memo(props => {
                     }}
                 />
 
-                <ClientList
-                    clientList={clientList}
-                    actionList={{
-                        generatePayment: handleCreatePayment,
-                        edit: handleEditClient,
-                        delete: deleteClient
-                    }}
-                />
+                {!pagination.loading && (
+                    <ClientList
+                        clientList={clientList}
+                        actionList={{
+                            generatePayment: handleCreatePayment,
+                            edit: handleEditClient,
+                            delete: deleteClient
+                        }}
+                    />
+                )}
 
                 {!pagination.loading && (
                     <Pagination

@@ -83,7 +83,7 @@ const ClientFilterSection = React.memo(
                     </form>
                 </AccordionDetails>
                 <Divider />
-                <AccordionActions style={{ justifyContent: "space-between" }}>
+                <AccordionActions>
                     <Button
                         size="small"
                         color="primary"
