@@ -64,6 +64,7 @@ const ClientFilterSection = React.memo(
                                     label="C.I."
                                     type="number"
                                     name="ci"
+                                    autoComplete="off"
                                     value={form.ci}
                                     onChange={handleChangeForm}
                                 />
@@ -73,6 +74,7 @@ const ClientFilterSection = React.memo(
                                     fullWidth
                                     label="Apellido P."
                                     name="first_last_name"
+                                    autoComplete="off"
                                     value={form.first_last_name}
                                     onChange={handleChangeForm}
                                 />

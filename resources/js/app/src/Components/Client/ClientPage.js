@@ -103,6 +103,9 @@ const ClientPage = React.memo(props => {
     const clientService = new ClientService();
     const paymentService = new PaymentService();
 
+    // State to filterList
+    const [filterList, setFilterList] = useState({});
+
     // State to Clients
     const [clientList, setClientList] = useState({
         data: [],
@@ -216,7 +219,7 @@ const ClientPage = React.memo(props => {
             clientService.create(client).then(httpSuccess => {
                 handleCloseForm();
                 handleOpenSnack("success", "Inscripcion Exitosa");
-                chargePage();
+                chargePage({ ci: httpSuccess.data.results.ci });
             });
         },
         [handleCloseForm]
@@ -225,11 +228,15 @@ const ClientPage = React.memo(props => {
     const editClient = useCallback(
         (e, client) => {
             e.preventDefault();
-            client.date_of_birth = helpers.parseDate(client.date_of_birth_full);
+            if (!!client.date_of_birth_full) {
+                client.date_of_birth = helpers.parseDate(
+                    client.date_of_birth_full
+                );
+            }
             clientService.edit(client).then(httpSuccess => {
                 handleCloseForm();
                 handleOpenSnack("success", "Datos actualizados exitosamente");
-                chargePage();
+                chargePage({ ci: httpSuccess.data.results.ci });
             });
         },
         [handleCloseForm]
@@ -242,7 +249,7 @@ const ClientPage = React.memo(props => {
         if (!!payment.start_dateFull) {
             payment.start_date = helpers.parseDate(payment.start_dateFull);
         }
-        if(!!payment.end_dateFull){
+        if (!!payment.end_dateFull) {
             payment.end_date = helpers.parseDate(payment.end_dateFull);
         }
         paymentService.create(payment).then(httpSuccess => {
@@ -343,6 +350,7 @@ const ClientPage = React.memo(props => {
     const chargePage = (filterList = {}) => {
         startLoadingClientList();
         startLoadingPagination();
+        setFilterList(filterList);
 
         clientService
             .getAll(limit, pagination.offset, filterList)
@@ -363,7 +371,7 @@ const ClientPage = React.memo(props => {
         startLoadingPagination();
 
         clientService
-            .getAll(limit, newOffset)
+            .getAll(limit, newOffset, filterList)
             .then(httpSuccess => {
                 chargeClientList(httpSuccess.data.results);
                 settingPagination(httpSuccess.data, newPage, newOffset);
