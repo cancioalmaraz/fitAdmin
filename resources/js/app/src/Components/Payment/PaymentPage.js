@@ -6,10 +6,11 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Helpers from "../../Helpers/Helpers";
+import { Button } from "@material-ui/core";
 
 // Icons
 import MenuIcon from "@material-ui/icons/Menu";
-import { Button, Card, CardActionArea } from "@material-ui/core";
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 
 // Components
 import PaymentForm from "./PaymentForm";
@@ -184,14 +185,14 @@ const PaymentPage = React.memo(props => {
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <div className={classes.root}>
-                    <Card>
-                        <CardActionArea
-                            onClick={handleCreatePayment}
-                            className={classes.actionCard}
-                        >
-                            <img src="/images/pay_symbol.png" alt="pay" />
-                        </CardActionArea>
-                    </Card>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<MonetizationOnIcon />}
+                        onClick={handleCreatePayment}
+                    >
+                        Realizar pago
+                    </Button>
 
                     <PaymentForm
                         state={stateForm}
