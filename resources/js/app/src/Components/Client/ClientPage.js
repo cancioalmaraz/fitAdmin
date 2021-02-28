@@ -233,11 +233,19 @@ const ClientPage = React.memo(props => {
                     client.date_of_birth_full
                 );
             }
-            clientService.create(client).then(httpSuccess => {
-                handleCloseForm();
-                handleOpenSnack("success", "Inscripcion Exitosa");
-                chargePage({ ci: httpSuccess.data.results.ci });
-            });
+            clientService
+                .create(client)
+                .then(httpSuccess => {
+                    handleCloseForm();
+                    handleOpenSnack("success", "Inscripcion Exitosa");
+                    chargePage({ ci: httpSuccess.data.results.ci });
+                })
+                .catch(httpError => {
+                    const errorMessageList = helpers.getMessagesError(
+                        httpError.response.data.errors
+                    );
+                    handleOpenSnack("error", errorMessageList.join(", "));
+                });
         },
         [handleCloseForm]
     );
@@ -250,11 +258,22 @@ const ClientPage = React.memo(props => {
                     client.date_of_birth_full
                 );
             }
-            clientService.edit(client).then(httpSuccess => {
-                handleCloseForm();
-                handleOpenSnack("success", "Datos actualizados exitosamente");
-                chargePage({ ci: httpSuccess.data.results.ci });
-            });
+            clientService
+                .edit(client)
+                .then(httpSuccess => {
+                    handleCloseForm();
+                    handleOpenSnack(
+                        "success",
+                        "Datos actualizados exitosamente"
+                    );
+                    chargePage({ ci: httpSuccess.data.results.ci });
+                })
+                .catch(httpError => {
+                    const errorMessageList = helpers.getMessagesError(
+                        httpError.response.data.errors
+                    );
+                    handleOpenSnack("error", errorMessageList.join(", "));
+                });
         },
         [handleCloseForm]
     );
@@ -269,11 +288,19 @@ const ClientPage = React.memo(props => {
         if (!!payment.end_dateFull) {
             payment.end_date = helpers.parseDate(payment.end_dateFull);
         }
-        paymentService.create(payment).then(httpSuccess => {
-            handleCloseFormPayment();
-            handleOpenSnack("success", "Pago realizado exitosamente");
-            chargePage({ ci: httpSuccess.data.results.clients[0].ci });
-        });
+        paymentService
+            .create(payment)
+            .then(httpSuccess => {
+                handleCloseFormPayment();
+                handleOpenSnack("success", "Pago realizado exitosamente");
+                chargePage({ ci: httpSuccess.data.results.clients[0].ci });
+            })
+            .catch(httpError => {
+                const errorMessageList = helpers.getMessagesError(
+                    httpError.response.data.errors
+                );
+                handleOpenSnack("error", errorMessageList.join(", "));
+            });
     };
 
     // State to Pagination
@@ -356,11 +383,19 @@ const ClientPage = React.memo(props => {
 
     //Functions to Client
     const deleteClient = client => {
-        clientService.delete(client).then(httpSuccess => {
-            handleCloseForm();
-            handleOpenSnack("success", "Cliente Eliminado");
-            chargePage();
-        });
+        clientService
+            .delete(client)
+            .then(httpSuccess => {
+                handleCloseForm();
+                handleOpenSnack("success", "Cliente Eliminado");
+                chargePage();
+            })
+            .catch(httpError => {
+                const errorMessageList = helpers.getMessagesError(
+                    httpError.response.data.errors
+                );
+                handleOpenSnack("error", errorMessageList.join(", "));
+            });
     };
 
     const sendMessageToClient = client => {
@@ -372,7 +407,11 @@ const ClientPage = React.memo(props => {
     };
 
     // Function in Page
-    const chargePage = (filterList = {}, page = pagination.page, offset = pagination.offset) => {
+    const chargePage = (
+        filterList = {},
+        page = pagination.page,
+        offset = pagination.offset
+    ) => {
         startLoadingClientList();
         startLoadingPagination();
         setFilterList(filterList);
@@ -382,6 +421,12 @@ const ClientPage = React.memo(props => {
             .then(httpSuccess => {
                 chargeClientList(httpSuccess.data.results);
                 settingPagination(httpSuccess.data, page, offset);
+            })
+            .catch(httpError => {
+                const errorMessageList = helpers.getMessagesError(
+                    httpError.response.data.errors
+                );
+                handleOpenSnack("error", errorMessageList.join(", "));
             })
             .finally(() => {
                 finishLoadingClientList();
@@ -400,6 +445,12 @@ const ClientPage = React.memo(props => {
             .then(httpSuccess => {
                 chargeClientList(httpSuccess.data.results);
                 settingPagination(httpSuccess.data, newPage, newOffset);
+            })
+            .catch(httpError => {
+                const errorMessageList = helpers.getMessagesError(
+                    httpError.response.data.errors
+                );
+                handleOpenSnack("error", errorMessageList.join(", "));
             })
             .finally(() => {
                 finishLoadingClientList();

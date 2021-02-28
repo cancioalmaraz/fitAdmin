@@ -10,7 +10,7 @@ import { Button } from "@material-ui/core";
 
 // Icons
 import MenuIcon from "@material-ui/icons/Menu";
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 
 // Components
 import PaymentForm from "./PaymentForm";
@@ -172,10 +172,18 @@ const PaymentPage = React.memo(props => {
         payment.clientList = payment.clientListGross.map(e => e.id);
         payment.start_date = helpers.parseDate(payment.start_dateFull);
         payment.end_date = helpers.parseDate(payment.end_dateFull);
-        paymentService.create(payment).then(httpSuccess => {
-            handleCloseForm();
-            handleOpenSnack("success", "Pago realizado exitosamente");
-        });
+        paymentService
+            .create(payment)
+            .then(httpSuccess => {
+                handleCloseForm();
+                handleOpenSnack("success", "Pago realizado exitosamente");
+            })
+            .catch(httpError => {
+                const errorMessageList = helpers.getMessagesError(
+                    httpError.response.data.errors
+                );
+                handleOpenSnack("error", errorMessageList.join(", "));
+            });
     };
 
     return (

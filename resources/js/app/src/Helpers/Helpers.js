@@ -12,6 +12,14 @@ class Helpers {
         }
         return dateParsed;
     }
+
+    getMessagesError(errorList) {
+        let errorMessageList = [];
+        for (const property in errorList) {
+            errorMessageList.push(errorList[property].join(", "));
+        }
+        return errorMessageList;
+    }
 }
 
 export default Helpers;

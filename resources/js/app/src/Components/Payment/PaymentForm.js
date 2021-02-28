@@ -124,6 +124,12 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
                 .then(httpSuccess => {
                     chargeClientList(httpSuccess.data.results);
                 })
+                .catch(httpError => {
+                    const errorMessageList = helpers.getMessagesError(
+                        httpError.response.data.errors
+                    );
+                    handleOpenSnack("error", errorMessageList.join(", "));
+                })
                 .finally(() => {
                     finishLoadingClientList();
                 });
