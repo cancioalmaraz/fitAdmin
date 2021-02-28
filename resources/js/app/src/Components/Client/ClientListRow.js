@@ -25,6 +25,7 @@ import LocalAtmIcon from "@material-ui/icons/LocalAtm";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import SendIcon from "@material-ui/icons/Send";
 
 const StyledMenu = withStyles({
     paper: {
@@ -221,6 +222,18 @@ const ClientListRow = ({ client, actionList = {} }) => {
                         <DeleteIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Eliminar" />
+                </StyledMenuItem>
+                <StyledMenuItem
+                    disabled={!client.phone}
+                    onClick={() => {
+                        handleCloseActions();
+                        actionList.message(client);
+                    }}
+                >
+                    <ListItemIcon>
+                        <SendIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Enviar Mensaje" />
                 </StyledMenuItem>
             </StyledMenu>
             <Dialog

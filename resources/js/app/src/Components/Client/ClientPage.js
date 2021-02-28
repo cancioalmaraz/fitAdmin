@@ -363,6 +363,14 @@ const ClientPage = React.memo(props => {
         });
     };
 
+    const sendMessageToClient = client => {
+        if (!!client.phone) {
+            window.open(
+                `https://api.whatsapp.com/send?phone=591${client.phone}`
+            );
+        }
+    };
+
     // Function in Page
     const chargePage = (filterList = {}) => {
         startLoadingClientList();
@@ -451,7 +459,8 @@ const ClientPage = React.memo(props => {
                         actionList={{
                             generatePayment: handleCreatePayment,
                             edit: handleEditClient,
-                            delete: deleteClient
+                            delete: deleteClient,
+                            message: sendMessageToClient
                         }}
                     />
                 )}
