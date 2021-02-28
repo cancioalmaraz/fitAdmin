@@ -465,6 +465,7 @@ const ClientPage = React.memo(props => {
                         offset={pagination.offset}
                         totalItemsInPage={pagination.totalItemsInPage}
                         loading={pagination.loading}
+                        subject="cliente(s)"
                     />
                 )}
 

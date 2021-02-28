@@ -16,7 +16,8 @@ const PaginationUi = React.memo(
         onChange = () => {},
         offset = 0,
         totalItemsInPage = 1,
-        loading = false
+        loading = false,
+        subject = "entrada(s)"
     }) => {
         const classes = useStyles();
         return (
@@ -31,7 +32,7 @@ const PaginationUi = React.memo(
                     <Typography className={classes.textPagination}>
                         Mostrando {loading ? "..." : offset + 1} a{" "}
                         {loading ? "..." : offset + totalItemsInPage} de{" "}
-                        {loading ? "..." : totalItems} {"entrada(s)"}
+                        {loading ? "..." : totalItems} {subject}
                     </Typography>
                 </Box>
                 <Box p={1}>
