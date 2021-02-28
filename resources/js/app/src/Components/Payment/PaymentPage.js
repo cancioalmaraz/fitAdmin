@@ -9,7 +9,7 @@ import Helpers from "../../Helpers/Helpers";
 
 // Icons
 import MenuIcon from "@material-ui/icons/Menu";
-import { Button } from "@material-ui/core";
+import { Button, Card, CardActionArea } from "@material-ui/core";
 
 // Components
 import PaymentForm from "./PaymentForm";
@@ -57,6 +57,9 @@ const useStyles = makeStyles(theme => ({
     content: {
         flexGrow: 1,
         padding: theme.spacing(3)
+    },
+    actionCard: {
+        width: "auto"
     }
 }));
 
@@ -181,7 +184,14 @@ const PaymentPage = React.memo(props => {
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <div className={classes.root}>
-                    <Button onClick={handleCreatePayment}>Realizar Pago</Button>
+                    <Card>
+                        <CardActionArea
+                            onClick={handleCreatePayment}
+                            className={classes.actionCard}
+                        >
+                            <img src="/images/pay_symbol.png" alt="pay" />
+                        </CardActionArea>
+                    </Card>
 
                     <PaymentForm
                         state={stateForm}
