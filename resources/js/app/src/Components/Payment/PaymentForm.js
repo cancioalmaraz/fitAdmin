@@ -171,6 +171,7 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
                                         margin="normal"
                                         label="Desde"
                                         format="yyyy-MM-dd"
+                                        inputVariant="outlined"
                                         value={form.start_dateFull}
                                         onChange={date => {
                                             handleChangeForm({
@@ -192,6 +193,7 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
                                         margin="normal"
                                         label="Hasta"
                                         format="yyyy-MM-dd"
+                                        inputVariant="outlined"
                                         value={form.end_dateFull}
                                         onChange={date => {
                                             handleChangeForm({

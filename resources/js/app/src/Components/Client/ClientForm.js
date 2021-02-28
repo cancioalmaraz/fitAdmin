@@ -354,7 +354,9 @@ const ClientForm = React.memo(({ state, handleClose }) => {
                     </Toolbar>
                 </AppBar>
                 <MapContainer
-                    center={center}
+                    center={
+                        !!state.client.address ? state.client.address : center
+                    }
                     zoom={16}
                     scrollWheelZoom={true}
                     style={{
