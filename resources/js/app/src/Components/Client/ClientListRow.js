@@ -173,7 +173,7 @@ const ClientListRow = ({ client, actionList = {} }) => {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        {`¿ Estas seguro de eliminar a ${client.name} ${client.first_last_name} ?`}
+                        {`¿ Estas seguro de eliminar a ${client.fullName} ?`}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
