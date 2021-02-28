@@ -372,16 +372,16 @@ const ClientPage = React.memo(props => {
     };
 
     // Function in Page
-    const chargePage = (filterList = {}) => {
+    const chargePage = (filterList = {}, page = pagination.page, offset = pagination.offset) => {
         startLoadingClientList();
         startLoadingPagination();
         setFilterList(filterList);
 
         clientService
-            .getAll(limit, pagination.offset, filterList)
+            .getAll(limit, offset, filterList)
             .then(httpSuccess => {
                 chargeClientList(httpSuccess.data.results);
-                settingPagination(httpSuccess.data);
+                settingPagination(httpSuccess.data, page, offset);
             })
             .finally(() => {
                 finishLoadingClientList();
@@ -413,7 +413,7 @@ const ClientPage = React.memo(props => {
 
     const search = (e, filterList) => {
         e.preventDefault();
-        chargePage(filterList);
+        chargePage(filterList, 1, 0);
     };
 
     useEffect(() => {

@@ -29,11 +29,15 @@ const PaginationUi = React.memo(
                 p={1}
             >
                 <Box p={1}>
-                    <Typography className={classes.textPagination}>
-                        Mostrando {loading ? "..." : offset + 1} a{" "}
-                        {loading ? "..." : offset + totalItemsInPage} de{" "}
-                        {loading ? "..." : totalItems} {subject}
-                    </Typography>
+                    {totalItemsInPage === 0 ? (
+                        <Typography>No hay resultados</Typography>
+                    ) : (
+                        <Typography className={classes.textPagination}>
+                            Mostrando {loading ? "..." : offset + 1} a{" "}
+                            {loading ? "..." : offset + totalItemsInPage} de{" "}
+                            {loading ? "..." : totalItems} {subject}
+                        </Typography>
+                    )}
                 </Box>
                 <Box p={1}>
                     <Pagination
