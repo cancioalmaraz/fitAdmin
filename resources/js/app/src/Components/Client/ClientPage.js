@@ -89,7 +89,7 @@ const AppBarPage = React.memo(props => {
                     <MenuIcon />
                 </IconButton>
                 <Grid container justify="space-between">
-                    <Grid item xs={2} style={{ alignSelf: "center" }}>
+                    <Grid item xs={4} style={{ alignSelf: "center" }}>
                         <Typography variant="h6" noWrap>
                             Clientes
                         </Typography>
