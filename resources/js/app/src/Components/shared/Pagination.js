@@ -32,7 +32,7 @@ const PaginationUi = React.memo(
                     {totalItemsInPage === 0 ? (
                         <Typography>No hay resultados</Typography>
                     ) : (
-                        <Typography className={classes.textPagination}>
+                        <Typography className={classes.textPagination} variant="subtitle2">
                             Mostrando {loading ? "..." : offset + 1} a{" "}
                             {loading ? "..." : offset + totalItemsInPage} de{" "}
                             {loading ? "..." : totalItems} {subject}
