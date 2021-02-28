@@ -37,8 +37,7 @@ const PaginationUi = React.memo(
                 <Box p={1}>
                     <Pagination
                         count={totalPages}
-                        variant="outlined"
-                        shape="rounded"
+                        color="primary"
                         page={page}
                         onChange={onChange}
                         size="small"
