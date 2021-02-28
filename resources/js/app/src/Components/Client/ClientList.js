@@ -1,6 +1,7 @@
 import React from "react";
 import {
     Hidden,
+    makeStyles,
     Table,
     TableBody,
     TableCell,
@@ -12,28 +13,73 @@ import {
 // Components
 import ClientListRow from "./ClientListRow";
 
+const useStyles = makeStyles(theme => ({
+    tableHead: {
+        backgroundColor: "rgb(63, 81, 181)"
+    },
+    tableCell: {
+        color: "white"
+    }
+}));
+
 const ClientList = React.memo(
     ({ clientList = { data: [], loading: false }, actionList = {} }) => {
+        const classes = useStyles();
+
         return (
             <TableContainer>
                 <Table>
                     <Hidden smDown>
-                        <TableHead>
+                        <TableHead className={classes.tableHead}>
                             <TableRow>
-                                <TableCell align="center">C.I.</TableCell>
-                                <TableCell align="center">Nombre</TableCell>
-                                <TableCell align="center">
+                                <TableCell
+                                    className={classes.tableCell}
+                                    align="center"
+                                >
+                                    C.I.
+                                </TableCell>
+                                <TableCell
+                                    className={classes.tableCell}
+                                    align="center"
+                                >
+                                    Nombre
+                                </TableCell>
+                                <TableCell
+                                    className={classes.tableCell}
+                                    align="center"
+                                >
                                     Apellido P.
                                 </TableCell>
-                                <TableCell align="center">
+                                <TableCell
+                                    className={classes.tableCell}
+                                    align="center"
+                                >
                                     Apellido M.
                                 </TableCell>
-                                <TableCell align="center">
+                                <TableCell
+                                    className={classes.tableCell}
+                                    align="center"
+                                >
                                     Dias Restantes
                                 </TableCell>
-                                <TableCell align="center">Telefono</TableCell>
-                                <TableCell align="center">Coach</TableCell>
-                                <TableCell align="center">Acciones</TableCell>
+                                <TableCell
+                                    className={classes.tableCell}
+                                    align="center"
+                                >
+                                    Telefono
+                                </TableCell>
+                                <TableCell
+                                    className={classes.tableCell}
+                                    align="center"
+                                >
+                                    Coach
+                                </TableCell>
+                                <TableCell
+                                    className={classes.tableCell}
+                                    align="center"
+                                >
+                                    Acciones
+                                </TableCell>
                             </TableRow>
                         </TableHead>
                     </Hidden>
