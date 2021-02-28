@@ -1,5 +1,12 @@
 import React, { Fragment, useState } from "react";
-import { IconButton, TableCell, TableRow } from "@material-ui/core";
+import {
+    Grid,
+    Hidden,
+    IconButton,
+    TableCell,
+    TableRow,
+    Typography
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -84,36 +91,90 @@ const ClientListRow = ({ client, actionList = {} }) => {
     return (
         <Fragment>
             <TableRow style={styles.row}>
-                <TableCell style={styles.cell} align="center">
-                    {client.ci}
-                </TableCell>
-                <TableCell style={styles.cell} align="center">
-                    {client.name}
-                </TableCell>
-                <TableCell style={styles.cell} align="center">
-                    {client.first_last_name}
-                </TableCell>
-                <TableCell style={styles.cell} align="center">
-                    {client.second_last_name}
-                </TableCell>
-                <TableCell style={styles.cell} align="center">
-                    {client.remaining_days !== null && client.remaining_days}
-                </TableCell>
-                <TableCell style={styles.cell} align="center">
-                    {!!client.phone && client.phone}
-                </TableCell>
-                <TableCell style={styles.cell} align="center">
-                    {!!client.coach && client.coach.name}
-                </TableCell>
-                <TableCell style={styles.cell} align="center">
-                    <IconButton
-                        onClick={handleOpenActions}
-                        aria-label="actions"
-                        size="small"
-                    >
-                        <ArrowDropDownIcon />
-                    </IconButton>
-                </TableCell>
+                <Hidden mdDown>
+                    <TableCell style={styles.cell} align="center">
+                        {client.ci}
+                    </TableCell>
+                    <TableCell style={styles.cell} align="center">
+                        {client.name}
+                    </TableCell>
+                    <TableCell style={styles.cell} align="center">
+                        {client.first_last_name}
+                    </TableCell>
+                    <TableCell style={styles.cell} align="center">
+                        {client.second_last_name}
+                    </TableCell>
+                    <TableCell style={styles.cell} align="center">
+                        {client.remaining_days !== null &&
+                            client.remaining_days}
+                    </TableCell>
+                    <TableCell style={styles.cell} align="center">
+                        {!!client.phone && client.phone}
+                    </TableCell>
+                    <TableCell style={styles.cell} align="center">
+                        {!!client.coach && client.coach.name}
+                    </TableCell>
+                    <TableCell style={styles.cell} align="center">
+                        <IconButton
+                            onClick={handleOpenActions}
+                            aria-label="actions"
+                            size="small"
+                        >
+                            <ArrowDropDownIcon />
+                        </IconButton>
+                    </TableCell>
+                </Hidden>
+                <Hidden mdUp>
+                    <TableCell style={styles.cell} align="center">
+                        <Grid container>
+                            <Grid
+                                item
+                                xs={8}
+                                style={{
+                                    textAlign: "left",
+                                    alignSelf: "center"
+                                }}
+                            >
+                                <Typography>CI: {client.ci}</Typography>
+                            </Grid>
+                            <Grid item xs={4} style={{ textAlign: "right" }}>
+                                <IconButton
+                                    onClick={handleOpenActions}
+                                    aria-label="actions"
+                                    size="small"
+                                >
+                                    <ArrowDropDownIcon />
+                                </IconButton>
+                            </Grid>
+                            <Grid
+                                item
+                                xs={12}
+                                style={{
+                                    textAlign: "left",
+                                    alignSelf: "center"
+                                }}
+                            >
+                                <Typography>
+                                    Nombre: {client.fullName}
+                                </Typography>
+                            </Grid>
+                            <Grid
+                                item
+                                xs={12}
+                                style={{
+                                    textAlign: "left",
+                                    alignSelf: "center"
+                                }}
+                            >
+                                <Typography>
+                                    Dias Restantes:{" "}
+                                    {client.remaining_days !== null &&
+                                        client.remaining_days}
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </TableCell>
+                </Hidden>
             </TableRow>
             <StyledMenu
                 id="customized-menu"
