@@ -43,6 +43,23 @@ class ClientRepository {
             $query->where('c.first_last_name', 'like', '%'.$filterList['first_last_name'].'%');
         }
 
+        if (array_key_exists('birth_date', $filterList) ){
+            $fieldRaw = "DATEDIFF(DATE_FORMAT(DATE_ADD(c.date_of_birth, INTERVAL (YEAR(CURRENT_DATE()) - YEAR(c.date_of_birth)) YEAR), '%Y-%m-%d'), CURRENT_DATE())";
+            $query->addSelect(DB::raw($fieldRaw . ' as remaining_days_to_birthday'));
+            if($filterList['birth_date'] == 'previous'){
+                $query->whereRaw($fieldRaw . ' < 0');
+            }
+            if($filterList['birth_date'] == 'today'){
+                $query->whereRaw($fieldRaw . ' = 0');
+            }
+            if($filterList['birth_date'] == 'tomorrow'){
+                $query->whereRaw($fieldRaw . ' = 1');
+            }
+            if($filterList['birth_date'] == 'next'){
+                $query->whereRaw($fieldRaw . ' > 1');
+            }
+        }
+
         if (array_key_exists('ci', $filterList) ){
             $query->where('c.ci', '=', $filterList['ci']);
         }
