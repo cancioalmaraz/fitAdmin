@@ -133,7 +133,7 @@ const CoachForm = React.memo(({ state, handleClose }) => {
                 phone: !!state.coach.phone ? state.coach.phone : "",
                 address: !!state.coach.address ? state.coach.address : center,
                 date_of_birth_full: !!state.coach.date_of_birth
-                    ? new Date(state.coach.date_of_birth)
+                    ? new Date(`${state.coach.date_of_birth}T04:00`)
                     : null
             });
         }

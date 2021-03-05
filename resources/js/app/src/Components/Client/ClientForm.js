@@ -133,7 +133,7 @@ const ClientForm = React.memo(({ state, handleClose }) => {
                 phone: !!state.client.phone ? state.client.phone : "",
                 address: !!state.client.address ? state.client.address : center,
                 date_of_birth_full: !!state.client.date_of_birth
-                    ? new Date(state.client.date_of_birth)
+                    ? new Date(`${state.client.date_of_birth}T04:00`)
                     : null
             });
         }
