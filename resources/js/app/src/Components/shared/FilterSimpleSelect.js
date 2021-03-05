@@ -114,6 +114,7 @@ const FilterSimpleSelect = ({
     onChange = () => {},
     disabled = false,
     value = null,
+    optionField = "name",
     required = false
 }) => {
     const classes = useStyles();
@@ -125,7 +126,7 @@ const FilterSimpleSelect = ({
         setValueAutocomplete(
             !!value ? list[list.map(e => e.id).indexOf(value)] : null
         );
-    }, [value]);
+    }, [value, disabled]);
 
     return (
         <Autocomplete
@@ -134,7 +135,7 @@ const FilterSimpleSelect = ({
                 onChange({
                     target: {
                         name: name,
-                        value: !!newValue ? newValue.id : null
+                        value: newValue
                     }
                 });
                 if (!!newValue) {
@@ -152,19 +153,18 @@ const FilterSimpleSelect = ({
             ListboxComponent={ListboxComponent}
             renderGroup={renderGroup}
             options={list}
-            getOptionLabel={option => option.name}
+            getOptionLabel={option => option[optionField]}
             renderInput={params => (
                 <TextField
                     {...params}
                     required={required}
-                    size="small"
                     variant="outlined"
                     label={label}
                 />
             )}
             renderOption={(option, { selected }) => (
                 <FormControlLabel
-                    label={option.name}
+                    label={option[optionField]}
                     style={{
                         width: "100%",
                         whiteSpace: "nowrap",

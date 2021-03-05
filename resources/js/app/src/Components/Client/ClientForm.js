@@ -22,6 +22,12 @@ import {
 } from "@material-ui/pickers";
 import esLocale from "date-fns/locale/es";
 
+//Services
+import CoachService from "../../Services/CoachService";
+
+//Components
+import FilterSimpleSelect from "../shared/FilterSimpleSelect";
+
 //Icons
 import CloseIcon from "@material-ui/icons/Close";
 import RoomIcon from "@material-ui/icons/Room";
@@ -98,12 +104,42 @@ const DraggableMarker = ({ position }) => {
 const ClientForm = React.memo(({ state, handleClose }) => {
     const classes = useStyles();
 
+    // Services
+    const coachService = new CoachService();
+
     const [form, setForm] = useState({});
 
     const handleChangeForm = ({ target }) => {
         setForm(state => ({
             ...state,
             [target.name]: target.value
+        }));
+    };
+
+    // State to coaches
+    const [coachList, setCoachList] = useState({
+        data: [],
+        loading: true
+    });
+
+    const setDataList = (data = [], setList) => {
+        setList(state => ({
+            ...state,
+            data: data
+        }));
+    };
+
+    const startLoading = setList => {
+        setList(state => ({
+            ...state,
+            loading: true
+        }));
+    };
+
+    const finishLoading = setList => {
+        setList(state => ({
+            ...state,
+            loading: false
         }));
     };
 
@@ -118,8 +154,22 @@ const ClientForm = React.memo(({ state, handleClose }) => {
         setOpenMap(false);
     };
 
+    const chargeCoachList = () => {
+        startLoading(setCoachList);
+        coachService
+            .getAll(1000, 0)
+            .then(httpSuccess => {
+                setDataList(httpSuccess.data.results, setCoachList);
+            })
+            .finally(() => {
+                finishLoading(setCoachList);
+            });
+    };
+
     useEffect(() => {
         if (state.open) {
+            chargeCoachList();
+
             setForm({
                 ...state.client,
                 ci: !!state.client.ci ? state.client.ci : "",
@@ -134,7 +184,8 @@ const ClientForm = React.memo(({ state, handleClose }) => {
                 address: !!state.client.address ? state.client.address : center,
                 date_of_birth_full: !!state.client.date_of_birth
                     ? new Date(`${state.client.date_of_birth}T04:00`)
-                    : null
+                    : null,
+                coach: !!state.client.coach ? state.client.coach : null
             });
         }
     }, [state.open]);
@@ -277,6 +328,26 @@ const ClientForm = React.memo(({ state, handleClose }) => {
                                         }}
                                         cancelLabel="Cancelar"
                                         okLabel="Aceptar"
+                                    />
+                                </Grid>
+
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={12}
+                                    style={{ alignSelf: "center" }}
+                                >
+                                    <FilterSimpleSelect
+                                        name="coach"
+                                        list={coachList.data}
+                                        label="Seleccionar Coach"
+                                        onChange={handleChangeForm}
+                                        disabled={coachList.loading}
+                                        value={
+                                            !!form.coach ? form.coach.id : null
+                                        }
+                                        optionField="fullName"
+                                        required={false}
                                     />
                                 </Grid>
 
