@@ -47,7 +47,7 @@ class ClientRepository {
             $fieldRaw = "DATEDIFF(DATE_FORMAT(DATE_ADD(c.date_of_birth, INTERVAL (YEAR(CURRENT_DATE()) - YEAR(c.date_of_birth)) YEAR), '%Y-%m-%d'), CURRENT_DATE())";
             $query->addSelect(DB::raw($fieldRaw . ' as remaining_days_to_birthday'));
             if($filterList['birth_date'] == 'previous'){
-                $query->whereRaw($fieldRaw . ' < 0');
+                $query->whereRaw($fieldRaw . ' BETWEEN -7 AND -1');
             }
             if($filterList['birth_date'] == 'today'){
                 $query->whereRaw($fieldRaw . ' = 0');
@@ -56,7 +56,7 @@ class ClientRepository {
                 $query->whereRaw($fieldRaw . ' = 1');
             }
             if($filterList['birth_date'] == 'next'){
-                $query->whereRaw($fieldRaw . ' > 1');
+                $query->whereRaw($fieldRaw . ' BETWEEN 2 AND 7');
             }
         }
 
