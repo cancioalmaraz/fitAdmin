@@ -1,13 +1,15 @@
-import React from 'react';
-
-
+import React from "react";
+import useGetClientBirthdays from "../../Hooks/useGetClientBirthdays";
 
 const BirthdayTab = () => {
-    return (
-        <div>
-            
-        </div>
-    )
-}
+    const {
+        previousBirthdayList,
+        todayBirthdayList,
+        tomorrowBirthdayList,
+        nextBirthdayList
+    } = useGetClientBirthdays();
+
+    return <div></div>;
+};
 
 export default BirthdayTab;
