@@ -31,7 +31,7 @@ class CoachRepository {
         }
 
         if (array_key_exists('ci', $filterList) ){
-            $query->where('c.ci', '=', $filterList['ci']);
+            $query->where('ch.ci', '=', $filterList['ci']);
         }
 
         return $query;

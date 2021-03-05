@@ -1,6 +1,6 @@
 import axios from "axios";
 
-class ClientService {
+class CoachService {
     getAll(limit = 10, offset = 0, filterList = {}) {
         const urlSearchParams = new URLSearchParams();
 
@@ -16,22 +16,22 @@ class ClientService {
             }
         }
 
-        return axios.get("/api/clients", {
+        return axios.get("/api/coaches", {
             params: urlSearchParams
         });
     }
 
-    create(client) {
-        return axios.post("/api/clients", client);
+    create(coach) {
+        return axios.post("/api/coaches", coach);
     }
 
-    edit(client) {
-        return axios.put(`/api/clients/${client.id}`, client);
+    edit(coach) {
+        return axios.put(`/api/coaches/${coach.id}`, coach);
     }
 
-    delete(client) {
-        return axios.delete(`/api/clients/${client.id}`);
+    delete(coach) {
+        return axios.delete(`/api/coaches/${coach.id}`);
     }
 }
 
-export default ClientService;
+export default CoachService;
