@@ -4,7 +4,16 @@ import { Grid, makeStyles, Paper, Typography } from "@material-ui/core";
 const useStyles = makeStyles(theme => ({
     title: {
         textAlign: "left",
-        marginBottom: 20
+        marginBottom: 20,
+        color: "white"
+    },
+    paperRoot: {
+        padding: 20,
+        backgroundColor: "rgb(63, 81, 133)"
+    },
+    cardBirthday: {
+        backgroundColor: "black",
+        color: "white"
     }
 }));
 
@@ -38,14 +47,14 @@ const BirthdayClientPaper = ({
     );
 
     return (
-        <Paper elevation={2} style={{ padding: 20 }}>
+        <Paper elevation={2} className={classes.paperRoot}>
             <Grid container style={{ padding: 10 }}>
                 <Grid className={classes.title} item xs={12}>
                     <Typography>{title}</Typography>
                 </Grid>
                 <Grid container spacing={5}>
                     {birthdayClientList.length === 0 && (
-                        <Grid item xs={12}>
+                        <Grid item xs={12} style={{ color: "white" }}>
                             <Typography>No hay cumpleaños</Typography>
                         </Grid>
                     )}
@@ -59,7 +68,7 @@ const BirthdayClientPaper = ({
                             lg={3}
                             xl={2}
                         >
-                            <Paper elevation={3}>
+                            <Paper elevation={3} className={classes.cardBirthday}>
                                 <Grid
                                     container
                                     spacing={2}

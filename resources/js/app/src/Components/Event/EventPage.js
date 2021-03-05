@@ -141,7 +141,7 @@ const EventPage = React.memo(props => {
                             />
                         </Tabs>
                     </AppBar>
-                    <TabPanel value={value} index={0}>
+                    <TabPanel value={value} index={0} style={{backgroundColor: "lavender"}}>
                         <BirthdayTab />
                     </TabPanel>
                 </div>
