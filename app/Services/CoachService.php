@@ -82,12 +82,7 @@ class CoachService extends BaseService
             'ci' => 'required|integer|unique:'.Coach::getTableName(),
             'name' => 'required|string',
             'first_last_name' => 'required|string',
-            'second_last_name' => 'required|string',
-            'sex' => 'string',
-            'age' => 'integer',
-            'email' => 'email',
-            'phone' => 'string',
-            'address' => 'string'
+            'second_last_name' => 'required|string'
         ];
 
         $validator = Validator::make($data, $validationRules);
@@ -104,10 +99,10 @@ class CoachService extends BaseService
             $coach->first_last_name = $data['first_last_name'];
             $coach->second_last_name = $data['second_last_name'];
             $coach->sex = Arr::get($data, 'sex');
-            $coach->age = Arr::get($data, 'age');
             $coach->email = Arr::get($data, 'email');
             $coach->phone = Arr::get($data, 'phone');
             $coach->address = Arr::get($data, 'address');
+            $coach->date_of_birth = Arr::get($data, 'date_of_birth');
             $coach->save();
         }
         return $coach;
@@ -129,12 +124,7 @@ class CoachService extends BaseService
             ],
             'name' => 'required|string',
             'first_last_name' => 'required|string',
-            'second_last_name' => 'required|string',
-            'sex' => 'string',
-            'age' => 'integer',
-            'email' => 'email',
-            'phone' => 'string',
-            'address' => 'string'
+            'second_last_name' => 'required|string'
         ];
 
         $validator = Validator::make($data, $validationRules);
@@ -149,10 +139,10 @@ class CoachService extends BaseService
             $coach->first_last_name = $data['first_last_name'];
             $coach->second_last_name = $data['second_last_name'];
             $coach->sex = Arr::get($data, 'sex');
-            $coach->age = Arr::get($data, 'age');
             $coach->email = Arr::get($data, 'email');
             $coach->phone = Arr::get($data, 'phone');
             $coach->address = Arr::get($data, 'address');
+            $coach->date_of_birth = Arr::get($data, 'date_of_birth');
             $coach->update();
         }
         return $coach;

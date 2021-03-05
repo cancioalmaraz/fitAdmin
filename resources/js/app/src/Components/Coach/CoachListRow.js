@@ -21,8 +21,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 // Icons
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import LocalAtmIcon from "@material-ui/icons/LocalAtm";
-import VisibilityIcon from "@material-ui/icons/Visibility";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SendIcon from "@material-ui/icons/Send";
@@ -58,7 +56,7 @@ const StyledMenuItem = withStyles(theme => ({
     }
 }))(MenuItem);
 
-const ClientListRow = ({ client, actionList = {} }) => {
+const CoachListRow = ({ coach, actionList = {} }) => {
     const [openActions, setOpenActions] = useState(null);
 
     const handleOpenActions = event => {
@@ -80,42 +78,22 @@ const ClientListRow = ({ client, actionList = {} }) => {
         setOpenDeleteDialog(false);
     };
 
-    const styles = {
-        row: {
-            backgroundColor: client.remaining_days < 7 ? "red" : "white"
-        },
-        cell: {
-            color: client.remaining_days < 7 ? "white" : "black"
-        }
-    };
-
     return (
         <Fragment>
-            <TableRow style={styles.row}>
+            <TableRow>
                 <Hidden mdDown>
-                    <TableCell style={styles.cell} align="center">
-                        {client.ci}
+                    <TableCell align="center">{coach.ci}</TableCell>
+                    <TableCell align="center">{coach.name}</TableCell>
+                    <TableCell align="center">
+                        {coach.first_last_name}
                     </TableCell>
-                    <TableCell style={styles.cell} align="center">
-                        {client.name}
+                    <TableCell align="center">
+                        {coach.second_last_name}
                     </TableCell>
-                    <TableCell style={styles.cell} align="center">
-                        {client.first_last_name}
+                    <TableCell align="center">
+                        {!!coach.phone && coach.phone}
                     </TableCell>
-                    <TableCell style={styles.cell} align="center">
-                        {client.second_last_name}
-                    </TableCell>
-                    <TableCell style={styles.cell} align="center">
-                        {client.remaining_days !== null &&
-                            client.remaining_days}
-                    </TableCell>
-                    <TableCell style={styles.cell} align="center">
-                        {!!client.phone && client.phone}
-                    </TableCell>
-                    <TableCell style={styles.cell} align="center">
-                        {!!client.coach && client.coach.name}
-                    </TableCell>
-                    <TableCell style={styles.cell} align="center">
+                    <TableCell align="center">
                         <IconButton
                             onClick={handleOpenActions}
                             aria-label="actions"
@@ -126,7 +104,7 @@ const ClientListRow = ({ client, actionList = {} }) => {
                     </TableCell>
                 </Hidden>
                 <Hidden mdUp>
-                    <TableCell style={styles.cell} align="center">
+                    <TableCell align="center">
                         <Grid container>
                             <Grid
                                 item
@@ -136,7 +114,7 @@ const ClientListRow = ({ client, actionList = {} }) => {
                                     alignSelf: "center"
                                 }}
                             >
-                                <Typography>CI: {client.ci}</Typography>
+                                <Typography>CI: {coach.ci}</Typography>
                             </Grid>
                             <Grid item xs={4} style={{ textAlign: "right" }}>
                                 <IconButton
@@ -156,7 +134,7 @@ const ClientListRow = ({ client, actionList = {} }) => {
                                 }}
                             >
                                 <Typography>
-                                    Nombre: {client.fullName}
+                                    Nombre: {coach.fullName}
                                 </Typography>
                             </Grid>
                             <Grid
@@ -169,8 +147,8 @@ const ClientListRow = ({ client, actionList = {} }) => {
                             >
                                 <Typography>
                                     Dias Restantes:{" "}
-                                    {client.remaining_days !== null &&
-                                        client.remaining_days}
+                                    {coach.remaining_days !== null &&
+                                        coach.remaining_days}
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -184,17 +162,6 @@ const ClientListRow = ({ client, actionList = {} }) => {
                 open={Boolean(openActions)}
                 onClose={handleCloseActions}
             >
-                <StyledMenuItem
-                    onClick={() => {
-                        handleCloseActions();
-                        actionList.generatePayment(client);
-                    }}
-                >
-                    <ListItemIcon>
-                        <LocalAtmIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText primary="Realizar Pago" />
-                </StyledMenuItem>
                 {/* <StyledMenuItem>
                     <ListItemIcon>
                         <VisibilityIcon fontSize="small" />
@@ -204,7 +171,7 @@ const ClientListRow = ({ client, actionList = {} }) => {
                 <StyledMenuItem
                     onClick={() => {
                         handleCloseActions();
-                        actionList.edit(client);
+                        actionList.edit(coach);
                     }}
                 >
                     <ListItemIcon>
@@ -224,10 +191,10 @@ const ClientListRow = ({ client, actionList = {} }) => {
                     <ListItemText primary="Eliminar" />
                 </StyledMenuItem>
                 <StyledMenuItem
-                    disabled={!client.phone}
+                    disabled={!coach.phone}
                     onClick={() => {
                         handleCloseActions();
-                        actionList.message(client);
+                        actionList.message(coach);
                     }}
                 >
                     <ListItemIcon>
@@ -243,11 +210,11 @@ const ClientListRow = ({ client, actionList = {} }) => {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"¿ Eliminar cliente ?"}
+                    {"¿ Eliminar Coach ?"}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        {`¿ Estas seguro de eliminar a ${client.fullName} ?`}
+                        {`¿ Estas seguro de eliminar a ${coach.fullName} ?`}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -256,7 +223,7 @@ const ClientListRow = ({ client, actionList = {} }) => {
                     </Button>
                     <Button
                         onClick={() => {
-                            actionList.delete(client);
+                            actionList.delete(coach);
                         }}
                         color="primary"
                         autoFocus
@@ -269,4 +236,4 @@ const ClientListRow = ({ client, actionList = {} }) => {
     );
 };
 
-export default ClientListRow;
+export default CoachListRow;
