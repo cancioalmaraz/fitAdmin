@@ -6,13 +6,19 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 const ClientDetailsDataTab = ({ client = {}, loading = false }) => {
     return (
         <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={8}>
                 <Typography>C.I : {client.ci}</Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={4}>
+                <Typography>
+                    {!!client.remaining_days &&
+                        `Dias Restantes: ${client.remaining_days}`}
+                </Typography>
+            </Grid>
+            <Grid item xs={12} md={8}>
                 <Typography>Nombre : {client.fullName}</Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={4}>
                 <Typography>Telefono : {client.phone}</Typography>
             </Grid>
             <Grid item xs={12} sm={8}>

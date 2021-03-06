@@ -48,7 +48,7 @@ class PaymentRepository {
      */
     public function getAll( $limit = 10,
                             $offset = 0,
-                            $order = [['col' => 'pm.created_at', 'dir' => 'asc']],
+                            $order = [['col' => 'pm.created_at', 'dir' => 'desc']],
                             $filterList = [] ){
         $query = $this->queryAll($filterList);
 

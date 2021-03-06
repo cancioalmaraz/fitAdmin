@@ -47,7 +47,7 @@ class PaymentService extends BaseService
         return $this->paymentRepository->getAll(
             Arr::get($data, 'limit', 10),
             Arr::get($data, 'offset', 0),
-            Arr::get($data, 'order', [['col' => 'pm.created_at', 'dir' => 'asc']]),
+            Arr::get($data, 'order', [['col' => 'pm.created_at', 'dir' => 'desc']]),
             Arr::get($data, 'filterList', [])
         );
     }
