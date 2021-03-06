@@ -57,7 +57,7 @@ const ClientDetailsPaymentsTab = () => {
 
     return (
         <Grid container spacing={3}>
-            {paymentList.data.length === 0 && (
+            {paymentList.data.length === 0 && !paymentList.loading && (
                 <Grid item xs={12} style={{ color: "white" }}>
                     <Typography>
                         No hay Pagos realizados por este cliente
