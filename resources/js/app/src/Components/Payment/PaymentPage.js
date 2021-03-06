@@ -199,7 +199,7 @@ const PaymentPage = React.memo(props => {
                         startIcon={<MonetizationOnIcon />}
                         onClick={handleCreatePayment}
                     >
-                        Realizar pago
+                        Realizar Pago Masivo
                     </Button>
 
                     <PaymentForm
