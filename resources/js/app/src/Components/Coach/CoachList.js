@@ -65,9 +65,7 @@ const CoachList = React.memo(
                                 <TableCell
                                     className={classes.tableCell}
                                     align="center"
-                                >
-                                    Acciones
-                                </TableCell>
+                                ></TableCell>
                             </TableRow>
                         </TableHead>
                     </Hidden>

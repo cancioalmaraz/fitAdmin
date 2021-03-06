@@ -24,6 +24,8 @@ import { Grid } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import LoopIcon from "@material-ui/icons/Loop";
 
+import { grey } from "@material-ui/core/colors";
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
@@ -98,7 +100,7 @@ const AppBarPage = React.memo(props => {
                             size="medium"
                             onClick={props.actionList.reload}
                         >
-                            <LoopIcon fontSize="small" />
+                            <LoopIcon style={{ color: grey[50] }} />
                         </IconButton>
                     </Grid>
                 </Grid>

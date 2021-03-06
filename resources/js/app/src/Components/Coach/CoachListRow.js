@@ -94,13 +94,15 @@ const CoachListRow = ({ coach, actionList = {} }) => {
                         {!!coach.phone && coach.phone}
                     </TableCell>
                     <TableCell align="center">
-                        <IconButton
-                            onClick={handleOpenActions}
-                            aria-label="actions"
+                        <Button
+                            variant="contained"
+                            color="primary"
                             size="small"
+                            onClick={handleOpenActions}
+                            startIcon={<ArrowDropDownIcon />}
                         >
-                            <ArrowDropDownIcon />
-                        </IconButton>
+                            Acciones
+                        </Button>
                     </TableCell>
                 </Hidden>
                 <Hidden mdUp>
@@ -135,20 +137,6 @@ const CoachListRow = ({ coach, actionList = {} }) => {
                             >
                                 <Typography>
                                     Nombre: {coach.fullName}
-                                </Typography>
-                            </Grid>
-                            <Grid
-                                item
-                                xs={12}
-                                style={{
-                                    textAlign: "left",
-                                    alignSelf: "center"
-                                }}
-                            >
-                                <Typography>
-                                    Dias Restantes:{" "}
-                                    {coach.remaining_days !== null &&
-                                        coach.remaining_days}
                                 </Typography>
                             </Grid>
                         </Grid>

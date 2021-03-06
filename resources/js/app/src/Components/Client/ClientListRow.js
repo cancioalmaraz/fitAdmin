@@ -116,13 +116,15 @@ const ClientListRow = ({ client, actionList = {} }) => {
                         {!!client.coach && client.coach.name}
                     </TableCell>
                     <TableCell style={styles.cell} align="center">
-                        <IconButton
-                            onClick={handleOpenActions}
-                            aria-label="actions"
+                        <Button
+                            variant="contained"
+                            color="primary"
                             size="small"
+                            onClick={handleOpenActions}
+                            startIcon={<ArrowDropDownIcon />}
                         >
-                            <ArrowDropDownIcon />
-                        </IconButton>
+                            Acciones
+                        </Button>
                     </TableCell>
                 </Hidden>
                 <Hidden mdUp>
