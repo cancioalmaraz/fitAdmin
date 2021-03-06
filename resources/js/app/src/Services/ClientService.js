@@ -21,6 +21,10 @@ class ClientService {
         });
     }
 
+    getById(id) {
+        return axios.get(`/api/clients/${id}`);
+    }
+
     create(client) {
         return axios.post("/api/clients", client);
     }

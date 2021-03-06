@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -11,8 +11,13 @@ import IconButton from "@material-ui/core/IconButton";
 
 // Icons
 import MenuIcon from "@material-ui/icons/Menu";
-import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
+import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
+
+// Services
+import ClientService from "../../Services/ClientService";
+import { useParams } from "react-router-dom";
+import ClientDetailsDataTab from "./ClientDetailsDataTab";
 
 // Components
 
@@ -43,7 +48,7 @@ const AppBarPage = React.memo(props => {
                     <MenuIcon />
                 </IconButton>
                 <Typography variant="h6" noWrap>
-                    Client Details
+                    Detalles del Cliente
                 </Typography>
             </Toolbar>
         </AppBar>
@@ -61,7 +66,7 @@ const TabPanel = props => {
             aria-labelledby={`simple-tab-${index}`}
             {...other}
         >
-            {value === index && <Box p={3}>{children}</Box>}
+            {value === index && <Box p={2}>{children}</Box>}
         </div>
     );
 };
@@ -115,11 +120,58 @@ const useStyles = makeStyles(theme => ({
 
 const ClientDetailsPage = React.memo(props => {
     const classes = useStyles();
+
+    const params = useParams();
+
+    // Services
+    const clientService = new ClientService();
+
+    // State to Client
+    const [client, setClient] = useState({
+        data: {},
+        loading: true
+    });
+
+    // Functions to change states
+    const setData = (data = {}, setList) => {
+        setList(state => ({
+            ...state,
+            data: data
+        }));
+    };
+
+    const startLoading = setList => {
+        setList(state => ({
+            ...state,
+            loading: true
+        }));
+    };
+
+    const finishLoading = setList => {
+        setList(state => ({
+            ...state,
+            loading: false
+        }));
+    };
+
+    // State to Tabs
     const [value, setValue] = useState(0);
 
     const handleChange = (_, newValue) => {
         setValue(newValue);
     };
+
+    useEffect(() => {
+        startLoading(setClient);
+        clientService
+            .getById(params.id)
+            .then(httpSuccess => {
+                setData(httpSuccess.data.results, setClient);
+            })
+            .finally(() => {
+                finishLoading(setClient);
+            });
+    }, []);
 
     return (
         <Fragment>
@@ -151,7 +203,10 @@ const ClientDetailsPage = React.memo(props => {
                         index={0}
                         style={{ backgroundColor: "lavender" }}
                     >
-                        <div>Datos</div>
+                        <ClientDetailsDataTab
+                            client={client.data}
+                            loading={client.loading}
+                        />
                     </TabPanel>
                     <TabPanel
                         value={value}
