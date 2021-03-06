@@ -18,6 +18,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { useHistory } from "react-router-dom";
 
 // Icons
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
@@ -59,6 +60,8 @@ const StyledMenuItem = withStyles(theme => ({
 }))(MenuItem);
 
 const ClientListRow = ({ client, actionList = {} }) => {
+    const history = useHistory();
+
     const [openActions, setOpenActions] = useState(null);
 
     const handleOpenActions = event => {
@@ -87,6 +90,10 @@ const ClientListRow = ({ client, actionList = {} }) => {
         cell: {
             color: client.remaining_days < 7 ? "white" : "black"
         }
+    };
+
+    const linkToDetailsClient = () => {
+        history.push(`/clients/${client.id}`);
     };
 
     return (
@@ -197,12 +204,12 @@ const ClientListRow = ({ client, actionList = {} }) => {
                     </ListItemIcon>
                     <ListItemText primary="Realizar Pago" />
                 </StyledMenuItem>
-                {/* <StyledMenuItem>
+                <StyledMenuItem onClick={linkToDetailsClient}>
                     <ListItemIcon>
                         <VisibilityIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Ver" />
-                </StyledMenuItem> */}
+                </StyledMenuItem>
                 <StyledMenuItem
                     onClick={() => {
                         handleCloseActions();

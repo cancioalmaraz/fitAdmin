@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 
 // Components
 import ClientPage from "../Components/Client/ClientPage";
+import ClientDetailsPage from "../Components/Client/ClientDetailsPage";
 import CoachPage from "../Components/Coach/CoachPage";
 import EventPage from "../Components/Event/EventPage";
 import PaymentPage from "../Components/Payment/PaymentPage";
@@ -13,6 +14,9 @@ const AppRouter = props => {
             <Switch>
                 <Route exact path="/">
                     <ClientPage {...props} />
+                </Route>
+                <Route exact path="/clients/:id">
+                    <ClientDetailsPage {...props} />
                 </Route>
                 <Route exact path="/coaches">
                     <CoachPage {...props} />
