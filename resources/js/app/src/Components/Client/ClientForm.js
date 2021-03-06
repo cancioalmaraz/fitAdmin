@@ -24,6 +24,7 @@ import esLocale from "date-fns/locale/es";
 
 //Services
 import CoachService from "../../Services/CoachService";
+import ClientService from "../../Services/ClientService";
 
 //Components
 import FilterSimpleSelect from "../shared/FilterSimpleSelect";
@@ -106,7 +107,14 @@ const ClientForm = React.memo(({ state, handleClose }) => {
 
     // Services
     const coachService = new CoachService();
+    const clientService = new ClientService();
 
+    const [helperText, setHelperText] = useState({
+        data: "",
+        loading: false
+    });
+
+    // State to client form
     const [form, setForm] = useState({});
 
     const handleChangeForm = ({ target }) => {
@@ -122,7 +130,7 @@ const ClientForm = React.memo(({ state, handleClose }) => {
         loading: true
     });
 
-    const setDataList = (data = [], setList) => {
+    const setData = (data, setList) => {
         setList(state => ({
             ...state,
             data: data
@@ -159,16 +167,45 @@ const ClientForm = React.memo(({ state, handleClose }) => {
         coachService
             .getAll(1000, 0)
             .then(httpSuccess => {
-                setDataList(httpSuccess.data.results, setCoachList);
+                setData(httpSuccess.data.results, setCoachList);
             })
             .finally(() => {
                 finishLoading(setCoachList);
             });
     };
 
+    const chargeHelperText = coach => {
+        startLoading(setHelperText);
+        clientService
+            .getAll(1000, 0, { coach: coach.id })
+            .then(httpSuccess => {
+                setData(
+                    `Tiene ${httpSuccess.data.filterCount} alumnos`,
+                    setHelperText
+                );
+            })
+            .finally(() => {
+                finishLoading(setHelperText);
+            });
+    };
+
+    const handleChangeCoach = e => {
+        if (!!e.target.value) {
+            chargeHelperText(e.target.value);
+        } else {
+            setData("", setHelperText);
+        }
+        handleChangeForm(e);
+    };
+
     useEffect(() => {
         if (state.open) {
             chargeCoachList();
+            if (!!state.client.coach) {
+                chargeHelperText(state.client.coach);
+            } else {
+                setData("", setHelperText);
+            }
 
             setForm({
                 ...state.client,
@@ -338,16 +375,16 @@ const ClientForm = React.memo(({ state, handleClose }) => {
                                     style={{ alignSelf: "center" }}
                                 >
                                     <FilterSimpleSelect
+                                        open={state.open}
                                         name="coach"
                                         list={coachList.data}
                                         label="Seleccionar Coach"
-                                        onChange={handleChangeForm}
+                                        onChange={handleChangeCoach}
                                         disabled={coachList.loading}
-                                        value={
-                                            !!form.coach ? form.coach.id : null
-                                        }
+                                        value={!!form.coach ? form.coach : null}
                                         optionField="fullName"
-                                        required={false}
+                                        helperText={helperText.data}
+                                        loading={helperText.loading}
                                     />
                                 </Grid>
 

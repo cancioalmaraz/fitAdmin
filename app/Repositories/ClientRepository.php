@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Client;
+use App\Models\Coach;
 use Illuminate\Support\Facades\DB;
 
 class ClientRepository {
@@ -62,6 +63,11 @@ class ClientRepository {
 
         if (array_key_exists('ci', $filterList) ){
             $query->where('c.ci', '=', $filterList['ci']);
+        }
+
+        if (array_key_exists('coach', $filterList) ){
+            $query->join(Coach::getFullTableName() . ' as ch', 'ch.id', '=', 'c.coach_id');
+            $query->where('ch.id', '=', $filterList['coach']);
         }
 
         return $query;

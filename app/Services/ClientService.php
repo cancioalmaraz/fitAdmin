@@ -157,12 +157,18 @@ class ClientService extends BaseService
 
             if (!is_null($coach)){
                 $client->coach()->associate($coach);
+            } else {
+                $client->coach_id = null;
             }
             if (!is_null($membership)){
                 $client->membership()->associate($membership);
+            } else {
+                $client->membership_id = null;
             }
             if (!is_null($schedule)){
                 $client->schedule()->associate($schedule);
+            } else {
+                $client->schedule_id = null;
             }
             
             $client->update();
