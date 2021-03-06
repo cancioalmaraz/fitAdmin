@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Paper, Typography } from "@material-ui/core";
 import { useParams } from "react-router-dom";
-import ShowMoreText from 'react-show-more-text';
+import ShowMoreText from "react-show-more-text";
 
 // Services
 import PaymentService from "../../Services/PaymentService";
