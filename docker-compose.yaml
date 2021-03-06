@@ -14,7 +14,7 @@ services:
     ports:
       - ${DB_DOCKER_HOST}:3306
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
       - mysql-data:/var/lib/mysql:cached
 
