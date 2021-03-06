@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Paper, Typography } from "@material-ui/core";
 import { useParams } from "react-router-dom";
+import ShowMoreText from 'react-show-more-text';
 
 // Services
 import PaymentService from "../../Services/PaymentService";
@@ -77,18 +78,19 @@ const ClientDetailsPaymentsTab = () => {
                                 {payment.start_date} a {payment.end_date}
                             </Grid>
                             <Grid item xs={12}>
-                                Fecha de Pago:
-                            </Grid>
-                            <Grid item xs={12} style={{ textAlign: "center" }}>
-                                {payment.created_at}
-                            </Grid>
-                            <Grid item xs={12}>
-                                Monto: {payment.payment_amount}
+                                Monto: Bs. {payment.payment_amount}
                             </Grid>
                             {payment.notes && (
                                 <Grid item xs={12}>
                                     Notas:
-                                    <p>{payment.notes}</p>
+                                    <ShowMoreText
+                                        lines={1}
+                                        more="Mas..."
+                                        less="Menos..."
+                                        expanded={false}
+                                    >
+                                        {payment.notes}
+                                    </ShowMoreText>
                                 </Grid>
                             )}
                         </Grid>
