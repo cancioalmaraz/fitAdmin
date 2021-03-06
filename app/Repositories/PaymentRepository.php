@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Models\Client;
 use App\Models\Payment;
+use Illuminate\Database\Eloquent\Builder;
 
 class PaymentRepository {
     
@@ -25,6 +27,12 @@ class PaymentRepository {
     public function queryAll($filterList = []){
         $query = Payment::from(Payment::getFullTableName() . ' as pm')
             ->select('pm.*');
+
+        if (array_key_exists('client', $filterList) ){
+            $query->join('client_payment as cp', 'cp.payment_id', '=', 'pm.id');
+            $query->join(Client::getFullTableName() . ' as c', 'cp.client_id', '=', 'c.id');
+            $query->where('c.id', '=', $filterList['client']);
+        }
 
         return $query;
     }

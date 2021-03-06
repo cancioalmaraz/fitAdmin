@@ -8,6 +8,7 @@ import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
+import { useParams } from "react-router-dom";
 
 // Icons
 import MenuIcon from "@material-ui/icons/Menu";
@@ -16,10 +17,10 @@ import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 
 // Services
 import ClientService from "../../Services/ClientService";
-import { useParams } from "react-router-dom";
-import ClientDetailsDataTab from "./ClientDetailsDataTab";
 
 // Components
+import ClientDetailsDataTab from "./ClientDetailsDataTab";
+import ClientDetailsPaymentsTab from "./ClientDetailsPaymentsTab";
 
 const drawerWidth = 240;
 
@@ -161,7 +162,7 @@ const ClientDetailsPage = React.memo(props => {
         setValue(newValue);
     };
 
-    useEffect(() => {
+    const chargeClient = () => {
         startLoading(setClient);
         clientService
             .getById(params.id)
@@ -171,6 +172,10 @@ const ClientDetailsPage = React.memo(props => {
             .finally(() => {
                 finishLoading(setClient);
             });
+    };
+
+    useEffect(() => {
+        chargeClient();
     }, []);
 
     return (
@@ -213,7 +218,7 @@ const ClientDetailsPage = React.memo(props => {
                         index={1}
                         style={{ backgroundColor: "lavender" }}
                     >
-                        <div>Pagos</div>
+                        <ClientDetailsPaymentsTab />
                     </TabPanel>
                 </div>
             </main>
