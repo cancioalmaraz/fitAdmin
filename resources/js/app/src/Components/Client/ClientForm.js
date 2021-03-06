@@ -165,7 +165,7 @@ const ClientForm = React.memo(({ state, handleClose }) => {
     const chargeCoachList = () => {
         startLoading(setCoachList);
         coachService
-            .getAll(1000, 0)
+            .getAll(10000, 0)
             .then(httpSuccess => {
                 setData(httpSuccess.data.results, setCoachList);
             })
@@ -177,10 +177,10 @@ const ClientForm = React.memo(({ state, handleClose }) => {
     const chargeHelperText = coach => {
         startLoading(setHelperText);
         clientService
-            .getAll(1000, 0, { coach: coach.id })
+            .getAll(10000, 0, { coach: coach.id })
             .then(httpSuccess => {
                 setData(
-                    `Tiene ${httpSuccess.data.filterCount} alumnos`,
+                    `Tiene ${httpSuccess.data.filterCount} alumno(s)`,
                     setHelperText
                 );
             })

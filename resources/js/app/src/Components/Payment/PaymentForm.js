@@ -120,7 +120,7 @@ const PaymentForm = React.memo(({ state, handleClose }) => {
             startLoadingClientList();
             setForm(initialState);
             clientService
-                .getAll(1000, 0)
+                .getAll(10000, 0)
                 .then(httpSuccess => {
                     chargeClientList(httpSuccess.data.results);
                 })

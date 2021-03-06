@@ -50,7 +50,7 @@ const useGetClientBirthdays = () => {
     const chargeClientList = (when, setList) => {
         startLoadingBirthdayList(setList);
         clientService
-            .getAll(1000, 0, { birth_date: when })
+            .getAll(10000, 0, { birth_date: when })
             .then(httpSuccess => {
                 setDataBirthdayList(httpSuccess.data.results, setList);
             })
