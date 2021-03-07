@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { CircularProgress, Grid, Paper, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { useParams } from "react-router-dom";
-import ShowMoreText from "react-show-more-text";
 
 // Services
 import PaymentService from "../../Services/PaymentService";
 
 // Components
 import Pagination from "../shared/Pagination";
+import PaymentList from "../Payment/PaymentList";
 
 const limit = 10;
 
@@ -115,67 +115,11 @@ const ClientDetailsPaymentsTab = () => {
     }, []);
 
     return (
-        <Grid container spacing={3}>
-            {paymentList.data.length === 0 && !paymentList.loading && (
-                <Grid item xs={12} style={{ color: "Black" }}>
-                    <Typography>
-                        No hay Pagos realizados por este cliente
-                    </Typography>
-                </Grid>
-            )}
-            {!paymentList.loading ? (
-                paymentList.data.map(payment => (
-                    <Grid
-                        item
-                        key={payment.id}
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        lg={3}
-                        xl={2}
-                    >
-                        <Paper elevation={3}>
-                            <Grid container spacing={2} style={{ padding: 20 }}>
-                                <Grid item xs={12}>
-                                    ID: {payment.id}
-                                </Grid>
-                                <Grid item xs={12}>
-                                    Fechas:
-                                </Grid>
-                                <Grid
-                                    item
-                                    xs={12}
-                                    style={{ textAlign: "center" }}
-                                >
-                                    {payment.start_date} a {payment.end_date}
-                                </Grid>
-                                <Grid item xs={12}>
-                                    Monto: Bs. {payment.payment_amount}
-                                </Grid>
-                                {payment.notes && (
-                                    <Grid item xs={12}>
-                                        Notas:
-                                        <ShowMoreText
-                                            lines={1}
-                                            more="Mas..."
-                                            less="Menos..."
-                                            expanded={false}
-                                        >
-                                            {payment.notes}
-                                        </ShowMoreText>
-                                    </Grid>
-                                )}
-                            </Grid>
-                        </Paper>
-                    </Grid>
-                ))
-            ) : (
-                <Grid item xs={12} style={{ textAlign: "center", margin: 20 }}>
-                    <CircularProgress />
-                </Grid>
-            )}
-            {!pagination.loading && paymentList.data.length !== 0 && (
-                <Grid item xs={12}>
+        <Grid container item spacing={3}>
+            <PaymentList paymentList={paymentList} />
+
+            <Grid item xs={12}>
+                {!pagination.loading && paymentList.data.length !== 0 && (
                     <Pagination
                         page={pagination.page}
                         totalPages={pagination.totalPages}
@@ -186,8 +130,8 @@ const ClientDetailsPaymentsTab = () => {
                         loading={pagination.loading}
                         subject="pago(s)"
                     />
-                </Grid>
-            )}
+                )}
+            </Grid>
         </Grid>
     );
 };

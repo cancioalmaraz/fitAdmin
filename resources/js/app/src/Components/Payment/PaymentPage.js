@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useState } from "react";
+import React, { Fragment, useCallback, useState, useEffect } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -6,7 +6,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Helpers from "../../Helpers/Helpers";
-import { Button } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 
 // Icons
 import MenuIcon from "@material-ui/icons/Menu";
@@ -15,6 +15,8 @@ import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 // Components
 import PaymentForm from "./PaymentForm";
 import SnackActions from "../shared/SnackActions";
+import Pagination from "../shared/Pagination";
+import PaymentList from "./PaymentList";
 
 // Services
 import PaymentService from "../../Services/PaymentService";
@@ -96,6 +98,8 @@ const AppBarPage = React.memo(props => {
     );
 });
 
+const limit = 10;
+
 const PaymentPage = React.memo(props => {
     const classes = useStyles();
 
@@ -103,6 +107,36 @@ const PaymentPage = React.memo(props => {
 
     // Services
     const paymentService = new PaymentService();
+
+    // State to PaymentList
+    const [paymentList, setPaymentList] = useState({
+        data: [],
+        loading: true
+    });
+
+    // State to Pagination
+    const [pagination, setPagination] = useState({
+        page: 1,
+        totalPages: 0,
+        offset: 0,
+        totalItems: 0,
+        totalItemsInPage: 0,
+        loading: true
+    });
+
+    const settingPagination = useCallback(
+        (data, page = pagination.page, offset = pagination.offset) => {
+            setPagination(state => ({
+                ...state,
+                page: page,
+                offset: offset,
+                totalPages: Math.ceil(data.filterCount / limit),
+                totalItems: data.filterCount,
+                totalItemsInPage: data.results.length
+            }));
+        },
+        [pagination.page, pagination.offset]
+    );
 
     // State to form
     const [stateForm, setStateForm] = useState({
@@ -166,6 +200,28 @@ const PaymentPage = React.memo(props => {
         }));
     };
 
+    // Functions to change states
+    const setData = (data = {}, setList) => {
+        setList(state => ({
+            ...state,
+            data: data
+        }));
+    };
+
+    const startLoading = setList => {
+        setList(state => ({
+            ...state,
+            loading: true
+        }));
+    };
+
+    const finishLoading = setList => {
+        setList(state => ({
+            ...state,
+            loading: false
+        }));
+    };
+
     // Functions to Payments
     const createPayment = (e, payment) => {
         e.preventDefault();
@@ -186,6 +242,51 @@ const PaymentPage = React.memo(props => {
             });
     };
 
+    const chargePaymentList = ({
+        page = pagination.page,
+        offset = pagination.offset
+    }) => {
+        startLoading(setPaymentList);
+        startLoading(setPagination);
+
+        paymentService
+            .getAll(limit, 0)
+            .then(httpSuccess => {
+                setData(httpSuccess.data.results, setPaymentList);
+                settingPagination(httpSuccess.data, page, offset);
+            })
+            .finally(() => {
+                finishLoading(setPaymentList);
+                finishLoading(setPagination);
+            });
+    };
+
+    const changePage = newPage => {
+        const newOffset = (newPage - 1) * limit;
+
+        startLoading(setPaymentList);
+        startLoading(setPagination);
+
+        paymentService
+            .getAll(limit, newOffset)
+            .then(httpSuccess => {
+                setData(httpSuccess.data.results, setPaymentList);
+                settingPagination(httpSuccess.data, newPage, newOffset);
+            })
+            .finally(() => {
+                finishLoading(setPaymentList);
+                finishLoading(setPagination);
+            });
+    };
+
+    const handleChangePage = (_, newPage) => {
+        changePage(newPage);
+    };
+
+    useEffect(() => {
+        chargePaymentList(1, 0);
+    }, []);
+
     return (
         <Fragment>
             <AppBarPage {...props} />
@@ -193,14 +294,38 @@ const PaymentPage = React.memo(props => {
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <div className={classes.root}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<MonetizationOnIcon />}
-                        onClick={handleCreatePayment}
-                    >
-                        Realizar Pago Masivo
-                    </Button>
+                    <Grid container item spacing={3}>
+                        <Grid item xs={12}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                startIcon={<MonetizationOnIcon />}
+                                onClick={handleCreatePayment}
+                            >
+                                Realizar Pago Masivo
+                            </Button>
+                        </Grid>
+
+                        <PaymentList paymentList={paymentList} showClientList />
+
+                        <Grid item xs={12}>
+                            {!pagination.loading &&
+                                paymentList.data.length !== 0 && (
+                                    <Pagination
+                                        page={pagination.page}
+                                        totalPages={pagination.totalPages}
+                                        totalItems={pagination.totalItems}
+                                        onChange={handleChangePage}
+                                        offset={pagination.offset}
+                                        totalItemsInPage={
+                                            pagination.totalItemsInPage
+                                        }
+                                        loading={pagination.loading}
+                                        subject="pago(s)"
+                                    />
+                                )}
+                        </Grid>
+                    </Grid>
 
                     <PaymentForm
                         state={stateForm}
