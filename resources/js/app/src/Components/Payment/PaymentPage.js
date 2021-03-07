@@ -233,6 +233,7 @@ const PaymentPage = React.memo(props => {
             .then(httpSuccess => {
                 handleCloseForm();
                 handleOpenSnack("success", "Pago realizado exitosamente");
+                chargePaymentList(1, 0);
             })
             .catch(httpError => {
                 const errorMessageList = helpers.getMessagesError(
@@ -250,7 +251,7 @@ const PaymentPage = React.memo(props => {
         startLoading(setPagination);
 
         paymentService
-            .getAll(limit, 0)
+            .getAll(limit, offset)
             .then(httpSuccess => {
                 setData(httpSuccess.data.results, setPaymentList);
                 settingPagination(httpSuccess.data, page, offset);
