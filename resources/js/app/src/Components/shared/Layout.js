@@ -83,6 +83,10 @@ const DrawerUi = ({ drawer }) => {
         history.push("/coaches");
     };
 
+    const linkToSchedules = () => {
+        history.push("/schedules");
+    };
+
     return (
         <Drawer
             variant="permanent"
@@ -132,12 +136,12 @@ const DrawerUi = ({ drawer }) => {
                     </ListItemIcon>
                     <ListItemText primary={"Afiliaciones"} />
                 </ListItem> */}
-                {/* <ListItem button>
+                <ListItem button onClick={linkToSchedules}>
                     <ListItemIcon>
                         <ScheduleIcon />
                     </ListItemIcon>
                     <ListItemText primary={"Horarios"} />
-                </ListItem> */}
+                </ListItem>
                 <ListItem button onClick={linkToEvents}>
                     <ListItemIcon>
                         <EventIcon />

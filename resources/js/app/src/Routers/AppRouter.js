@@ -7,6 +7,7 @@ import ClientDetailsPage from "../Components/Client/ClientDetailsPage";
 import CoachPage from "../Components/Coach/CoachPage";
 import EventPage from "../Components/Event/EventPage";
 import PaymentPage from "../Components/Payment/PaymentPage";
+import SchedulePage from "../Components/Schedule/SchedulePage";
 
 const AppRouter = props => {
     return (
@@ -26,6 +27,9 @@ const AppRouter = props => {
                 </Route>
                 <Route exact path="/events">
                     <EventPage {...props} />
+                </Route>
+                <Route exact path="/schedules">
+                    <SchedulePage {...props} />
                 </Route>
                 <Redirect to="/" />
             </Switch>
