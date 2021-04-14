@@ -20,7 +20,8 @@ const ClientFilterSection = React.memo(
         const initFilters = useMemo(
             () => ({
                 ci: "",
-                first_last_name: ""
+                first_last_name: "",
+                second_last_name: ""
             }),
             []
         );
@@ -76,6 +77,16 @@ const ClientFilterSection = React.memo(
                                     name="first_last_name"
                                     autoComplete="off"
                                     value={form.first_last_name}
+                                    onChange={handleChangeForm}
+                                />
+                            </Grid>
+                            <Grid item xs={6} md={2}>
+                                <TextField
+                                    fullWidth
+                                    label="Apellido M."
+                                    name="second_last_name"
+                                    autoComplete="off"
+                                    value={form.second_last_name}
                                     onChange={handleChangeForm}
                                 />
                             </Grid>
