@@ -10,7 +10,7 @@ services:
       - ${APPLICATION_DIR}:/application:cached
 
   mysql:
-    image: mysql:5.7
+    image: ${IMAGE_MYSQL}
     ports:
       - ${DB_DOCKER_HOST}:3306
     environment:
