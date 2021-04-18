@@ -6,9 +6,13 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import {
     AppBar,
+    FormControl,
     Grid,
     IconButton,
+    InputLabel,
     makeStyles,
+    MenuItem,
+    Select,
     TextField,
     Toolbar,
     Typography
@@ -215,16 +219,21 @@ const ClientForm = React.memo(({ state, handleClose }) => {
     };
 
     const handleChangeCoach = e => {
+        changingHelperText(e.target.value, form.schedule);
         handleChangeForm(e);
     };
 
     const handleChangeSchedule = e => {
-        if (!!e.target.value && !!form.coach) {
-            chargeHelperText(form.coach ,e.target.value);
+        changingHelperText(form.coach, e.target.value);
+        handleChangeForm(e);
+    };
+
+    const changingHelperText = (coach, schedule) => {
+        if (!!schedule && !!coach) {
+            chargeHelperText(coach, schedule);
         } else {
             setData("", setHelperText);
         }
-        handleChangeForm(e);
     };
 
     useEffect(() => {
@@ -232,7 +241,7 @@ const ClientForm = React.memo(({ state, handleClose }) => {
             chargeCoachList();
             chargeScheduleList();
             if (!!state.client.coach && !!state.client.schedule) {
-                chargeHelperText(state.client.coach,state.client.schedule);
+                chargeHelperText(state.client.coach, state.client.schedule);
             } else {
                 setData("", setHelperText);
             }
@@ -253,7 +262,8 @@ const ClientForm = React.memo(({ state, handleClose }) => {
                     ? new Date(`${state.client.date_of_birth}T04:00`)
                     : null,
                 coach: !!state.client.coach ? state.client.coach : null,
-                schedule: !!state.client.schedule ? state.client.schedule : null
+                schedule: !!state.client.schedule ? state.client.schedule : null,
+                sex: !!state.client.sex ? state.client.sex : ""
             });
         }
     }, [state.open]);
@@ -301,7 +311,7 @@ const ClientForm = React.memo(({ state, handleClose }) => {
                                     />
                                 </Grid>
 
-                                <Grid item xs={12}>
+                                <Grid item xs={12} md={6}>
                                     <TextField
                                         required
                                         fullWidth
@@ -397,6 +407,28 @@ const ClientForm = React.memo(({ state, handleClose }) => {
                                         cancelLabel="Cancelar"
                                         okLabel="Aceptar"
                                     />
+                                </Grid>
+
+                                <Grid item xs={12} md={6} style={{ alignSelf: 'center' }}>
+                                    <FormControl
+                                        fullWidth
+                                        variant="outlined"
+                                    >
+                                        <InputLabel id="select-gender">Sexo</InputLabel>
+                                        <Select
+                                            name="sex"
+                                            value={form.sex}
+                                            labelId="select-gender"
+                                            label="Sexo"
+                                            onClick={handleChangeForm}
+                                        >
+                                            <MenuItem value="">
+                                                <em>Ninguno</em>
+                                            </MenuItem>
+                                            <MenuItem value={"M"}>Masculino</MenuItem>
+                                            <MenuItem value={"F"}>Femenino</MenuItem>
+                                        </Select>
+                                    </FormControl>
                                 </Grid>
 
                                 <Grid
