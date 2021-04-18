@@ -385,7 +385,7 @@ const ClientForm = React.memo(({ state, handleClose }) => {
                                     item
                                     xs={12}
                                     md={6}
-                                    style={{ alignSelf: "center" }}
+                                    style={{ alignSelf: "center", textAlign: 'center' }}
                                 >
                                     <KeyboardDatePicker
                                         margin="normal"
