@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -8,11 +8,27 @@ import { Grid } from '@material-ui/core';
 import { KeyboardTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from "@date-io/date-fns";
 import esLocale from "date-fns/locale/es";
+import moment from "moment";
+
+const now = moment().hours(7).minutes(0).seconds(0);
 
 const ScheduleForm = ({
+    create = () => { },
     onClose = () => { },
     open = false
 }) => {
+
+    const [schedule, setSchedule] = useState({
+        entry_time: now.toDate(),
+        departure_time: now.add(1, 'hours').toDate()
+    });
+
+    const handleChangeTime = ( target ) => {
+        setSchedule(state=>({
+            ...state,
+            [target.name]: target.value
+        }));
+    };
 
     return (
         <Dialog
@@ -37,7 +53,13 @@ const ScheduleForm = ({
                                 margin="normal"
                                 id="entry-time"
                                 label="Hora de Entrada"
-                                onChange={() => { }}
+                                onChange={(e)=>{
+                                    handleChangeTime({
+                                        name: "entry_time",
+                                        value: e
+                                    });
+                                }}
+                                value={schedule.entry_time}
                                 KeyboardButtonProps={{
                                     'aria-label': 'change time',
                                 }}
@@ -49,9 +71,15 @@ const ScheduleForm = ({
                         >
                             <KeyboardTimePicker
                                 margin="normal"
-                                id="partiture-time"
+                                id="departure-time"
                                 label="Hora de Salida"
-                                onChange={() => { }}
+                                onChange={(e)=>{
+                                    handleChangeTime({
+                                        name: "departure_time",
+                                        value: e
+                                    });
+                                }}
+                                value={schedule.departure_time}
                                 KeyboardButtonProps={{
                                     'aria-label': 'change time',
                                 }}
@@ -64,7 +92,12 @@ const ScheduleForm = ({
                 <Button onClick={onClose} color="primary">
                     Cancelar
                 </Button>
-                <Button onClick={onClose} color="primary" autoFocus>
+                <Button
+                    onClick={()=>{
+                        create(schedule);
+                    }}
+                    color="primary" autoFocus
+                >
                     Crear
                 </Button>
             </DialogActions>

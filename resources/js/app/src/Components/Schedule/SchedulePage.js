@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import { Fragment } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
@@ -17,7 +17,11 @@ import ScheduleForm from "./ScheduleForm";
 import MenuIcon from "@material-ui/icons/Menu";
 import AddIcon from '@material-ui/icons/Add';
 
-
+// Services
+import ScheduleService from "../../Services/ScheduleService";
+import moment from "moment";
+import StateHelper from "../../Helpers/StateHelper";
+import ScheduleList from "./ScheduleList";
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
@@ -98,6 +102,16 @@ const SchedulePage = React.memo(props => {
     const classes = useStyles();
 
     const helpers = new Helpers();
+    const stateHelper = new StateHelper()
+
+    const scheduleService = new ScheduleService();
+
+    // State for scheduleList
+    const [scheduleList, setScheduleList] = useState({
+        data: [],
+        loading: true,
+        filterList: {}
+    });
 
     // State to schedule form
     const [openScheduleForm, setOpenScheduleForm] = useState(false);
@@ -150,6 +164,36 @@ const SchedulePage = React.memo(props => {
         }));
     };
 
+    // Functions to schedule
+    const chargeScheduleList = () => {
+        stateHelper.startLoading(setScheduleList);
+        scheduleService
+            .getAll(100, 0, scheduleList.filterList)
+            .then(httpSuccess=>{
+                stateHelper.setData(httpSuccess.data.results, setScheduleList);
+            })
+            .finally(()=>{
+                stateHelper.finishLoading(setScheduleList);
+            })
+    }
+
+    const createSchedule = (schedule) => {
+        scheduleService
+            .create(schedule)
+            .then(httpSuccess => {
+                handleOpenSnack('success', 'Horario creado exitosamente');
+                handleCloseScheduleForm();
+                chargeScheduleList();
+            })
+            .catch(httpError => {
+                const errorMessageList = helpers.getMessagesError(httpError.response.data.errors);
+                handleOpenSnack("error", errorMessageList.join(", "));
+            });
+    };
+
+    useEffect(()=>{
+        chargeScheduleList();
+    }, []);
 
     return (
         <Fragment>
@@ -169,9 +213,15 @@ const SchedulePage = React.memo(props => {
                     Añadir Horario
                 </Button>
 
+                <ScheduleList
+                    scheduleList={scheduleList.data}
+                    loading={scheduleList.loading}
+                />
+
                 <ScheduleForm
                     onClose={handleCloseScheduleForm}
                     open={openScheduleForm}
+                    create={createSchedule}
                 />
 
                 <SnackActions

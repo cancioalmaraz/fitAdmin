@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Schedule;
 use App\Repositories\ScheduleRepository;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 /**
  * Class ScheduleService
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
  */
 class ScheduleService extends BaseService
 {
-    
+
     /**
      * __construct
      *
@@ -23,7 +24,7 @@ class ScheduleService extends BaseService
     ){
         parent::__construct();
     }
-    
+
     /**
      * getById
      *
@@ -33,7 +34,7 @@ class ScheduleService extends BaseService
     public function getById($id){
         return $this->scheduleRepository->getById($id);
     }
-    
+
     /**
      * getAll
      *
@@ -48,7 +49,7 @@ class ScheduleService extends BaseService
             Arr::get($data, 'filterList', [])
         );
     }
-    
+
     /**
      * countAllFiltered
      *
@@ -60,7 +61,7 @@ class ScheduleService extends BaseService
             Arr::get($data, 'filterList', [])
         );
     }
-    
+
     /**
      * countAll
      *
@@ -69,7 +70,7 @@ class ScheduleService extends BaseService
     public function countAll(){
         return $this->scheduleRepository->countAll();
     }
-    
+
     /**
      * create
      *
@@ -78,8 +79,8 @@ class ScheduleService extends BaseService
      */
     public function create($data = []) {
         $validationRules = [
-            'entry_time' => 'required|string',
-            'departure_time' => 'required|string'
+            'entry_time' => 'required',
+            'departure_time' => 'required'
         ];
 
         $validator = Validator::make($data, $validationRules);
@@ -91,13 +92,13 @@ class ScheduleService extends BaseService
         $schedule = null;
         if (!$this->hasErrors()) {
             $schedule = new Schedule();
-            $schedule->entry_time = $data['entry_time'];
-            $schedule->departure_time = $data['departure_time'];
+            $schedule->entry_time = Carbon::parse($data['entry_time'])->format('H:i:s');
+            $schedule->departure_time = Carbon::parse($data['departure_time'])->format('H:i:s');
             $schedule->save();
         }
         return $schedule;
     }
-    
+
     /**
      * update
      *
