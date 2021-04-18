@@ -6,7 +6,11 @@ import {
     AccordionSummary,
     Button,
     Divider,
+    FormControl,
     Grid,
+    InputLabel,
+    MenuItem,
+    Select,
     TextField,
     Typography
 } from "@material-ui/core";
@@ -31,7 +35,8 @@ const ClientFilterSection = React.memo(
                 ci: "",
                 first_last_name: "",
                 second_last_name: "",
-                schedule: null
+                schedule: null,
+                sex: ""
             }),
             []
         );
@@ -153,6 +158,26 @@ const ClientFilterSection = React.memo(
                                         value={form.second_last_name}
                                         onChange={handleChangeForm}
                                     />
+                                </Grid>
+                                <Grid item xs={6} md={2}>
+                                    <FormControl
+                                        fullWidth
+                                    >
+                                        <InputLabel id="select-gender">Sexo</InputLabel>
+                                        <Select
+                                            name="sex"
+                                            value={form.sex}
+                                            labelId="select-gender"
+                                            label="Sexo"
+                                            onClick={handleChangeForm}
+                                        >
+                                            <MenuItem value="">
+                                                <em>Ninguno</em>
+                                            </MenuItem>
+                                            <MenuItem value={"M"}>Masculino</MenuItem>
+                                            <MenuItem value={"F"}>Femenino</MenuItem>
+                                        </Select>
+                                    </FormControl>
                                 </Grid>
                             </Grid>
 
