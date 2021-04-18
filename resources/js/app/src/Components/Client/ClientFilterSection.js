@@ -19,6 +19,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import FilterSimpleSelect from "../shared/FilterSimpleSelect";
 
 // Services
+import CoachService from "../../Services/CoachService";
 import ScheduleService from "../../Services/ScheduleService";
 
 import StateHelper from "../../Helpers/StateHelper";
@@ -38,6 +39,7 @@ const ClientFilterSection = React.memo(
         const stateHelper = new StateHelper();
 
         const scheduleService = new ScheduleService();
+        const coachService = new CoachService();
 
         const [form, setForm] = useState(initFilters);
 
@@ -71,8 +73,27 @@ const ClientFilterSection = React.memo(
                 });
         };
 
+        // State to coaches
+        const [coachList, setCoachList] = useState({
+            data: [],
+            loading: true
+        });
+
+        const chargeCoachList = () => {
+            stateHelper.startLoading(setCoachList);
+            coachService
+                .getAll(10000, 0)
+                .then(httpSuccess => {
+                    stateHelper.setData(httpSuccess.data.results, setCoachList);
+                })
+                .finally(() => {
+                    stateHelper.finishLoading(setCoachList);
+                });
+        };
+
         useEffect(()=>{
             chargeScheduleList();
+            chargeCoachList();
         }, []);
 
         return (
@@ -93,64 +114,89 @@ const ClientFilterSection = React.memo(
                         onSubmit={e => {
                             filter.search(e, {
                                 ...form,
-                                schedule: !!form.schedule ? form.schedule.id : null
+                                schedule: !!form.schedule ? form.schedule.id : null,
+                                coach: !!form.coach ? form.coach.id : null
                             });
                         }}
                         style={{ width: "100%" }}
                     >
                         <Grid container spacing={3}>
-                            <Grid item xs={6} md={2}>
-                                <TextField
-                                    fullWidth
-                                    label="C.I."
-                                    type="number"
-                                    name="ci"
-                                    autoComplete="off"
-                                    value={form.ci}
-                                    onChange={handleChangeForm}
-                                />
-                            </Grid>
-                            <Grid item xs={6} md={2}>
-                                <TextField
-                                    fullWidth
-                                    label="Apellido P."
-                                    name="first_last_name"
-                                    autoComplete="off"
-                                    value={form.first_last_name}
-                                    onChange={handleChangeForm}
-                                />
-                            </Grid>
-                            <Grid item xs={6} md={2}>
-                                <TextField
-                                    fullWidth
-                                    label="Apellido M."
-                                    name="second_last_name"
-                                    autoComplete="off"
-                                    value={form.second_last_name}
-                                    onChange={handleChangeForm}
-                                />
+
+                            <Grid item container spacing={3}>
+                                <Grid item xs={6} md={2}>
+                                    <TextField
+                                        fullWidth
+                                        label="C.I."
+                                        type="number"
+                                        name="ci"
+                                        autoComplete="off"
+                                        value={form.ci}
+                                        onChange={handleChangeForm}
+                                    />
+                                </Grid>
+                                <Grid item xs={6} md={2}>
+                                    <TextField
+                                        fullWidth
+                                        label="Apellido P."
+                                        name="first_last_name"
+                                        autoComplete="off"
+                                        value={form.first_last_name}
+                                        onChange={handleChangeForm}
+                                    />
+                                </Grid>
+                                <Grid item xs={6} md={2}>
+                                    <TextField
+                                        fullWidth
+                                        label="Apellido M."
+                                        name="second_last_name"
+                                        autoComplete="off"
+                                        value={form.second_last_name}
+                                        onChange={handleChangeForm}
+                                    />
+                                </Grid>
                             </Grid>
 
-                            <Grid
-                                item
-                                xs={12}
-                                sm={6}
-                                md={4}
-                                lg={2}
-                            >
-                                <FilterSimpleSelect
-                                    name="schedule"
-                                    list={scheduleList.data}
-                                    label="Seleccionar Horario"
-                                    onChange={handleChangeForm}
-                                    disabled={scheduleList.loading}
-                                    value={form.schedule}
-                                    optionField="fullTime"
-                                    helperText=""
-                                    loading={scheduleList.loading}
-                                    variant="standard"
-                                />
+                            <Grid item container spacing={3}>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    sm={6}
+                                    md={4}
+                                >
+                                    <FilterSimpleSelect
+                                        name="schedule"
+                                        list={scheduleList.data}
+                                        label="Seleccionar Horario"
+                                        onChange={handleChangeForm}
+                                        disabled={scheduleList.loading}
+                                        value={form.schedule}
+                                        optionField="fullTime"
+                                        helperText=""
+                                        loading={scheduleList.loading}
+                                        variant="standard"
+                                    />
+                                </Grid>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    sm={6}
+                                    md={4}
+                                >
+                                    <FilterSimpleSelect
+                                        name="coach"
+                                        list={coachList.data}
+                                        label="Seleccionar Coach"
+                                        onChange={handleChangeForm}
+                                        disabled={coachList.loading}
+                                        value={form.coach}
+                                        optionField="fullName"
+                                        helperText=""
+                                        loading={coachList.loading}
+                                        variant="standard"
+                                    />
+                                </Grid>
                             </Grid>
+
                         </Grid>
                     </form>
                 </AccordionDetails>

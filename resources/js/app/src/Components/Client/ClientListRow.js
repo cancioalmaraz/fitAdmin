@@ -99,7 +99,7 @@ const ClientListRow = ({ client, actionList = {} }) => {
     return (
         <Fragment>
             <TableRow style={styles.row}>
-                <Hidden mdDown>
+                <Hidden smDown>
                     <TableCell style={styles.cell} align="center">
                         {client.ci}
                     </TableCell>
