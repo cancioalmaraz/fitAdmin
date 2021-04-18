@@ -1,3 +1,5 @@
+import moment from "moment";
+
 class Helpers {
     parseDate(date) {
         let dateParsed = "";
@@ -20,6 +22,10 @@ class Helpers {
         }
         return errorMessageList;
     }
+
+    transformTimeFromServer(time) {
+        return moment(time, 'HH:mm:ss').add(moment().utcOffset() / 60, 'hours').format('HH:mm')
+    };
 }
 
 export default Helpers;

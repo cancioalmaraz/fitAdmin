@@ -114,14 +114,35 @@ const SchedulePage = React.memo(props => {
     });
 
     // State to schedule form
-    const [openScheduleForm, setOpenScheduleForm] = useState(false);
+    const [scheduleForm, setScheduleForm] = useState({
+        open: false,
+        action: () => {},
+        value: null
+    });
 
     const handleOpenScheduleForm = () => {
-        setOpenScheduleForm(true);
+        setScheduleForm(state => ({
+            ...state,
+            open: true,
+            action: createSchedule,
+            value: null
+        }));
+    };
+
+    const handleEditScheduleForm = (schedule) => {
+        setScheduleForm(state => ({
+            ...state,
+            open: true,
+            action: editSchedule,
+            value: schedule
+        }));
     };
 
     const handleCloseScheduleForm = () => {
-        setOpenScheduleForm(false);
+        setScheduleForm(state => ({
+            ...state,
+            open: false
+        }));
     };
 
     // State for SnackActions
@@ -168,7 +189,7 @@ const SchedulePage = React.memo(props => {
     const chargeScheduleList = () => {
         stateHelper.startLoading(setScheduleList);
         scheduleService
-            .getAll(100, 0, scheduleList.filterList)
+            .getAll(1000, 0, scheduleList.filterList)
             .then(httpSuccess=>{
                 stateHelper.setData(httpSuccess.data.results, setScheduleList);
             })
@@ -190,6 +211,30 @@ const SchedulePage = React.memo(props => {
                 handleOpenSnack("error", errorMessageList.join(", "));
             });
     };
+
+    const editSchedule = (schedule) => {
+        scheduleService
+            .edit(schedule)
+            .then(httpSuccess => {
+                handleOpenSnack('success', 'Horario editado exitosamente');
+                handleCloseScheduleForm();
+                chargeScheduleList();
+            })
+            .catch(httpError => {
+                const errorMessageList = helpers.getMessagesError(httpError.response.data.errors);
+                handleOpenSnack("error", errorMessageList.join(", "));
+            });
+    };
+
+    const deleteSchedule = (schedule) => {
+        scheduleService
+            .delete(schedule)
+            .then(()=>{
+                handleOpenSnack('success', 'Horario eliminado exitosamente');
+                handleCloseScheduleForm();
+                chargeScheduleList();
+            })
+    }
 
     useEffect(()=>{
         chargeScheduleList();
@@ -216,12 +261,17 @@ const SchedulePage = React.memo(props => {
                 <ScheduleList
                     scheduleList={scheduleList.data}
                     loading={scheduleList.loading}
+                    actionList={{
+                        edit: handleEditScheduleForm
+                    }}
                 />
 
                 <ScheduleForm
                     onClose={handleCloseScheduleForm}
-                    open={openScheduleForm}
-                    create={createSchedule}
+                    open={scheduleForm.open}
+                    action={scheduleForm.action}
+                    value={scheduleForm.value}
+                    onDelete={deleteSchedule}
                 />
 
                 <SnackActions

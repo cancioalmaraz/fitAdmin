@@ -119,8 +119,8 @@ class ScheduleService extends BaseService
         }
 
         if (!$this->hasErrors()) {
-            $schedule->entry_time = $data['entry_time'];
-            $schedule->departure_time = $data['departure_time'];
+            $schedule->entry_time = Carbon::parse($data['entry_time'])->format('H:i:s');
+            $schedule->departure_time = Carbon::parse($data['departure_time'])->format('H:i:s');
             $schedule->update();
         }
         return $schedule;

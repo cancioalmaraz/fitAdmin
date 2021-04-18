@@ -24,6 +24,14 @@ class ScheduleService {
     create(schedule) {
         return axios.post("/api/schedules", schedule);
     }
+
+    edit(schedule) {
+        return axios.put(`/api/schedules/${schedule.id}`, schedule);
+    }
+
+    delete(schedule) {
+        return axios.delete(`/api/schedules/${schedule.id}`);
+    }
 }
 
 export default ScheduleService;

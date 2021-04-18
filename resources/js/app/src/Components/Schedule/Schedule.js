@@ -1,25 +1,23 @@
 import React from 'react';
 import {Grid, Paper, Typography} from "@material-ui/core";
-import moment from "moment";
+
+import Helpers from "../../Helpers/Helpers";
 
 const Schedule = ({
-    schedule
+    schedule,
+    actionList = {}
                   }) => {
 
-    const transformTime = (time) => {
-        return moment(time, 'HH:mm:ss').add(moment().utcOffset() / 60, 'hours').format('HH:mm')
-    };
-
-    const handleClickSchedule = () => {
-        console.log("Click");
-    };
+    const helpers = new Helpers();
 
     return (
         <Grid
             item
             xs={2}
             style={{ cursor: 'pointer' }}
-            onClick={handleClickSchedule}
+            onClick={()=>{
+                actionList.edit(schedule)
+            }}
         >
             <Paper
                 elevation={3}
@@ -29,7 +27,7 @@ const Schedule = ({
                 <Typography
                     variant="subtitle1"
                 >
-                    { transformTime(schedule.entry_time) } - { transformTime(schedule.departure_time) }
+                    { helpers.transformTimeFromServer(schedule.entry_time) } - { helpers.transformTimeFromServer(schedule.departure_time) }
                 </Typography>
             </Paper>
         </Grid>

@@ -4,7 +4,8 @@ import {Grid} from "@material-ui/core";
 
 const ScheduleList = ({
     scheduleList = [],
-    loading = true
+    loading = true,
+    actionList = {}
                       }) => {
     return (
         <Grid
@@ -15,7 +16,7 @@ const ScheduleList = ({
             {
                 !loading &&
                 scheduleList.map(schedule => (
-                    <Schedule key={schedule.id} schedule={schedule} />
+                    <Schedule key={schedule.id} schedule={schedule} actionList={actionList}/>
                 ))
             }
         </Grid>
