@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Client;
 use App\Models\Coach;
 use App\Models\Schedule;
+use App\Models\Membership;
 use Illuminate\Support\Facades\DB;
 
 class ClientRepository {
@@ -82,6 +83,11 @@ class ClientRepository {
         if (array_key_exists('schedule', $filterList) ){
             $query->join(Schedule::getFullTableName() . ' as sch', 'sch.id', '=', 'c.schedule_id');
             $query->where('sch.id', '=', $filterList['schedule']);
+        }
+
+        if (array_key_exists('membership', $filterList) ){
+            $query->join(Membership::getFullTableName() . ' as mms', 'mms.id', '=', 'c.membership_id');
+            $query->where('mms.id', '=', $filterList['membership']);
         }
 
         return $query;

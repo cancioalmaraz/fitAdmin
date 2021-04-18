@@ -25,6 +25,7 @@ import FilterSimpleSelect from "../shared/FilterSimpleSelect";
 // Services
 import CoachService from "../../Services/CoachService";
 import ScheduleService from "../../Services/ScheduleService";
+import MembershipService from "../../Services/MembershipService";
 
 import StateHelper from "../../Helpers/StateHelper";
 
@@ -36,6 +37,8 @@ const ClientFilterSection = React.memo(
                 first_last_name: "",
                 second_last_name: "",
                 schedule: null,
+                coach: null,
+                membership: null,
                 sex: ""
             }),
             []
@@ -45,6 +48,7 @@ const ClientFilterSection = React.memo(
 
         const scheduleService = new ScheduleService();
         const coachService = new CoachService();
+        const membershipService = new MembershipService();
 
         const [form, setForm] = useState(initFilters);
 
@@ -96,9 +100,28 @@ const ClientFilterSection = React.memo(
                 });
         };
 
+        // State to memberships
+        const [membershipList, setMembershipList] = useState({
+            data: [],
+            loading: true
+        });
+
+        const chargeMembershipList = () => {
+            stateHelper.startLoading(setMembershipList);
+            membershipService
+                .getAll(10000, 0)
+                .then(httpSuccess => {
+                    stateHelper.setData(httpSuccess.data.results, setMembershipList);
+                })
+                .finally(() => {
+                    stateHelper.finishLoading(setMembershipList);
+                });
+        };
+
         useEffect(()=>{
             chargeScheduleList();
             chargeCoachList();
+            chargeMembershipList();
         }, []);
 
         return (
@@ -120,7 +143,8 @@ const ClientFilterSection = React.memo(
                             filter.search(e, {
                                 ...form,
                                 schedule: !!form.schedule ? form.schedule.id : null,
-                                coach: !!form.coach ? form.coach.id : null
+                                coach: !!form.coach ? form.coach.id : null,
+                                membership: !!form.membership ? form.membership.id : null
                             });
                         }}
                         style={{ width: "100%" }}
@@ -217,6 +241,25 @@ const ClientFilterSection = React.memo(
                                         optionField="fullName"
                                         helperText=""
                                         loading={coachList.loading}
+                                        variant="standard"
+                                    />
+                                </Grid>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    sm={6}
+                                    md={4}
+                                >
+                                    <FilterSimpleSelect
+                                        name="membership"
+                                        list={membershipList.data}
+                                        label="Seleccionar Afiliacion"
+                                        onChange={handleChangeForm}
+                                        disabled={membershipList.loading}
+                                        value={form.membership}
+                                        optionField="name"
+                                        helperText=""
+                                        loading={membershipList.loading}
                                         variant="standard"
                                     />
                                 </Grid>
