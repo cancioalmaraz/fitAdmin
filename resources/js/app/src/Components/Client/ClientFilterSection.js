@@ -148,6 +148,7 @@ const ClientFilterSection = React.memo(
                                     optionField="fullTime"
                                     helperText=""
                                     loading={scheduleList.loading}
+                                    variant="standard"
                                 />
                             </Grid>
                         </Grid>

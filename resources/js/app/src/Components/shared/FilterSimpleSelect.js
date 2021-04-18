@@ -122,7 +122,8 @@ const FilterSimpleSelect = ({
     optionField = "name",
     required = false,
     helperText = "Helper Text",
-    loading = false
+    loading = false,
+    variant = "outlined"
 }) => {
     const classes = useStyles();
 
@@ -150,6 +151,7 @@ const FilterSimpleSelect = ({
                 <TextField
                     {...params}
                     required={required}
+                    variant={variant}
                     label={label}
                     helperText={helperText}
                     InputProps={{
