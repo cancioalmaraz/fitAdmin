@@ -81,7 +81,7 @@ const CoachListRow = ({ coach, actionList = {} }) => {
     return (
         <Fragment>
             <TableRow>
-                <Hidden mdDown>
+                <Hidden smDown>
                     <TableCell align="center">{coach.ci}</TableCell>
                     <TableCell align="center">{coach.name}</TableCell>
                     <TableCell align="center">

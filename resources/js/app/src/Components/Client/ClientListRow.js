@@ -85,10 +85,30 @@ const ClientListRow = ({ client, actionList = {} }) => {
 
     const styles = {
         row: {
-            backgroundColor: client.remaining_days < 7 ? "red" : "white"
+            backgroundColor: function(){
+                if (client.remaining_days < 3) {
+                    return "red";
+                }
+                else if (client.remaining_days < 7) {
+                    return "darkorange";
+                }
+                else {
+                    return "white"
+                }
+            }()
         },
         cell: {
-            color: client.remaining_days < 7 ? "white" : "black"
+            color: function(){
+                if (client.remaining_days < 3) {
+                    return "white";
+                }
+                else if (client.remaining_days < 7) {
+                    return "black";
+                }
+                else {
+                    return "black";
+                }
+            }()
         }
     };
 
@@ -121,6 +141,12 @@ const ClientListRow = ({ client, actionList = {} }) => {
                     </TableCell>
                     <TableCell style={styles.cell} align="center">
                         {!!client.coach && client.coach.name}
+                    </TableCell>
+                    <TableCell style={styles.cell} align="center">
+                        {!!client.schedule && client.schedule.fullTime}
+                    </TableCell>
+                    <TableCell style={styles.cell} align="center">
+                        {!!client.membership && client.membership.name}
                     </TableCell>
                     <TableCell style={styles.cell} align="center">
                         <Button
@@ -180,6 +206,45 @@ const ClientListRow = ({ client, actionList = {} }) => {
                                     Dias Restantes:{" "}
                                     {client.remaining_days !== null &&
                                         client.remaining_days}
+                                </Typography>
+                            </Grid>
+                            <Grid
+                                item
+                                xs={12}
+                                style={{
+                                    textAlign: "left",
+                                    alignSelf: "center"
+                                }}
+                            >
+                                <Typography>
+                                    Coach:{" "}
+                                    {!!client.coach && client.coach.name}
+                                </Typography>
+                            </Grid>
+                            <Grid
+                                item
+                                xs={12}
+                                style={{
+                                    textAlign: "left",
+                                    alignSelf: "center"
+                                }}
+                            >
+                                <Typography>
+                                    Horario:{" "}
+                                    {!!client.schedule && client.schedule.fullTime}
+                                </Typography>
+                            </Grid>
+                            <Grid
+                                item
+                                xs={12}
+                                style={{
+                                    textAlign: "left",
+                                    alignSelf: "center"
+                                }}
+                            >
+                                <Typography>
+                                    Afiliacion:{" "}
+                                    {!!client.membership && client.membership.name}
                                 </Typography>
                             </Grid>
                         </Grid>
