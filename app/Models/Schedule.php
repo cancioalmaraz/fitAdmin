@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
+use Illuminate\Support\Carbon;
 
 class Schedule extends BaseModel
 {
@@ -12,8 +13,7 @@ class Schedule extends BaseModel
     {
         $array = parent::toArray();
 
-        $array['fullTime'] = $this->entry_time . " - " . $this->departure_time;
-
+        $array['fullTime'] = Carbon::parse($this->entry_time)->format('H:i') . " - " . Carbon::parse($this->departure_time)->format('H:i');
         return $array;
     }
 }
