@@ -8,7 +8,7 @@ class ClientService {
         urlSearchParams.append("offset", offset);
 
         for (const property in filterList) {
-            if (filterList[property] !== "") {
+            if (filterList[property] !== "" && !!filterList[property]) {
                 urlSearchParams.append(
                     `filterList[${property}]`,
                     filterList[property]

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {
     Accordion,
     AccordionActions,
@@ -15,16 +15,29 @@ import {
 import ClearAllIcon from "@material-ui/icons/ClearAll";
 import SearchIcon from "@material-ui/icons/Search";
 
+// Components
+import FilterSimpleSelect from "../shared/FilterSimpleSelect";
+
+// Services
+import ScheduleService from "../../Services/ScheduleService";
+
+import StateHelper from "../../Helpers/StateHelper";
+
 const ClientFilterSection = React.memo(
     ({ accordion = { state: false }, filter = {} }) => {
         const initFilters = useMemo(
             () => ({
                 ci: "",
                 first_last_name: "",
-                second_last_name: ""
+                second_last_name: "",
+                schedule: null
             }),
             []
         );
+
+        const stateHelper = new StateHelper();
+
+        const scheduleService = new ScheduleService();
 
         const [form, setForm] = useState(initFilters);
 
@@ -40,6 +53,28 @@ const ClientFilterSection = React.memo(
             filter.charge();
         };
 
+        // State to schedules
+        const [scheduleList, setScheduleList] = useState({
+            data: [],
+            loading: true
+        });
+
+        const chargeScheduleList = () => {
+            stateHelper.startLoading(setScheduleList);
+            scheduleService
+                .getAll(10000, 0)
+                .then(httpSuccess => {
+                    stateHelper.setData(httpSuccess.data.results, setScheduleList);
+                })
+                .finally(() => {
+                    stateHelper.finishLoading(setScheduleList);
+                });
+        };
+
+        useEffect(()=>{
+            chargeScheduleList();
+        }, []);
+
         return (
             <Accordion expanded={accordion.state}>
                 <AccordionSummary
@@ -50,11 +85,16 @@ const ClientFilterSection = React.memo(
                         marginTop: 20
                     }}
                 ></AccordionSummary>
-                <AccordionDetails>
+                <AccordionDetails
+                    style={{ padding: 25 }}
+                >
                     <form
                         id="form-client-filters"
                         onSubmit={e => {
-                            filter.search(e, form);
+                            filter.search(e, {
+                                ...form,
+                                schedule: !!form.schedule ? form.schedule.id : null
+                            });
                         }}
                         style={{ width: "100%" }}
                     >
@@ -88,6 +128,26 @@ const ClientFilterSection = React.memo(
                                     autoComplete="off"
                                     value={form.second_last_name}
                                     onChange={handleChangeForm}
+                                />
+                            </Grid>
+
+                            <Grid
+                                item
+                                xs={12}
+                                sm={6}
+                                md={4}
+                                lg={2}
+                            >
+                                <FilterSimpleSelect
+                                    name="schedule"
+                                    list={scheduleList.data}
+                                    label="Seleccionar Horario"
+                                    onChange={handleChangeForm}
+                                    disabled={scheduleList.loading}
+                                    value={form.schedule}
+                                    optionField="fullTime"
+                                    helperText=""
+                                    loading={scheduleList.loading}
                                 />
                             </Grid>
                         </Grid>

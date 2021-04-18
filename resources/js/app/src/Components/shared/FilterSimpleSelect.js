@@ -150,7 +150,6 @@ const FilterSimpleSelect = ({
                 <TextField
                     {...params}
                     required={required}
-                    variant="outlined"
                     label={label}
                     helperText={helperText}
                     InputProps={{
