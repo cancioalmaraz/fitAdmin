@@ -123,7 +123,7 @@ const ClientListRow = ({ client, actionList = {} }) => {
                     <TableCell style={styles.cell} align="center">
                         {client.ci}
                     </TableCell>
-                    <TableCell style={styles.cell} align="center">
+                    <TableCell style={styles.cell} align="left">
                         {client.fullName}
                     </TableCell>
                     <TableCell style={styles.cell} align="center">
