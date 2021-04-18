@@ -105,7 +105,7 @@ const ClientFilterSection = React.memo(
                         minHeight: 0,
                         marginTop: 20
                     }}
-                ></AccordionSummary>
+                />
                 <AccordionDetails
                     style={{ padding: 25 }}
                 >
