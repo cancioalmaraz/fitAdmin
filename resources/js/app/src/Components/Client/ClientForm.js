@@ -261,11 +261,7 @@ const ClientForm = React.memo(({ state, handleClose }) => {
             chargeCoachList();
             chargeScheduleList();
             chargeMembershipList();
-            if (!!state.client.coach && !!state.client.schedule) {
-                chargeHelperText(state.client.coach, state.client.schedule);
-            } else {
-                setData("", setHelperText);
-            }
+            setData("", setHelperText);
 
             setForm({
                 ...state.client,
