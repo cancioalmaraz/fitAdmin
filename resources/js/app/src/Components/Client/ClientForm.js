@@ -30,6 +30,7 @@ import esLocale from "date-fns/locale/es";
 import CoachService from "../../Services/CoachService";
 import ClientService from "../../Services/ClientService";
 import ScheduleService from "../../Services/ScheduleService";
+import MembershipService from "../../Services/MembershipService";
 
 //Components
 import FilterSimpleSelect from "../shared/FilterSimpleSelect";
@@ -119,6 +120,7 @@ const ClientForm = React.memo(({ state, handleClose }) => {
     const coachService = new CoachService();
     const clientService = new ClientService();
     const scheduleService = new ScheduleService();
+    const membershipService = new MembershipService();
 
     const [helperText, setHelperText] = useState({
         data: "",
@@ -168,6 +170,12 @@ const ClientForm = React.memo(({ state, handleClose }) => {
         loading: true
     });
 
+    // State to memberships
+    const [membershipList, setMembershipList] = useState({
+        data: [],
+        loading: true
+    });
+
     // State map
     const [openMap, setOpenMap] = React.useState(false);
 
@@ -200,6 +208,18 @@ const ClientForm = React.memo(({ state, handleClose }) => {
             })
             .finally(() => {
                 stateHelper.finishLoading(setScheduleList);
+            });
+    };
+
+    const chargeMembershipList = () => {
+        stateHelper.startLoading(setMembershipList);
+        membershipService
+            .getAll(10000, 0)
+            .then(httpSuccess => {
+                stateHelper.setData(httpSuccess.data.results, setMembershipList);
+            })
+            .finally(() => {
+                stateHelper.finishLoading(setMembershipList);
             });
     };
 
@@ -240,6 +260,7 @@ const ClientForm = React.memo(({ state, handleClose }) => {
         if (state.open) {
             chargeCoachList();
             chargeScheduleList();
+            chargeMembershipList();
             if (!!state.client.coach && !!state.client.schedule) {
                 chargeHelperText(state.client.coach, state.client.schedule);
             } else {
@@ -263,6 +284,7 @@ const ClientForm = React.memo(({ state, handleClose }) => {
                     : null,
                 coach: !!state.client.coach ? state.client.coach : null,
                 schedule: !!state.client.schedule ? state.client.schedule : null,
+                membership: !!state.client.membership ? state.client.membership : null,
                 sex: !!state.client.sex ? state.client.sex : ""
             });
         }
@@ -467,6 +489,26 @@ const ClientForm = React.memo(({ state, handleClose }) => {
                                         optionField="fullTime"
                                         helperText={helperText.data}
                                         loading={helperText.loading}
+                                    />
+                                </Grid>
+
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={6}
+                                    style={{ alignSelf: "start" }}
+                                >
+                                    <FilterSimpleSelect
+                                        open={state.open}
+                                        name="membership"
+                                        list={membershipList.data}
+                                        label="Seleccionar Afiliacion"
+                                        onChange={handleChangeForm}
+                                        disabled={membershipList.loading}
+                                        value={!!form.membership ? form.membership : null}
+                                        optionField="name"
+                                        helperText=""
+                                        loading={membershipList.loading}
                                     />
                                 </Grid>
 
