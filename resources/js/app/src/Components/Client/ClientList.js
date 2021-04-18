@@ -48,18 +48,6 @@ const ClientList = React.memo(
                                     className={classes.tableCell}
                                     align="center"
                                 >
-                                    Apellido P.
-                                </TableCell>
-                                <TableCell
-                                    className={classes.tableCell}
-                                    align="center"
-                                >
-                                    Apellido M.
-                                </TableCell>
-                                <TableCell
-                                    className={classes.tableCell}
-                                    align="center"
-                                >
                                     Dias Restantes
                                 </TableCell>
                                 <TableCell

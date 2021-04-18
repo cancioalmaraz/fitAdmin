@@ -124,13 +124,7 @@ const ClientListRow = ({ client, actionList = {} }) => {
                         {client.ci}
                     </TableCell>
                     <TableCell style={styles.cell} align="center">
-                        {client.name}
-                    </TableCell>
-                    <TableCell style={styles.cell} align="center">
-                        {client.first_last_name}
-                    </TableCell>
-                    <TableCell style={styles.cell} align="center">
-                        {client.second_last_name}
+                        {client.fullName}
                     </TableCell>
                     <TableCell style={styles.cell} align="center">
                         {client.remaining_days !== null &&
