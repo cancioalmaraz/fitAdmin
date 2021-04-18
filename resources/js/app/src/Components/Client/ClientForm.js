@@ -25,6 +25,7 @@ import esLocale from "date-fns/locale/es";
 //Services
 import CoachService from "../../Services/CoachService";
 import ClientService from "../../Services/ClientService";
+import ScheduleService from "../../Services/ScheduleService";
 
 //Components
 import FilterSimpleSelect from "../shared/FilterSimpleSelect";
@@ -32,6 +33,8 @@ import FilterSimpleSelect from "../shared/FilterSimpleSelect";
 //Icons
 import CloseIcon from "@material-ui/icons/Close";
 import RoomIcon from "@material-ui/icons/Room";
+
+import StateHelper from "../../Helpers/StateHelper";
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -105,9 +108,13 @@ const DraggableMarker = ({ position }) => {
 const ClientForm = React.memo(({ state, handleClose }) => {
     const classes = useStyles();
 
+    // Helpers
+    const stateHelper = new StateHelper();
+
     // Services
     const coachService = new CoachService();
     const clientService = new ClientService();
+    const scheduleService = new ScheduleService();
 
     const [helperText, setHelperText] = useState({
         data: "",
@@ -151,6 +158,12 @@ const ClientForm = React.memo(({ state, handleClose }) => {
         }));
     };
 
+    // State to schedules
+    const [scheduleList, setScheduleList] = useState({
+        data: [],
+        loading: true
+    });
+
     // State map
     const [openMap, setOpenMap] = React.useState(false);
 
@@ -174,13 +187,25 @@ const ClientForm = React.memo(({ state, handleClose }) => {
             });
     };
 
-    const chargeHelperText = coach => {
+    const chargeScheduleList = () => {
+        stateHelper.startLoading(setScheduleList);
+        scheduleService
+            .getAll(10000, 0)
+            .then(httpSuccess => {
+                stateHelper.setData(httpSuccess.data.results, setScheduleList);
+            })
+            .finally(() => {
+                stateHelper.finishLoading(setScheduleList);
+            });
+    };
+
+    const chargeHelperText = (coach, schedule) => {
         startLoading(setHelperText);
         clientService
-            .getAll(10000, 0, { coach: coach.id })
+            .getAll(10000, 0, { coach: coach.id, schedule: schedule.id })
             .then(httpSuccess => {
                 setData(
-                    `Tiene ${httpSuccess.data.filterCount} alumno(s)`,
+                    `En este horario ${coach.name} tiene ${httpSuccess.data.filterCount} alumno(s)`,
                     setHelperText
                 );
             })
@@ -190,8 +215,12 @@ const ClientForm = React.memo(({ state, handleClose }) => {
     };
 
     const handleChangeCoach = e => {
-        if (!!e.target.value) {
-            chargeHelperText(e.target.value);
+        handleChangeForm(e);
+    };
+
+    const handleChangeSchedule = e => {
+        if (!!e.target.value && !!form.coach) {
+            chargeHelperText(form.coach ,e.target.value);
         } else {
             setData("", setHelperText);
         }
@@ -201,8 +230,9 @@ const ClientForm = React.memo(({ state, handleClose }) => {
     useEffect(() => {
         if (state.open) {
             chargeCoachList();
-            if (!!state.client.coach) {
-                chargeHelperText(state.client.coach);
+            chargeScheduleList();
+            if (!!state.client.coach && !!state.client.schedule) {
+                chargeHelperText(state.client.coach,state.client.schedule);
             } else {
                 setData("", setHelperText);
             }
@@ -222,7 +252,8 @@ const ClientForm = React.memo(({ state, handleClose }) => {
                 date_of_birth_full: !!state.client.date_of_birth
                     ? new Date(`${state.client.date_of_birth}T04:00`)
                     : null,
-                coach: !!state.client.coach ? state.client.coach : null
+                coach: !!state.client.coach ? state.client.coach : null,
+                schedule: !!state.client.schedule ? state.client.schedule : null
             });
         }
     }, [state.open]);
@@ -383,6 +414,25 @@ const ClientForm = React.memo(({ state, handleClose }) => {
                                         disabled={coachList.loading}
                                         value={!!form.coach ? form.coach : null}
                                         optionField="fullName"
+                                        helperText=""
+                                    />
+                                </Grid>
+
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={6}
+                                    style={{ alignSelf: "center" }}
+                                >
+                                    <FilterSimpleSelect
+                                        open={state.open}
+                                        name="schedule"
+                                        list={scheduleList.data}
+                                        label="Seleccionar Horario"
+                                        onChange={handleChangeSchedule}
+                                        disabled={scheduleList.loading}
+                                        value={!!form.schedule ? form.schedule : null}
+                                        optionField="fullTime"
                                         helperText={helperText.data}
                                         loading={helperText.loading}
                                     />

@@ -4,10 +4,11 @@ namespace App\Repositories;
 
 use App\Models\Client;
 use App\Models\Coach;
+use App\Models\Schedule;
 use Illuminate\Support\Facades\DB;
 
 class ClientRepository {
-        
+
     /**
      * getById
      *
@@ -74,9 +75,14 @@ class ClientRepository {
             $query->where('ch.id', '=', $filterList['coach']);
         }
 
+        if (array_key_exists('schedule', $filterList) ){
+            $query->join(Schedule::getFullTableName() . ' as sch', 'sch.id', '=', 'c.schedule_id');
+            $query->where('sch.id', '=', $filterList['schedule']);
+        }
+
         return $query;
     }
-    
+
     /**
      * getAll
      *
@@ -99,7 +105,7 @@ class ClientRepository {
 
         return $query->get();
     }
-    
+
     /**
      * countAll
      *
@@ -109,7 +115,7 @@ class ClientRepository {
         $query = $this->queryAll();
         return $query->count();
     }
-    
+
     /**
      * countAllFiltered
      *
