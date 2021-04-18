@@ -86,10 +86,10 @@ const ClientListRow = ({ client, actionList = {} }) => {
     const styles = {
         row: {
             backgroundColor: function(){
-                if (client.remaining_days < 3) {
+                if (client.remaining_days <= 3) {
                     return "red";
                 }
-                else if (client.remaining_days < 7) {
+                else if (client.remaining_days <= 7) {
                     return "darkorange";
                 }
                 else {
