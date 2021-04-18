@@ -13,7 +13,8 @@ class Schedule extends BaseModel
     {
         $array = parent::toArray();
 
-        $array['fullTime'] = Carbon::parse($this->entry_time)->format('H:i') . " - " . Carbon::parse($this->departure_time)->format('H:i');
+        //TODO: Make it dynamic with hours offset from client (its only valid to gmt -4)
+        $array['fullTime'] = Carbon::parse($this->entry_time)->addHours(-4)->format('H:i') . " - " . Carbon::parse($this->departure_time)->addHours(-4)->format('H:i');
         return $array;
     }
 }
