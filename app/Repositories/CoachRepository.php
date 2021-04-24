@@ -34,6 +34,15 @@ class CoachRepository {
             $query->where('ch.ci', '=', $filterList['ci']);
         }
 
+        if (array_key_exists('searchText', $filterList) ){
+            $query->where(function($query) use($filterList) {
+                $query
+                    ->orWhere('ch.name', 'like', "%" . $filterList['searchText'] . "%")
+                    ->orWhere('ch.first_last_name', 'like', "%" . $filterList['searchText'] . "%")
+                    ->orWhere('ch.second_last_name', 'like', "%" . $filterList['searchText'] . "%");
+            });
+        }
+
         return $query;
     }
     
