@@ -83,8 +83,7 @@ class ClientService extends BaseService
         $validationRules = [
             'ci' => 'required|integer|unique:'.Client::getTableName(),
             'name' => 'required|string',
-            'first_last_name' => 'required|string',
-            'second_last_name' => 'required|string'
+            'first_last_name' => 'required|string'
         ];
 
         $validator = Validator::make($data, $validationRules);
@@ -135,8 +134,7 @@ class ClientService extends BaseService
                 Rule::unique(Client::getTableName())->ignore($client->id)
             ],
             'name' => 'required|string',
-            'first_last_name' => 'required|string',
-            'second_last_name' => 'required|string'
+            'first_last_name' => 'required|string'
         ];
 
         $validator = Validator::make($data, $validationRules);
