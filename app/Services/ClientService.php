@@ -7,6 +7,7 @@ use App\Repositories\ClientRepository;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Carbon;
 
 /**
  * Class ClientService
@@ -103,7 +104,7 @@ class ClientService extends BaseService
             $client->email = Arr::get($data, 'email');
             $client->phone = Arr::get($data, 'phone');
             $client->address = Arr::get($data, 'address');
-            $client->date_of_birth = Arr::get($data, 'date_of_birth');
+            $client->date_of_birth = Carbon::parse(Arr::get($data, 'date_of_birth'))->format('Y-m-d');
 
             if (!is_null($coach)){
                 $client->coach()->associate($coach);
@@ -153,7 +154,7 @@ class ClientService extends BaseService
             $client->email = Arr::get($data, 'email');
             $client->phone = Arr::get($data, 'phone');
             $client->address = Arr::get($data, 'address');
-            $client->date_of_birth = Arr::get($data, 'date_of_birth');
+            $client->date_of_birth = Carbon::parse(Arr::get($data, 'date_of_birth'))->format('Y-m-d');
 
             if (!is_null($coach)){
                 $client->coach()->associate($coach);
