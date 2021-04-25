@@ -104,7 +104,10 @@ class ClientService extends BaseService
             $client->email = Arr::get($data, 'email');
             $client->phone = Arr::get($data, 'phone');
             $client->address = Arr::get($data, 'address');
-            $client->date_of_birth = Carbon::parse(Arr::get($data, 'date_of_birth'))->format('Y-m-d');
+            
+            if (array_key_exists('date_of_birth', $data)){
+                $client->date_of_birth = Carbon::parse(Arr::get($data, 'date_of_birth'))->format('Y-m-d');
+            }
 
             if (!is_null($coach)){
                 $client->coach()->associate($coach);
@@ -154,7 +157,12 @@ class ClientService extends BaseService
             $client->email = Arr::get($data, 'email');
             $client->phone = Arr::get($data, 'phone');
             $client->address = Arr::get($data, 'address');
-            $client->date_of_birth = Carbon::parse(Arr::get($data, 'date_of_birth'))->format('Y-m-d');
+
+            if (array_key_exists('date_of_birth', $data)){
+                $client->date_of_birth = Carbon::parse(Arr::get($data, 'date_of_birth'))->format('Y-m-d');
+            } else {
+                $client->date_of_birth = null;
+            }
 
             if (!is_null($coach)){
                 $client->coach()->associate($coach);
