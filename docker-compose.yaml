@@ -28,24 +28,6 @@ services:
     depends_on:
       - app
 
-  node:
-    image: node:14.16-alpine3.10
-    depends_on: 
-      - app
-    working_dir: /usr/src/app
-    volumes:
-      - ${APPLICATION_DIR}:/usr/src/app
-    command: "npm install"
-
-  composer:
-    image: composer:1.10
-    depends_on: 
-      - app
-    working_dir: /app
-    volumes:
-      - ${APPLICATION_DIR}:/app
-    command: "composer install"
-
 volumes: 
   mysql-data:
     name: "fitAdmin-mysql-data"
