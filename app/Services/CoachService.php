@@ -7,6 +7,7 @@ use App\Repositories\CoachRepository;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Carbon;
 /**
  * Class CoachService
  * @package App\Services
@@ -102,7 +103,9 @@ class CoachService extends BaseService
             $coach->email = Arr::get($data, 'email');
             $coach->phone = Arr::get($data, 'phone');
             $coach->address = Arr::get($data, 'address');
-            $coach->date_of_birth = Arr::get($data, 'date_of_birth');
+            if (array_key_exists('date_of_birth', $data)){
+                $coach->date_of_birth = Carbon::parse(Arr::get($data, 'date_of_birth'))->format('Y-m-d');
+            }
             $coach->save();
         }
         return $coach;
@@ -142,7 +145,13 @@ class CoachService extends BaseService
             $coach->email = Arr::get($data, 'email');
             $coach->phone = Arr::get($data, 'phone');
             $coach->address = Arr::get($data, 'address');
-            $coach->date_of_birth = Arr::get($data, 'date_of_birth');
+            
+            if (array_key_exists('date_of_birth', $data)){
+                $coach->date_of_birth = Carbon::parse(Arr::get($data, 'date_of_birth'))->format('Y-m-d');
+            } else {
+                $coach->date_of_birth = null;
+            }
+
             $coach->update();
         }
         return $coach;
