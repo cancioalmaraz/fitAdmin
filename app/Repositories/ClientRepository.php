@@ -54,6 +54,15 @@ class ClientRepository {
             $query->where('c.sex', '=', $filterList['sex']);
         }
 
+        if (array_key_exists('searchText', $filterList) ){
+            $query->where(function($query) use($filterList) {
+                $query
+                    ->orWhere('c.name', 'like', "%" . $filterList['searchText'] . "%")
+                    ->orWhere('c.first_last_name', 'like', "%" . $filterList['searchText'] . "%")
+                    ->orWhere('c.second_last_name', 'like', "%" . $filterList['searchText'] . "%");
+            });
+        }
+
         if (array_key_exists('birth_date', $filterList) ){
             $fieldRaw = "DATEDIFF(DATE_FORMAT(DATE_ADD(c.date_of_birth, INTERVAL (YEAR(CURRENT_DATE()) - YEAR(c.date_of_birth)) YEAR), '%Y-%m-%d'), CURRENT_DATE())";
             $query->addSelect(DB::raw($fieldRaw . ' as remaining_days_to_birthday'));
