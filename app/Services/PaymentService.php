@@ -6,6 +6,7 @@ use App\Models\Payment;
 use App\Repositories\PaymentRepository;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Carbon;
 
 /**
  * Class PaymentService
@@ -99,9 +100,13 @@ class PaymentService extends BaseService
         if (!$this->hasErrors()) {
             $payment = new Payment();
             if (array_key_exists('start_date', $data)) {
-                $payment->start_date = $data['start_date'];
+                $payment->start_date = Carbon::parse(Arr::get($data, 'start_date'))->format('Y-m-d');
+            } else {
+                $payment->start_date = null;
             }
-            $payment->end_date = $data['end_date'];
+            if (array_key_exists('end_date', $data)) {
+                $payment->end_date = Carbon::parse(Arr::get($data, 'end_date'))->format('Y-m-d');
+            }
             $payment->payment_amount = $data['payment_amount'];
             if (array_key_exists('notes', $data)) {
                 $payment->notes = $data['notes'];
