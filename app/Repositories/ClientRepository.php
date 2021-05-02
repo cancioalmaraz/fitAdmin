@@ -80,6 +80,10 @@ class ClientRepository {
             }
         }
 
+        if (array_key_exists('idList', $filterList) ){
+            $query->whereIn('c.id', $filterList['idList']);
+        }
+
         if (array_key_exists('ci', $filterList) ){
             $query->where('c.ci', '=', $filterList['ci']);
         }
