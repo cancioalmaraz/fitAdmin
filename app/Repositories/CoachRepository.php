@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Coach;
+use Illuminate\Support\Facades\DB;
 
 class CoachRepository {
         
@@ -24,7 +25,18 @@ class CoachRepository {
      */
     public function queryAll($filterList = []){
         $query = Coach::from(Coach::getFullTableName() . ' as ch')
-            ->select('ch.*');
+            ->select('ch.*')
+            ->addSelect(DB::raw("(
+                select
+                    sum( distinct p.payment_amount )
+                from
+                    coaches as ch1
+                    left join clients cl on ch1.id = cl.coach_id
+                    left join client_payment cp on cl.id = cp.client_id
+                    left join payments p on cp.payment_id = p.id
+                where
+                    ch1.id = ch.id and p.paid_to_coach = false
+            ) as amount_owed"));
 
         if (array_key_exists('first_last_name', $filterList) ){
             $query->where('ch.first_last_name', 'like', '%'.$filterList['first_last_name'].'%');
