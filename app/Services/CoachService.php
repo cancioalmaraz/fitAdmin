@@ -46,7 +46,7 @@ class CoachService extends BaseService
         return $this->coachRepository->getAll(
             Arr::get($data, 'limit', 10),
             Arr::get($data, 'offset', 0),
-            Arr::get($data, 'order', [['col' => 'ch.first_last_name', 'dir' => 'asc']]),
+            Arr::get($data, 'order', [['col' => 'amount_owed', 'dir' => 'desc']]),
             Arr::get($data, 'filterList', [])
         );
     }
