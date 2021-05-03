@@ -28,14 +28,12 @@ class CoachRepository {
             ->select('ch.*')
             ->addSelect(DB::raw("(
                 select
-                    sum( distinct p.payment_amount )
+                    sum( distinct pm.payment_amount )
                 from
                     coaches as ch1
-                    left join clients cl on ch1.id = cl.coach_id
-                    left join client_payment cp on cl.id = cp.client_id
-                    left join payments p on cp.payment_id = p.id
+                    left join payments pm on pm.coach_id = ch1.id
                 where
-                    ch1.id = ch.id and p.paid_to_coach = false
+                    ch1.id = ch.id and pm.paid_to_coach = false
             ) as amount_owed"));
 
         if (array_key_exists('first_last_name', $filterList) ){
