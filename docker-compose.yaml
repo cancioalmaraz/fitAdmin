@@ -4,6 +4,7 @@ services:
   app:
     build: .docker/images/app
     image: laravel-app:1.0
+    restart: always
     depends_on:
       - mysql
     volumes:
@@ -11,6 +12,7 @@ services:
 
   mysql:
     image: mysql:5.7
+    restart: always
     ports:
       - ${DB_DOCKER_HOST}:3306
     environment:
@@ -20,6 +22,7 @@ services:
 
   nginx:
     image: nginx:1.19
+    restart: always
     ports:
       - ${WEB_HOST}:80
     volumes:
